@@ -204,6 +204,7 @@
     "inherits" "~2.0.0"
 
 "bloomxx@git+https://github.com/daginx/xx-bloom.git":
+  "integrity" "sha512-FHjeDlhIvGAI2VNsf6+v7Jeixj0G2JOBVMNbx7bcmdlHLYuKxgRL0Jxofpy3zxboxfY2K5X/ILVUUwPdCm8baA=="
   "resolved" "git+ssh://git@github.com/daginx/xx-bloom.git#b56df0178d955a5960cf8c81fc55f517159e9e28"
   "version" "0.1.2"
   dependencies:
