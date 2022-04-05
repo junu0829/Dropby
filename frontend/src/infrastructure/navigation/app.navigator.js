@@ -14,6 +14,7 @@ import { SignInScreen } from "../../features/login/Screens/SignIn";
 import { FeedScreen } from "../../features/Feed/feed.screen";
 import { SignUpScreen } from "../../features/login/Screens/Signup";
 import { DetailScreen } from "../../features/map/screen/DetailScreen";
+import { WalkThrough_01_01 } from "../../features/login/Screens/WalkThrough_01_01.js";
 
 const MainStack = createStackNavigator();
 
@@ -21,6 +22,10 @@ export const MainNavigator = () => {
   return (
     <NavigationContainer>
       <MainStack.Navigator headerMode="none">
+        <MainStack.Screen
+          name="WalkThrough_01_01"
+          component={WalkThrough_01_01}
+        />
         <MainStack.Screen name="SignIn" component={SignInScreen} />
         <MainStack.Screen name="SignUp" component={SignUpScreen} />
         <MainStack.Screen name="LogIn" component={LogIn} />
