@@ -148,7 +148,7 @@ export const SignInScreen = ({ navigation }) => {
         <View style={styles.container5}>
           <TouchableOpacity
             style={{ marginTop: 5, right: 15 }}
-            onPress={() => navigation.navigate("SignUp")}
+            onPress={() => navigation.navigate("SignUp0101")}
           >
             <SvgXml xml={AreYouStartingButton} width={50} />
           </TouchableOpacity>

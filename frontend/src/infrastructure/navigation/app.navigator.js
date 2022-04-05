@@ -14,6 +14,8 @@ import { SignInScreen } from "../../features/login/Screens/SignIn";
 import { FeedScreen } from "../../features/Feed/feed.screen";
 import { SignUpScreen } from "../../features/login/Screens/Signup";
 import { DetailScreen } from "../../features/map/screen/DetailScreen";
+import { SignUp0101 } from "../../features/login/Screens/SignUp0101";
+import { SignUp0201 } from "../../features/login/Screens/SignUp0201";
 
 const MainStack = createStackNavigator();
 
@@ -22,7 +24,9 @@ export const MainNavigator = () => {
     <NavigationContainer>
       <MainStack.Navigator headerMode="none">
         <MainStack.Screen name="SignIn" component={SignInScreen} />
-        <MainStack.Screen name="SignUp" component={SignUpScreen} />
+        <MainStack.Screen name="SignUp0101" component={SignUpScreen} />
+        <MainStack.Screen name="SignUp0201" component={SignUp0201} />
+
         <MainStack.Screen name="LogIn" component={LogIn} />
         <MainStack.Screen name="Loading" component={Loading} />
         <MainStack.Screen name="MapScreen" component={MapScreen} />
