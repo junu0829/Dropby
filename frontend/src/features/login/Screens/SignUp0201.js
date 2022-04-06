@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { LinearGradient } from "expo-linear-gradient";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -14,6 +13,8 @@ import { TextInput } from "react-native-gesture-handler";
 import backButtonWhite from "../../../../assets/Buttons/backButtonWhite";
 import signUpNextButton from "../../../../assets/Buttons/signUpNextButton";
 import { AutoFocus } from "expo-camera/build/Camera.types";
+import { LoginBg } from "../Component/LoginBg";
+import { LoginButton } from "../Component/LoginButton";
 
 export const SignUp0201 = ({ navigation, route }) => {
   // 전화번호, 이메일을 구분하는 method state
@@ -27,22 +28,13 @@ export const SignUp0201 = ({ navigation, route }) => {
   const nextButton = async () => {
     // 인증 코드 입력받음
     // 코드 확인하고, signUp0202로 넘어감
+    console.log("nextbutton 작동!");
+
     navigation.navigate("MapScreen");
   };
   return (
     <>
-      <LinearGradient
-        style={styles.container}
-        colors={[
-          theme.colors.bg.a,
-          theme.colors.bg.b,
-          theme.colors.bg.c,
-          theme.colors.bg.d,
-        ]}
-        start={{ x: 0.99, y: 0.01 }}
-        end={{ x: 0.01, y: 0.99 }}
-        locations={[0.0, 0.5, 0.8, 1.0]}
-      >
+      <LoginBg>
         {/* 뒤로가기 버튼 */}
         <View style={styles.container1}>
           <TouchableOpacity
@@ -101,17 +93,15 @@ export const SignUp0201 = ({ navigation, route }) => {
               value={code}
             ></TextInput>
           </View>
-
-          <TouchableOpacity
+          <LoginButton
             style={{ marginTop: 24 }}
-            onPress={() => {
-              nextButton();
-            }}
-          >
-            <SvgXml xml={signUpNextButton} width={300} height={43} />
-          </TouchableOpacity>
+            value="다 음"
+            onPress={nextButton}
+            width={300}
+            height={43}
+          />
         </View>
-      </LinearGradient>
+      </LoginBg>
     </>
   );
 };
