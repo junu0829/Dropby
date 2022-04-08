@@ -95,7 +95,7 @@ export const WalkThrough_01_01 = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  setIsStarted(false);
+                  navigation.navigate("SignUp0101");
                 }}
               >
                 <SvgXml xml={SignUpButton} width={250}></SvgXml>

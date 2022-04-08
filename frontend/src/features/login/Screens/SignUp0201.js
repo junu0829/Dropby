@@ -4,23 +4,20 @@ import {
   TouchableOpacity,
   View,
   Text,
-  Alert,
   Pressable,
 } from "react-native";
 import { theme } from "../../../infrastructure/theme";
 import { SvgXml } from "react-native-svg";
 import { TextInput } from "react-native-gesture-handler";
 import backButtonWhite from "../../../../assets/Buttons/backButtonWhite";
-import signUpNextButton from "../../../../assets/Buttons/signUpNextButton";
-import { AutoFocus } from "expo-camera/build/Camera.types";
 import { LoginBg } from "../Component/LoginBg";
 import { LoginButton } from "../Component/LoginButton";
 
 export const SignUp0201 = ({ navigation, route }) => {
-  // 전화번호, 이메일을 구분하는 method state
   const [code, setCode] = useState("");
-  // 이전 스크린에서 method, input받아오기
-  const { method, input } = route.params;
+  // 이전 스크린에서 userInfo 받아오기
+  const { userInfo, setUserInfo } = route.params;
+
   const handleCode = (e) => {
     setCode(e);
   };
@@ -28,9 +25,7 @@ export const SignUp0201 = ({ navigation, route }) => {
   const nextButton = async () => {
     // 인증 코드 입력받음
     // 코드 확인하고, signUp0202로 넘어감
-    console.log("nextbutton 작동!");
-
-    navigation.navigate("MapScreen");
+    navigation.navigate("SignUp0202", { userInfo, setUserInfo });
   };
   return (
     <>
@@ -48,7 +43,7 @@ export const SignUp0201 = ({ navigation, route }) => {
         {/* Main 안내 문구 */}
         <View style={styles.container2}>
           <Text style={styles.mainText}>
-            {input}
+            {userInfo.method ? userInfo.phoneNum : userInfo.email}
             <Text>으로</Text>
           </Text>
           <Text style={styles.mainText}>전송된 인증 코드를 입력하세요</Text>
@@ -58,7 +53,7 @@ export const SignUp0201 = ({ navigation, route }) => {
         <View style={styles.container3}>
           <View style={styles.buttonContainer}>
             {/* method에 따라 전화번호 변경, 이메일 주소 변경 으로 다르게 나타남 */}
-            {method ? (
+            {userInfo.method ? (
               <Pressable
                 style={styles.methodButton}
                 onPress={() => navigation.navigate("SignUp0101")}

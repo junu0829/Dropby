@@ -18,29 +18,38 @@ import { LoginButton } from "../Component/LoginButton";
 
 export const SignUp0101 = ({ navigation }) => {
   // 전화번호, 이메일을 구분하는 method state
-  const [method, setMethod] = useState(true);
-  const [phoneNum, setPhoneNum] = useState("");
-  const [email, setEmail] = useState("");
-  // const [input, setInput] = useState("");
+  const [userInfo, setUserInfo] = useState({
+    method: true,
+    phoneNum: "",
+    email: "",
+    name: "ex)김동민",
+    nickName: "ex)Min",
+    password: "ex)12345678",
+  });
+
   const handlePhoneNum = (e) => {
-    setPhoneNum(e);
+    setUserInfo((state) => {
+      return { ...state, phoneNum: e };
+    });
   };
 
   const handleEmail = (e) => {
-    setEmail(e);
+    setUserInfo((state) => {
+      return { ...state, email: e };
+    });
   };
 
   const nextButton = () => {
-    if (method) {
+    if (userInfo.method) {
       // 전화번호 입력 받음.
       // 인증 코드 스크린에 입력된 전화번호 넘겨주기
       // 전화번호로 인증 코드 보내기
-      navigation.navigate("SignUp0201", { method, input: phoneNum });
+      navigation.navigate("SignUp0201", { userInfo, setUserInfo });
     } else {
       // 이메일 입력 받음.
       // 인증 코드 스크린에 입력된 이메일 넘겨주기
       // 이메일로 인증 코드 보내기
-      navigation.navigate("SignUp0201", { method, input: email });
+      navigation.navigate("SignUp0201", { userInfo, setUserInfo });
     }
   };
   return (
@@ -66,25 +75,45 @@ export const SignUp0101 = ({ navigation }) => {
           <View style={styles.buttonContainer}>
             <Pressable
               style={styles.methodButton}
-              onPress={() => setMethod(true)}
+              onPress={() =>
+                setUserInfo((state) => {
+                  return { ...state, method: true };
+                })
+              }
             >
-              <Text style={styles.methodText}>전화번호</Text>
+              <Text
+                style={
+                  userInfo.method ? styles.methodTextPressed : styles.methodText
+                }
+              >
+                전화번호
+              </Text>
             </Pressable>
             <Pressable
               style={styles.methodButton}
-              onPress={() => setMethod(false)}
+              onPress={() =>
+                setUserInfo((state) => {
+                  return { ...state, method: false };
+                })
+              }
             >
-              <Text style={styles.methodText}>이메일 주소</Text>
+              <Text
+                style={
+                  userInfo.method ? styles.methodText : styles.methodTextPressed
+                }
+              >
+                이메일 주소
+              </Text>
             </Pressable>
           </View>
-          {method ? (
+          {userInfo.method ? (
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.input}
                 placeholderTextColor="#02B5AA"
                 placeholder="KR+82"
                 onChangeText={(phoneNum) => handlePhoneNum(phoneNum)}
-                value={phoneNum}
+                value={userInfo.phoneNum}
               ></TextInput>
             </View>
           ) : (
@@ -94,7 +123,7 @@ export const SignUp0101 = ({ navigation }) => {
                 placeholderTextColor="#02B5AA"
                 placeholder="이메일 주소"
                 onChangeText={(email) => handleEmail(email)}
-                value={email}
+                value={userInfo.email}
               ></TextInput>
             </View>
           )}
@@ -153,6 +182,10 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   methodText: {
+    color: "white",
+    opacity: 0.2,
+  },
+  methodTextPressed: {
     color: "white",
   },
   inputBox: {
