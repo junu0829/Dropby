@@ -12,9 +12,13 @@ import { CameraScreen } from "../../features/write/screen/camera.screen";
 
 import { SignInScreen } from "../../features/login/Screens/SignIn";
 import { FeedScreen } from "../../features/Feed/feed.screen";
-import { SignUpScreen } from "../../features/login/Screens/Signup";
 import { DetailScreen } from "../../features/map/screen/DetailScreen";
+
 import { WalkThrough_01_01 } from "../../features/login/Screens/WalkThrough_01_01.js";
+
+import { SignUp0101 } from "../../features/login/Screens/SignUp0101";
+import { SignUp0201 } from "../../features/login/Screens/SignUp0201";
+
 
 const MainStack = createStackNavigator();
 
@@ -27,7 +31,10 @@ export const MainNavigator = () => {
           component={WalkThrough_01_01}
         />
         <MainStack.Screen name="SignIn" component={SignInScreen} />
-        <MainStack.Screen name="SignUp" component={SignUpScreen} />
+        <MainStack.Screen name="SignUp0101" component={SignUp0101} />
+
+        <MainStack.Screen name="SignUp0201" component={SignUp0201} />
+
         <MainStack.Screen name="LogIn" component={LogIn} />
         <MainStack.Screen name="Loading" component={Loading} />
         <MainStack.Screen name="MapScreen" component={MapScreen} />
