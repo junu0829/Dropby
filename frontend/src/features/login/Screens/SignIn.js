@@ -145,9 +145,7 @@ export const SignInScreen = ({ navigation }) => {
               navigation.navigate("SignUp");
             }}
           >
-
             <SvgXml xml={SignInButton} width={280} height={43} />
-
           </TouchableOpacity>
           <View
             style={{
