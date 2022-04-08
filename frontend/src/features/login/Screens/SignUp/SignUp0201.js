@@ -9,9 +9,9 @@ import {
 import { theme } from "../../../../infrastructure/theme";
 import { SvgXml } from "react-native-svg";
 import { TextInput } from "react-native-gesture-handler";
-import backButtonWhite from "../../../../assets/Buttons/backButtonWhite";
-import { LoginBg } from "../Component/LoginBg";
-import { LoginButton } from "../Component/LoginButton";
+import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
+import { LoginBg } from "../../Component/LoginBg";
+import { LoginButton } from "../../Component/LoginButton";
 
 export const SignUp0201 = ({ navigation, route }) => {
   const [code, setCode] = useState("");

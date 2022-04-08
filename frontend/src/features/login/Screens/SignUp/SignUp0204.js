@@ -1,24 +1,42 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
-import { theme } from "../../../infrastructure/theme";
+import { StyleSheet, TouchableOpacity, View, Text, Alert } from "react-native";
+import { theme } from "../../../../infrastructure/theme";
 import { SvgXml } from "react-native-svg";
 import { TextInput } from "react-native-gesture-handler";
-import backButtonWhite from "../../../../assets/Buttons/backButtonWhite";
-import { LoginBg } from "../Component/LoginBg";
-import { LoginButton } from "../Component/LoginButton";
+import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
+import { LoginBg } from "../../Component/LoginBg";
+import { LoginButton } from "../../Component/LoginButton";
 
-export const SignUp0203 = ({ navigation, route }) => {
+export const SignUp0204 = ({ navigation, route }) => {
   const { userInfo, setUserInfo } = route.params;
 
-  const handleNickName = (e) => {
-    setUserInfo((state) => {
-      return { ...state, nickName: e };
-    });
+  const [isCheck, setIsCheck] = useState(false);
+  const [pwCheck, setPwCheck] = useState("");
+
+  const handlePassword = (e) => {
+    if (isCheck) {
+      setPwCheck(e);
+    } else {
+      setUserInfo((state) => {
+        return { ...state, password: e };
+      });
+    }
   };
 
-  const nextButton = async () => {
-    // 닉네임 입력받음. SignUp0204로 넘어감
-    navigation.navigate("SignUp0204", { userInfo, setUserInfo });
+  const nextButton = () => {
+    // 비밀번호 확인창으로 넘어가기
+    // 비밀번호 일치하면 SignUp0205로 넘어가기
+    // 비밀번호 틀리면 다시 입력받기
+    if (!isCheck) {
+      setIsCheck(true);
+    } else {
+      if (pwCheck == userInfo.password) {
+        navigation.navigate("SignUp0205");
+      } else {
+        Alert.alert("비밀번호가 틀렸습니다! 다시 입력해주세요");
+        setPwCheck("");
+      }
+    }
   };
 
   return (
@@ -36,7 +54,11 @@ export const SignUp0203 = ({ navigation, route }) => {
 
         {/* Main 안내 문구 */}
         <View style={styles.container2}>
-          <Text style={styles.mainText}>김동민님, 닉네임을 정해주세요</Text>
+          {isCheck ? (
+            <Text style={styles.mainText}>비밀번호 확인!</Text>
+          ) : (
+            <Text style={styles.mainText}>비밀번호를 입력해주세요</Text>
+          )}
         </View>
 
         {/* 유저 입력창 */}
@@ -46,8 +68,8 @@ export const SignUp0203 = ({ navigation, route }) => {
               style={styles.input}
               placeholderTextColor="#02B5AA"
               placeholder=""
-              onChangeText={(nickName) => handleNickName(nickName)}
-              value={userInfo.nickName}
+              onChangeText={(password) => handlePassword(password)}
+              value={isCheck ? pwCheck : userInfo.password}
             ></TextInput>
           </View>
           <LoginButton
@@ -95,7 +117,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: 100,
+    width: 200,
 
     justifyContent: "center",
     alignItems: "center",

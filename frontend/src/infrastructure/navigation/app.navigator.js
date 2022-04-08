@@ -14,14 +14,14 @@ import { SignIn0201 } from "../../features/login/Screens/SignIn/SignIn0201.js";
 import { SignIn0202 } from "../../features/login/Screens/SignIn/SignIn0202";
 import { FeedScreen } from "../../features/Feed/feed.screen";
 
-import { WalkThrough_01_01 } from "../../features/login/Screens/WalkThrough_01_01.js";
+import { WalkThrough0101 } from "../../features/login/Screens/WalkThrough/WalkThrough0101.js";
 
-import { SignUp0101 } from "../../features/login/Screens/SignUp0101";
-import { SignUp0201 } from "../../features/login/Screens/SignUp0201";
-import { SignUp0202 } from "../../features/login/Screens/SignUp0202";
-import { SignUp0203 } from "../../features/login/Screens/SignUp0203";
-import { SignUp0204 } from "../../features/login/Screens/SignUp0204";
-import { SignUp0205 } from "../../features/login/Screens/SignUp0205";
+import { SignUp0101 } from "../../features/login/Screens/SignUp/SignUp0101";
+import { SignUp0201 } from "../../features/login/Screens/SignUp/SignUp0201";
+import { SignUp0202 } from "../../features/login/Screens/SignUp/SignUp0202";
+import { SignUp0203 } from "../../features/login/Screens/SignUp/SignUp0203";
+import { SignUp0204 } from "../../features/login/Screens/SignUp/SignUp0204";
+import { SignUp0205 } from "../../features/login/Screens/SignUp/SignUp0205";
 
 const MainStack = createStackNavigator();
 

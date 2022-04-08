@@ -1,25 +1,15 @@
 import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
-import { theme } from "../../../infrastructure/theme";
+import { theme } from "../../../../infrastructure/theme";
 import { SvgXml } from "react-native-svg";
 import { TextInput } from "react-native-gesture-handler";
-import backButtonWhite from "../../../../assets/Buttons/backButtonWhite";
-import { LoginBg } from "../Component/LoginBg";
-import { LoginButton } from "../Component/LoginButton";
+import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
+import { LoginBg } from "../../Component/LoginBg";
+import { LoginButton } from "../../Component/LoginButton";
 
-export const SignUp0202 = ({ navigation, route }) => {
-  const { userInfo, setUserInfo } = route.params;
-
-  const handleName = (e) => {
-    setUserInfo((state) => {
-      return { ...state, name: e };
-    });
-  };
-
+export const SignUp0205 = ({ navigation }) => {
   const nextButton = async () => {
-    // 이름 입력받음
-    // SignUp0203로 넘어감
-    navigation.navigate("SignUp0203", { userInfo, setUserInfo });
+    navigation.navigate("MapScreen");
   };
 
   return (
@@ -37,23 +27,16 @@ export const SignUp0202 = ({ navigation, route }) => {
 
         {/* Main 안내 문구 */}
         <View style={styles.container2}>
-          <Text style={styles.mainText}>이름이 뭐에요?</Text>
+          <Text style={styles.mainText}>
+            두근두근, 드롭바이와{`\n`}여행을 떠나보실까요?
+          </Text>
         </View>
 
         {/* 유저 입력창 */}
         <View style={styles.container3}>
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.input}
-              placeholderTextColor="#02B5AA"
-              placeholder=""
-              onChangeText={(name) => handleName(name)}
-              value={userInfo.name}
-            ></TextInput>
-          </View>
           <LoginButton
-            style={{ marginTop: 100 }}
-            value="다 음"
+            style={{ marginTop: 24 }}
+            value="네!"
             onPress={nextButton}
             width={300}
             height={43}
@@ -74,12 +57,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   container2: {
-    flex: 1,
-    justifyContent: "center",
+    flex: 2,
+    justifyContent: "flex-end",
     alignItems: "center",
   },
   container3: {
-    flex: 4,
+    flex: 3,
     justifyContent: "flex-start",
     alignItems: "center",
   },
@@ -88,15 +71,13 @@ const styles = StyleSheet.create({
     flex: 0,
     alignItems: "center",
     justifyContent: "center",
-
     color: "white",
     fontFamily: theme.fonts.bold,
     fontWeight: "700",
-    fontSize: 20,
+    fontSize: 24,
   },
 
   input: {
-    width: 100,
     justifyContent: "center",
     alignItems: "center",
     fontSize: 24,
