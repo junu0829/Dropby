@@ -1,18 +1,26 @@
 import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, TouchableOpacity, View, Text, Alert } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  Alert,
+  Image,
+} from "react-native";
 import { theme } from "../../../infrastructure/theme";
 import LoadIcon from "../../../../assets/images/LoadIcon";
 import { SvgXml } from "react-native-svg";
 import Checkbox from "expo-checkbox";
 import googleLogin from "../../../../assets/Buttons/googleLogin";
 import kakaoLogin from "../../../../assets/Buttons/kakaoLogin";
-
+import whiteBackButton from "../../../../assets/whiteBackButton";
 import { TextInput } from "react-native-gesture-handler";
 import SignInButton from "../../../../assets/Buttons/SignInButton";
 import AreYouStartingButton from "../../../../assets/Buttons/AreYouStartingButton";
 import FindingPWButton from "../../../../assets/Buttons/FindingPWButton";
 import axios from "axios";
+import MovingCloud from "../../../../assets/MovingCloud.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axiosInstance from "../../../services/fetch";
 
@@ -74,6 +82,14 @@ export const SignInScreen = ({ navigation }) => {
         locations={[0.0, 0.5, 0.8, 1.0]}
       >
         <View style={styles.container2}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("WalkThrough_01_01");
+            }}
+            style={{ alignSelf: "flex-start", marginBottom: 180 }}
+          >
+            <SvgXml xml={whiteBackButton} width={50}></SvgXml>
+          </TouchableOpacity>
           <SvgXml xml={LoadIcon} width={72} height={123} />
         </View>
         <View style={styles.container3}>
@@ -99,64 +115,68 @@ export const SignInScreen = ({ navigation }) => {
           <View
             style={{
               top: 5,
-              width: 130,
+              width: 100,
               height: 30,
               flexDirection: "row",
               marginLeft: 185,
             }}
           >
-            <Checkbox
-              style={styles.checkbox}
-              value={isChecked}
-              onValueChange={setChecked}
-              color={isChecked ? theme.colors.bg.c : undefined}
-            />
-            <Text
-              style={{
-                color: theme.colors.bg.white,
-                fontSize: 14,
-                width: "90%",
-                fontWeight: "700",
-                marginTop: 8,
-              }}
-            >
-              로그인 유지
-            </Text>
-          </View>
+            <TouchableOpacity>
+              <Text
+                style={{
+                  color: theme.colors.bg.white,
+                  fontSize: 12,
 
+                  fontWeight: "700",
+                  marginTop: 8,
+                }}
+              >
+                비밀번호가 뭐였지?
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.container4}>
           <TouchableOpacity
-            style={{ marginTop: 40 }}
+            style={{ zIndex: 999, position: "absolute", top: 40 }}
             onPress={() => {
               signIn();
-              navigation.navigate("MapScreen");
+              navigation.navigate("SignUp");
             }}
           >
-            <SvgXml xml={SignInButton} width={320} height={43} />
+
+            <SvgXml xml={SignInButton} width={280} height={43} />
+
           </TouchableOpacity>
-        </View>
-        <View style={styles.container4}>
-          <TouchableOpacity style={{ marginTop: 55, right: 15 }}>
+          <View
+            style={{
+              zIndex: 1,
+              position: "absolute",
+            }}
+          >
+            <Image
+              style={{
+                width: 223,
+                height: 100,
+                zIndex: 2,
+              }}
+              source={MovingCloud}
+            ></Image>
+            <Image
+              style={{
+                top: -50,
+                left: 90,
+                opacity: 0.5,
+                width: 446,
+                height: 200,
+                zIndex: 5,
+              }}
+              source={MovingCloud}
+            ></Image>
+          </View>
+          <TouchableOpacity style={{ marginTop: 5 }}>
             <SvgXml xml={googleLogin} width={45} height={45} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ marginTop: 55, left: 15 }}
-            onPress={() => Alert.alert("준비중입니다")}
-          >
-            <SvgXml xml={kakaoLogin} width={45} height={45} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.container5}>
-          <TouchableOpacity
-            style={{ marginTop: 5, right: 15 }}
-            onPress={() => navigation.navigate("SignUp0101")}
-          >
-            <SvgXml xml={AreYouStartingButton} width={50} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => Alert.alert("준비중입니다")}
-            style={{ marginTop: 5, left: 15 }}
-          >
-            <SvgXml xml={FindingPWButton} width={120} />
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -169,27 +189,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container2: {
-    flex: 7,
+    flex: 9,
     justifyContent: "flex-end",
     alignItems: "center",
   },
   container3: {
-    flex: 8,
+    flex: 2,
     justifyContent: "flex-start",
     alignItems: "center",
   },
   container4: {
-    flex: 2,
+    flex: 8,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
   },
-  container5: {
-    flex: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-  },
+
   checkbox: {
     alignSelf: "center",
     margin: 8,
@@ -200,10 +215,10 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     backgroundColor: theme.colors.bg.white,
-    width: 300,
+    width: 280,
     height: 38,
     opacity: 0.9,
-    marginTop: 30,
+    marginTop: 10,
     borderColor: theme.colors.bg.a,
     borderWidth: 1,
     borderRadius: 20,
@@ -212,7 +227,7 @@ const styles = StyleSheet.create({
   },
   inputBox2: {
     backgroundColor: theme.colors.bg.white,
-    width: 300,
+    width: 280,
     height: 38,
     opacity: 0.9,
     borderColor: theme.colors.bg.a,
