@@ -7,24 +7,25 @@ import {
   Text,
   ImageBackground,
 } from "react-native";
-import { theme } from "../../../infrastructure/theme";
+import { theme } from "../../../../infrastructure/theme";
 
-import LoadIconPurple from "../../../../assets/images/LoadIconPurple";
+import LoadIconPurple from "../../../../../assets/images/LoadIconPurple";
 import { SvgXml } from "react-native-svg";
 import Checkbox from "expo-checkbox";
 
 import SignUpCloud from "../../../../assets/Background/SignUpCloud.png";
-import { cookieContext, setCookieContext } from "../../../../App";
+import { cookieContext, setCookieContext } from "../../../../../App";
 
-import SignUpButton from "../../../../assets/Buttons/SignUpButton";
+import SignUpButton from "../../../../../assets/Buttons/SignUpButton";
 
 import { TextInput } from "react-native-gesture-handler";
-import backButtonWhite from "../../../../assets/Buttons/backButtonWhite";
-import { FadeInView } from "../../../components/animations/fade.animation";
+import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
+import { FadeInView } from "../../../../components/animations/fade.animation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-import LOCAL_HOST from "../../local.js";
+import LOCAL_HOST from "../../../local.js";
+import { LoginBg } from "../../Component/LoginBg";
 export const SignUpScreen = ({ navigation }) => {
   const [isChecked, setChecked] = useState(false);
   const setCookie = useContext(setCookieContext);
@@ -80,18 +81,7 @@ export const SignUpScreen = ({ navigation }) => {
 
   return (
     <>
-      <LinearGradient
-        style={styles.container}
-        colors={[
-          theme.colors.bg.a,
-          theme.colors.bg.b,
-          theme.colors.bg.c,
-          theme.colors.bg.d,
-        ]}
-        start={{ x: 0.99, y: 0.01 }}
-        end={{ x: 0.01, y: 0.99 }}
-        locations={[0.0, 0.5, 0.8, 1.0]}
-      >
+      <LoginBg>
         <FadeInView>
           <View style={styles.container2}>
             <TouchableOpacity
@@ -212,7 +202,7 @@ export const SignUpScreen = ({ navigation }) => {
           </View>
           <View style={styles.container5}></View>
         </FadeInView>
-      </LinearGradient>
+      </LoginBg>
     </>
   );
 };
@@ -309,7 +299,6 @@ const styles = StyleSheet.create({
   inputStyle: {
     fontSize: 14,
     left: 50,
-
     fontFamily: theme.fonts.body,
   },
 });

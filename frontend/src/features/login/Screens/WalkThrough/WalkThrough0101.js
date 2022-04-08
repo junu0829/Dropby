@@ -1,41 +1,22 @@
 import React, { useState } from "react";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
-  Alert,
-  Image,
-  ImageBackground,
-} from "react-native";
-import { theme } from "../../../infrastructure/theme";
-import LoadIcon from "../../../../assets/images/LoadIcon";
-import { SvgXml } from "react-native-svg";
-import MovingCloud from "../../../../assets/MovingCloud.png";
-import StartButton from "../../../../assets/Buttons/StartButton";
-import { ExpandView } from "../../../components/animations/expand.animation";
-import { SlideView } from "../../../components/animations/slide.animation";
-import SignInButton from "../../../../assets/Buttons/SignInButton";
-import SignUpButton from "../../../../assets/Buttons/SignUpButton";
-import { SignInScreen } from "./SignIn";
 
-export const WalkThrough_01_01 = ({ navigation }) => {
+import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import { theme } from "../../../../infrastructure/theme";
+import LoadIcon from "../../../../../assets/images/LoadIcon";
+import { SvgXml } from "react-native-svg";
+
+import StartButton from "../../../../../assets/Buttons/StartButton";
+
+import SignInButton from "../../../../../assets/Buttons/SignInButton";
+import SignUpButton from "../../../../../assets/Buttons/SignUpButton";
+import { LoginBg } from "../../Component/LoginBg";
+import { CloudBg } from "../../Component/CloudBg";
+
+export const WalkThrough0101 = ({ navigation }) => {
   const [isStarted, setIsStarted] = useState(false);
   return (
     <>
-      <LinearGradient
-        style={styles.WholeContainer}
-        colors={[
-          theme.colors.bg.a,
-          theme.colors.bg.b,
-          theme.colors.bg.c,
-          theme.colors.bg.d,
-        ]}
-        start={{ x: 0.99, y: 0.01 }}
-        end={{ x: 0.01, y: 0.99 }}
-        locations={[0.0, 0.5, 0.8, 1.0]}
-      >
+      <LoginBg>
         <View style={styles.IconContainer}>
           <SvgXml xml={LoadIcon} width={72} height={123} />
           <Text
@@ -50,32 +31,10 @@ export const WalkThrough_01_01 = ({ navigation }) => {
           </Text>
         </View>
         <View style={styles.MiddelSpace}></View>
+
         <View style={styles.BottomContainer}>
-          <View
-            style={{
-              zIndex: 1,
-            }}
-          >
-            <Image
-              style={{
-                width: 223,
-                height: 100,
-                zIndex: 2,
-              }}
-              source={MovingCloud}
-            ></Image>
-            <Image
-              style={{
-                top: -50,
-                left: 90,
-                opacity: 0.5,
-                width: 446,
-                height: 200,
-                zIndex: 5,
-              }}
-              source={MovingCloud}
-            ></Image>
-          </View>
+          <CloudBg></CloudBg>
+
           {isStarted ? (
             <View
               style={{
@@ -88,14 +47,14 @@ export const WalkThrough_01_01 = ({ navigation }) => {
             >
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("SignIn");
+                  navigation.navigate("SignIn0101");
                 }}
               >
                 <SvgXml xml={SignInButton} width={250}></SvgXml>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  setIsStarted(false);
+                  navigation.navigate("SignUp0101");
                 }}
               >
                 <SvgXml xml={SignUpButton} width={250}></SvgXml>
@@ -131,7 +90,7 @@ export const WalkThrough_01_01 = ({ navigation }) => {
             </View>
           )}
         </View>
-      </LinearGradient>
+      </LoginBg>
     </>
   );
 };
@@ -141,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   IconContainer: {
-    flex: 10,
+    flex: 8.5,
     justifyContent: "flex-end",
     alignItems: "center",
   },

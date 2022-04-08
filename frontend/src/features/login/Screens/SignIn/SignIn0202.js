@@ -7,16 +7,29 @@ import {
   Alert,
   Pressable,
 } from "react-native";
-import { theme } from "../../../infrastructure/theme";
+import { theme } from "../../../../infrastructure/theme";
 import { SvgXml } from "react-native-svg";
 import { TextInput } from "react-native-gesture-handler";
-import backButtonWhite from "../../../../assets/Buttons/backButtonWhite";
-import signUpNextButton from "../../../../assets/Buttons/signUpNextButton";
-import { AutoFocus } from "expo-camera/build/Camera.types";
-import { LoginBg } from "../Component/LoginBg";
-import { LoginButton } from "../Component/LoginButton";
+import whiteBackButton from "../../../../../assets/whiteBackButton";
 
-export const SignUp0201 = ({ navigation, route }) => {
+import { LoginBg } from "../../Component/LoginBg";
+import { LoginButton } from "../../Component/LoginButton";
+import {
+  Cursor,
+  CodeField,
+  useClearByFocusCell,
+  useBlurOnFulfill,
+} from "react-native-confirmation-code-field";
+
+export const SignIn0202 = ({ navigation, route }) => {
+  const [value, setValue] = useState("");
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  //인증번호 입력받는
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
+  const CELL_COUNT = 6;
   // 전화번호, 이메일을 구분하는 method state
   const [code, setCode] = useState("");
   // 이전 스크린에서 method, input받아오기
@@ -38,10 +51,12 @@ export const SignUp0201 = ({ navigation, route }) => {
         {/* 뒤로가기 버튼 */}
         <View style={styles.container1}>
           <TouchableOpacity
-            style={{ right: 140, bottom: 40 }}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={{ alignSelf: "flex-start", position: "absolute", top: 30 }}
           >
-            <SvgXml xml={backButtonWhite} width={20} height={20} />
+            <SvgXml xml={whiteBackButton} width={50}></SvgXml>
           </TouchableOpacity>
         </View>
 
@@ -83,7 +98,7 @@ export const SignUp0201 = ({ navigation, route }) => {
               <Text style={styles.methodText}>인증 코드 재전송</Text>
             </Pressable>
           </View>
-
+          {/* 
           <View style={styles.inputBox}>
             <TextInput
               style={styles.input}
@@ -92,7 +107,29 @@ export const SignUp0201 = ({ navigation, route }) => {
               onChangeText={(code) => handleCode(code)}
               value={code}
             ></TextInput>
+           
           </View>
+           */}
+          <CodeField
+            ref={ref}
+            {...props}
+            // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
+            value={value}
+            onChangeText={setValue}
+            cellCount={CELL_COUNT}
+            rootStyle={styles.codeFieldRoot}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            renderCell={({ index, symbol, isFocused }) => (
+              <Text
+                key={index}
+                style={[styles.cell, isFocused && styles.focusCell]}
+                onLayout={getCellOnLayoutHandler(index)}
+              >
+                {symbol || (isFocused ? <Cursor /> : null)}
+              </Text>
+            )}
+          />
           <LoginButton
             style={{ marginTop: 24 }}
             value="다 음"
@@ -175,5 +212,20 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: theme.fonts.body,
     fontSize: 10,
+  },
+  root: { flex: 1, padding: 20 },
+  title: { textAlign: "center", fontSize: 30 },
+  codeFieldRoot: { marginTop: 20 },
+  cell: {
+    width: 40,
+    height: 40,
+    lineHeight: 38,
+    fontSize: 24,
+    borderWidth: 2,
+    borderColor: "white",
+    textAlign: "center",
+  },
+  focusCell: {
+    borderColor: "#000",
   },
 });

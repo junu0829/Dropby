@@ -7,14 +7,14 @@ import {
   Alert,
   Pressable,
 } from "react-native";
-import { theme } from "../../../infrastructure/theme";
+import { theme } from "../../../../infrastructure/theme";
 import { SvgXml } from "react-native-svg";
 import { TextInput } from "react-native-gesture-handler";
-import backButtonWhite from "../../../../assets/Buttons/backButtonWhite";
-import signUpNextButton from "../../../../assets/Buttons/signUpNextButton";
+import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
+import signUpNextButton from "../../../../../assets/Buttons/signUpNextButton";
 import { AutoFocus } from "expo-camera/build/Camera.types";
-import { LoginBg } from "../Component/LoginBg";
-import { LoginButton } from "../Component/LoginButton";
+import { LoginBg } from "../../Component/LoginBg";
+import { LoginButton } from "../../Component/LoginButton";
 
 export const SignUp0101 = ({ navigation }) => {
   // 전화번호, 이메일을 구분하는 method state

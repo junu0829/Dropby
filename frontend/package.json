@@ -43,6 +43,7 @@
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-card-flip": "^1.0.7",
+    "react-native-confirmation-code-field": "^7.3.0",
     "react-native-geolocation-service": "^5.2.0",
     "react-native-gesture-handler": "~2.1.0",
     "react-native-linear-gradient": "^2.5.6",
