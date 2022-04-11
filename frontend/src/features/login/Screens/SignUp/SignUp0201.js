@@ -8,10 +8,10 @@ import {
 } from "react-native";
 import { theme } from "../../../../infrastructure/theme";
 import { SvgXml } from "react-native-svg";
-import { TextInput } from "react-native-gesture-handler";
 import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
 import { LoginBg } from "../../Component/LoginBg";
 import { LoginButton } from "../../Component/LoginButton";
+import { CertificationCode } from "../../Component/CertificationCode";
 
 export const SignUp0201 = ({ navigation, route }) => {
   const [code, setCode] = useState("");
@@ -25,6 +25,7 @@ export const SignUp0201 = ({ navigation, route }) => {
   const nextButton = async () => {
     // 인증 코드 입력받음
     // 코드 확인하고, signUp0202로 넘어감
+    console.log(code);
     navigation.navigate("SignUp0202", { userInfo, setUserInfo });
   };
   return (
@@ -79,15 +80,7 @@ export const SignUp0201 = ({ navigation, route }) => {
             </Pressable>
           </View>
 
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.input}
-              placeholderTextColor="#02B5AA"
-              placeholder="인증 코드 6자리"
-              onChangeText={(code) => handleCode(code)}
-              value={code}
-            ></TextInput>
-          </View>
+          <CertificationCode value={code} setValue={setCode} />
           <LoginButton
             style={{ marginTop: 24 }}
             value="다 음"
@@ -143,32 +136,5 @@ const styles = StyleSheet.create({
   },
   methodText: {
     color: "#68B8F2",
-  },
-  inputBox: {
-    backgroundColor: theme.colors.bg.white,
-    width: 300,
-    height: 38,
-    opacity: 0.9,
-    borderColor: theme.colors.bg.a,
-    borderWidth: 1,
-    borderRadius: 20,
-    padding: 5,
-    justifyContent: "center",
-  },
-
-  input: {
-    fontSize: 14,
-    left: 32,
-    fontFamily: theme.fonts.body,
-  },
-  subTextContainer: {
-    flex: 0,
-    marginTop: 16,
-    alignItems: "center",
-  },
-  subText: {
-    color: "white",
-    fontFamily: theme.fonts.body,
-    fontSize: 10,
   },
 });
