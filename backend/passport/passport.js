@@ -3,8 +3,6 @@ const LocalStrategy = require('passport-local').Strategy;
 const {ExtractJwt, Strategy:JWTStrategy} = require('passport-jwt');
 const {User} = require('../models/index')
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const blacklist = require('jwt-blacklist');
 require('dotenv').config();
 
 const loginVerify = async (email, password, done) => {
@@ -43,12 +41,9 @@ const JWTRefreshVerify = async (jwtrefresh, done) => {
         return done(null, jwtrefresh);
     } else {
         return done(null, false);
-    }
-    // console.log('jwtrefresh', jwtrefresh);
-    // const verified = jwt.verify(jwtrefresh, process.env.JWT_SECRET_REFRESH_KEY);
-    // console.log('jwtverified', verified);
-    // return done(null, verified);            
+    }         
 }
+
 module.exports = () => {
     //Local Strategy
     passport.use('local',
