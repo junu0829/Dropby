@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {User} = require('../models');
 require('dotenv').config();
-const {verifyAccess, verifyRefresh} = require('../middlewares/auth');
+const {verifyAccess, verifyRefresh} = require('../utils/auth');
 
 exports.signUp = async ({nickname, email, password}) => {
     console.log(email);
