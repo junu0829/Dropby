@@ -14,26 +14,15 @@ import whiteBackButton from "../../../../../assets/whiteBackButton";
 
 import { LoginBg } from "../../Component/LoginBg";
 import { LoginButton } from "../../Component/LoginButton";
-import {
-  Cursor,
-  CodeField,
-  useClearByFocusCell,
-  useBlurOnFulfill,
-} from "react-native-confirmation-code-field";
+import { CertificationCode } from "../../Component/CertificationCode";
 
 export const SignIn0202 = ({ navigation, route }) => {
   const [value, setValue] = useState("");
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  //인증번호 입력받는
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
-  const CELL_COUNT = 6;
+
   // 전화번호, 이메일을 구분하는 method state
-  const [code, setCode] = useState("");
   // 이전 스크린에서 method, input받아오기
   const { method, input } = route.params;
+
   const handleCode = (e) => {
     setCode(e);
   };
@@ -41,7 +30,7 @@ export const SignIn0202 = ({ navigation, route }) => {
   const nextButton = async () => {
     // 인증 코드 입력받음
     // 코드 확인하고, signUp0202로 넘어감
-    console.log("nextbutton 작동!");
+    console.log(value);
 
     navigation.navigate("MapScreen");
   };
@@ -110,26 +99,7 @@ export const SignIn0202 = ({ navigation, route }) => {
            
           </View>
            */}
-          <CodeField
-            ref={ref}
-            {...props}
-            // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
-            value={value}
-            onChangeText={setValue}
-            cellCount={CELL_COUNT}
-            rootStyle={styles.codeFieldRoot}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={({ index, symbol, isFocused }) => (
-              <Text
-                key={index}
-                style={[styles.cell, isFocused && styles.focusCell]}
-                onLayout={getCellOnLayoutHandler(index)}
-              >
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            )}
-          />
+          <CertificationCode value={value} setValue={setValue} />
           <LoginButton
             style={{ marginTop: 24 }}
             value="다 음"
@@ -214,18 +184,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   root: { flex: 1, padding: 20 },
+
   title: { textAlign: "center", fontSize: 30 },
-  codeFieldRoot: { marginTop: 20 },
-  cell: {
-    width: 40,
-    height: 40,
-    lineHeight: 38,
-    fontSize: 24,
-    borderWidth: 2,
-    borderColor: "white",
-    textAlign: "center",
-  },
-  focusCell: {
-    borderColor: "#000",
-  },
 });
