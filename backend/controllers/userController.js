@@ -51,20 +51,4 @@ exports.tokenRefresh = async(req, res, next) => {
     }
 }
 
-exports.TokenBlacklist = async(req, res, next) => {
-    try {
-
-        const blacklisted = await userServices.TokenBlacklist(req.body.refresh);
-        res.status(200).json({
-            msg:blacklisted.msg,
-            success:blacklisted.success
-        })
-    } catch(error) {
-        res.status(400).json({
-            msg:error.message,
-            success:false
-        })
-
-    }
-
-}
+//TokenBlacklist 삭제. 필요한 경우 Dropby1 레거시 코드 참고
