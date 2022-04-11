@@ -1,9 +1,5 @@
-const express = require('express');
-const passport = require('passport');
-const router = express.Router();
 const userServices = require('../services/userServices');
-const jwt = require('jsonwebtoken');
-const {createBlackList} = require('jwt-blacklist');
+
 exports.signUp = async(req, res, next) => {
         const newUser = await userServices.signUp(req.body);
         if (newUser) {
