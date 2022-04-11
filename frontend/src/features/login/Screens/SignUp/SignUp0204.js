@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+import { useFocusEffect } from "@react-navigation/native";
 import { StyleSheet, TouchableOpacity, View, Text, Alert } from "react-native";
 import { theme } from "../../../../infrastructure/theme";
 import { SvgXml } from "react-native-svg";
@@ -39,6 +41,21 @@ export const SignUp0204 = ({ navigation, route }) => {
     }
   };
 
+  // 화면 오갈때마다 키보드 띄우기
+
+  const inputRef = React.createRef();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      inputRef.current.focus();
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [inputRef])
+  );
+
   return (
     <>
       <LoginBg>
@@ -65,6 +82,7 @@ export const SignUp0204 = ({ navigation, route }) => {
         <View style={styles.container3}>
           <View style={styles.inputBox}>
             <TextInput
+              ref={inputRef}
               style={styles.input}
               placeholderTextColor="#02B5AA"
               placeholder=""

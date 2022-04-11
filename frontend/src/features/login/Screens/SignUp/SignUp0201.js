@@ -12,6 +12,7 @@ import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
 import { LoginBg } from "../../Component/LoginBg";
 import { LoginButton } from "../../Component/LoginButton";
 import { CertificationCode } from "../../Component/CertificationCode";
+import { useFocusEffect } from "@react-navigation/native";
 
 export const SignUp0201 = ({ navigation, route }) => {
   const [code, setCode] = useState("");
@@ -28,6 +29,9 @@ export const SignUp0201 = ({ navigation, route }) => {
     console.log(code);
     navigation.navigate("SignUp0202", { userInfo, setUserInfo });
   };
+
+  // 화면 오갈때마다 키보드 띄우기
+
   return (
     <>
       <LoginBg>

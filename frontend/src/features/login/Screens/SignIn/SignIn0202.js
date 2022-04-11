@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+
 import {
   StyleSheet,
   TouchableOpacity,
@@ -9,7 +10,7 @@ import {
 } from "react-native";
 import { theme } from "../../../../infrastructure/theme";
 import { SvgXml } from "react-native-svg";
-import { TextInput } from "react-native-gesture-handler";
+
 import whiteBackButton from "../../../../../assets/whiteBackButton";
 
 import { LoginBg } from "../../Component/LoginBg";
@@ -22,10 +23,6 @@ export const SignIn0202 = ({ navigation, route }) => {
   // 전화번호, 이메일을 구분하는 method state
   // 이전 스크린에서 method, input받아오기
   const { method, input } = route.params;
-
-  const handleCode = (e) => {
-    setCode(e);
-  };
 
   const nextButton = async () => {
     // 인증 코드 입력받음
@@ -87,19 +84,12 @@ export const SignIn0202 = ({ navigation, route }) => {
               <Text style={styles.methodText}>인증 코드 재전송</Text>
             </Pressable>
           </View>
-          {/* 
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.input}
-              placeholderTextColor="#02B5AA"
-              placeholder="인증 코드 6자리"
-              onChangeText={(code) => handleCode(code)}
-              value={code}
-            ></TextInput>
-           
-          </View>
-           */}
-          <CertificationCode value={value} setValue={setValue} />
+
+          <CertificationCode
+            navigation={navigation}
+            value={value}
+            setValue={setValue}
+          />
           <LoginButton
             style={{ marginTop: 24 }}
             value="다 음"
