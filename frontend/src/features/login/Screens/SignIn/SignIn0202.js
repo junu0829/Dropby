@@ -24,12 +24,22 @@ export const SignIn0202 = ({ navigation, route }) => {
   // 이전 스크린에서 method, input받아오기
   const { method, input } = route.params;
 
-  const nextButton = async () => {
-    // 인증 코드 입력받음
-    // 코드 확인하고, signUp0202로 넘어감
-    console.log(value);
-
-    navigation.navigate("MapScreen");
+  const nextButton = () => {
+    if (input) {
+      if (method) {
+        // 전화번호 입력 받음.
+        // 인증 코드 스크린에 입력된 전화번호 넘겨주기
+        // 전화번호로 인증 코드 보내기
+        navigation.navigate("SignIn0204", { method, input });
+      } else {
+        // 이메일 입력 받음.
+        // 인증 코드 스크린에 입력된 이메일 넘겨주기
+        // 이메일로 인증 코드 보내기
+        navigation.navigate("SignIn0204", { method, input });
+      }
+    } else {
+      alert("회원정보를 입력하세요!");
+    }
   };
   return (
     <>
