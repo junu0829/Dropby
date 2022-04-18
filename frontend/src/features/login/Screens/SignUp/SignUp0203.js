@@ -9,17 +9,17 @@ import { LoginBg } from "../../Component/LoginBg";
 import { LoginButton } from "../../Component/LoginButton";
 
 export const SignUp0203 = ({ navigation, route }) => {
-  const { userInfo, setUserInfo } = route.params;
+  const userInfo = route.params;
 
+  const [nickName, setNickName] = useState("");
   const handleNickName = (e) => {
-    setUserInfo((state) => {
-      return { ...state, nickName: e };
-    });
+    setNickName(e);
   };
 
   const nextButton = async () => {
     // 닉네임 입력받음. SignUp0204로 넘어감
-    navigation.navigate("SignUp0204", { userInfo, setUserInfo });
+    userInfo.nickName = nickName;
+    navigation.navigate("SignUp0204", userInfo);
   };
 
   // 화면 오갈때마다 키보드 띄우기
@@ -66,7 +66,7 @@ export const SignUp0203 = ({ navigation, route }) => {
               placeholderTextColor="#02B5AA"
               placeholder=""
               onChangeText={(nickName) => handleNickName(nickName)}
-              value={userInfo.nickName}
+              value={nickName}
             ></TextInput>
           </View>
           <LoginButton

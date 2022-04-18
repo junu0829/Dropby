@@ -17,17 +17,16 @@ import { useFocusEffect } from "@react-navigation/native";
 export const SignUp0201 = ({ navigation, route }) => {
   const [code, setCode] = useState("");
   // 이전 스크린에서 userInfo 받아오기
-  const { userInfo, setUserInfo } = route.params;
+  const userInfo = route.params;
 
   const handleCode = (e) => {
     setCode(e);
   };
 
-  const nextButton = async () => {
+  const nextButton = () => {
     // 인증 코드 입력받음
     // 코드 확인하고, signUp0202로 넘어감
-    console.log(code);
-    navigation.navigate("SignUp0202", { userInfo, setUserInfo });
+    navigation.navigate("SignUp0202", userInfo);
   };
 
   // 화면 오갈때마다 키보드 띄우기

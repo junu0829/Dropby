@@ -7,8 +7,11 @@ import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
 import { LoginBg } from "../../Component/LoginBg";
 import { LoginButton } from "../../Component/LoginButton";
 
-export const SignUp0205 = ({ navigation }) => {
+export const SignUp0205 = ({ navigation, route }) => {
+  const userInfo = route.params;
+
   const nextButton = async () => {
+    // 여기서 서버에 회원가입 정보 보내기. userInfo 에 object 형태로 모든 정보가 들어있음.
     navigation.navigate("MapScreen");
   };
 

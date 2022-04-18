@@ -9,18 +9,18 @@ import { LoginButton } from "../../Component/LoginButton";
 import { useFocusEffect } from "@react-navigation/native";
 
 export const SignUp0202 = ({ navigation, route }) => {
-  const { userInfo, setUserInfo } = route.params;
+  const userInfo = route.params;
 
+  const [name, setName] = useState("");
   const handleName = (e) => {
-    setUserInfo((state) => {
-      return { ...state, name: e };
-    });
+    setName(e);
   };
 
-  const nextButton = async () => {
+  const nextButton = () => {
+    userInfo.name = name;
     // 이름 입력받음
     // SignUp0203로 넘어감
-    navigation.navigate("SignUp0203", { userInfo, setUserInfo });
+    navigation.navigate("SignUp0203", userInfo);
   };
 
   // 화면 오갈때마다 키보드 띄우기
@@ -65,7 +65,7 @@ export const SignUp0202 = ({ navigation, route }) => {
               placeholderTextColor="#02B5AA"
               placeholder=""
               onChangeText={(name) => handleName(name)}
-              value={userInfo.name}
+              value={name}
             ></TextInput>
           </View>
           <LoginButton

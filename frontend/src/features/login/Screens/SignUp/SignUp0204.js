@@ -10,8 +10,9 @@ import { LoginBg } from "../../Component/LoginBg";
 import { LoginButton } from "../../Component/LoginButton";
 
 export const SignUp0204 = ({ navigation, route }) => {
-  const { userInfo, setUserInfo } = route.params;
+  const userInfo = route.params;
 
+  const [password, setPassword] = useState("");
   const [isCheck, setIsCheck] = useState(false);
   const [pwCheck, setPwCheck] = useState("");
 
@@ -19,9 +20,7 @@ export const SignUp0204 = ({ navigation, route }) => {
     if (isCheck) {
       setPwCheck(e);
     } else {
-      setUserInfo((state) => {
-        return { ...state, password: e };
-      });
+      setPassword(e);
     }
   };
 
@@ -32,8 +31,9 @@ export const SignUp0204 = ({ navigation, route }) => {
     if (!isCheck) {
       setIsCheck(true);
     } else {
-      if (pwCheck == userInfo.password) {
-        navigation.navigate("SignUp0205");
+      if (pwCheck == password) {
+        userInfo.password = password;
+        navigation.navigate("SignUp0205", userInfo);
       } else {
         Alert.alert("비밀번호가 틀렸습니다! 다시 입력해주세요");
         setPwCheck("");
@@ -87,7 +87,7 @@ export const SignUp0204 = ({ navigation, route }) => {
               placeholderTextColor="#02B5AA"
               placeholder=""
               onChangeText={(password) => handlePassword(password)}
-              value={isCheck ? pwCheck : userInfo.password}
+              value={isCheck ? pwCheck : password}
             ></TextInput>
           </View>
           <LoginButton
