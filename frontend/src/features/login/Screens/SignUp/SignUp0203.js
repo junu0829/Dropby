@@ -114,7 +114,9 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: 100,
+    width: 200,
+
+    textAlign: "center",
 
     justifyContent: "center",
     alignItems: "center",

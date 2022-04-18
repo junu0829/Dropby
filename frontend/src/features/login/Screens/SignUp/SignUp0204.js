@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
     flex: 0,
     alignItems: "center",
     justifyContent: "center",
-
     color: "white",
     fontFamily: theme.fonts.bold,
     fontWeight: "700",
@@ -135,7 +134,8 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: 200,
+    textAlign: "center",
+    width: 300,
 
     justifyContent: "center",
     alignItems: "center",
