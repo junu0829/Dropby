@@ -143,25 +143,23 @@ export const MapScreen = ({ navigation, route }) => {
 
   //////희한하게 얘를 useEffect바깥에 놓으면 어떨땐 되고 어떨땐 안되는데... 조금 더 테스트를 해볼 필요가 있겠다. 만약에 드롭이 하나밖에 안뜨면 reload 하거나, useEffect안에 넣고 해볼 것.
 
-  const LoadDrop = () => {
-    console.log("드롭 불러오는중...");
+  // const LoadDrop = () => {
+  //   console.log("드롭 불러오는중...");
 
-    axiosInstance
-      .get(`http://${LOCAL_HOST}:3000/drops`)
-      .then((res) => {
-        console.log("드롭 불러옴");
-        setDrops(res.data.data);
-      })
-      .catch((error) => {
-        console.log("error message: ", error.message);
-      });
-  };
+  //   axiosInstance
+  //     .get(`http://${LOCAL_HOST}:3000/drops`)
+  //     .then((res) => {
+  //       console.log("드롭 불러옴");
+  //       setDrops(res.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log("error message: ", error.message);
+  //     });
+  // };
 
   const isFocused = useIsFocused();
   /// 처음 시작시 useEffect가 세번 되풀이 되는데 막을 방법이 없을까? 찾아볼것.
-  useEffect(() => {
-    LoadDrop();
-  }, [currentRegion, isFocused]);
+  useEffect(() => {}, [currentRegion, isFocused]);
 
   const dropsList = (drops) => {
     return (
