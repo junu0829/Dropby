@@ -24,7 +24,7 @@ export const SignUp0101 = ({ navigation }) => {
     phoneNum: "",
     email: "",
     name: "",
-    nickName: "",
+    nickname: "",
     password: "",
   };
   const [method, setMethod] = useState(true);

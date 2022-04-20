@@ -26,7 +26,6 @@ import LockButtonUnlocked from "../../../../assets/Buttons/LockButton(Unlocked)"
 
 import { container, styles } from "./writescreen.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import LOCAL_HOST from "../../local.js";
 
 export const WriteScreen = ({ navigation, route }) => {
   const getToken = async () => AsyncStorage.getItem("accessToken");

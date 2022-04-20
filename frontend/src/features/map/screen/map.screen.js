@@ -1,15 +1,12 @@
 import React, {
-  createRef,
   useEffect,
   useContext,
   useState,
   useRef,
-  useMemo,
   useCallback,
-  useReducer,
 } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import MapView, { Marker } from "react-native-maps";
+
 import {
   Dimensions,
   View,
@@ -22,16 +19,22 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from "react-native";
-
-import { Text } from "../../../components/typography/text.component";
-
-import { LocationContext } from "../../../services/location/location.context";
 import { LinearGradient } from "expo-linear-gradient";
-import { Loading } from "../../../components/Loading";
-
-import LOCAL_HOST from "../../local.js";
 import { SvgXml } from "react-native-svg";
+
+//Services
+import { LocationContext } from "../../../services/location/location.context";
+import { LoadedDrop } from "../../../services/drops/LoadedDrop.service";
+import axios from "axios";
+
+//API
+import { APIKey, PlAPIKey } from "../../../../APIkeys";
+
+//Components
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
+import { Loading } from "../../../components/Loading";
+import { Marker } from "react-native-maps";
+import { Text } from "../../../components/typography/text.component";
 import { DropPreview } from "./component/dropPreview";
 import {
   SearchContainer,
@@ -50,62 +53,62 @@ import {
   PlaceNameContainer2,
   ContainerEnd2,
 } from "./map.screen.styles";
-
 import { ClusteredMap } from "./component/ClusteredMap";
+import { Cloud } from "./component/cloud";
+import { SlideView } from "../../../components/animations/slide.animation";
+import LOCAL_HOST from "../../../services/local";
+
 //assets
 import Drops from "../../../../assets/images/Drops";
-import { APIKey, PlAPIKey } from "../../../../APIkeys";
-import { reducer, initialState } from "./dropRefresh.service";
 import write from "../../../../assets/Buttons/write";
 import PurpleDrop from "../../../../assets/images/PurpleDrop.png";
-
 import currentLocation from "../../../../assets/Buttons/currentLocation";
-
 import selectButton from "../../../../assets/Buttons/selectButton";
-
-import { Cloud } from "./component/cloud";
-
-import { SlideView } from "../../../components/animations/slide.animation";
-
 import backButton2 from "../../../../assets/Buttons/backButton2";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import { LoadedDrop } from "../../../services/drops/LoadedDrop.service";
-import axiosInstance from "../../../services/fetch";
-import NewPlaceButton from "../../../../assets/Buttons/NewPlaceButton";
-import axios from "axios";
-import { KakaoKey } from "../../../../APIkeys";
 import PlacePlusIcon from "../../../../assets/Buttons/PlacePlusIcon";
 import PlaceAddIcon from "../../../../assets/Buttons/PlaceAddIcon";
+import axiosInstance from "../../../services/fetch";
 
 export const MapScreen = ({ navigation, route }) => {
-  ////////////////////////////처음 state들//////////////////////////////////////
-  ///axios는 서버로부터 data json불러와주는 도구
-
-  /////지도를 지도 바깥에서 부를 수 있도록 정의
+  //////////////////////////지도 및 화면비율 정의///////////////////////////////////
   const map = useRef(null);
-
-  // 화면비율 조정하는 것
-
   let { width, height } = Dimensions.get("window");
-
   const ASPECT_RATIO = width / height;
   const LATITUDE_DELTA = 0.008; //Very high zoom level
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-  const [isDetail, setIsDetail] = useState(false);
+  ////////////////////////////초기 state들//////////////////////////////////////
 
-  ///////처음 데이터셋팅(현위치, 누른 위치-주소-장소명, 선택장소 마커위치, 데이터베이스에 저장된 마커들)
-  const { location, isLoading } = useContext(LocationContext);
-
+  /////1. 모드들
   const [isAddressLoading, SetIsAddressLoading] = useState(true);
-
   const [dropViewMode, setDropViewMode] = useState(false);
   const showModal = () => {
     setDropViewMode(true);
   };
-
   const [writeMode, setWriteMode] = useState(false);
+  const [isDetail, setIsDetail] = useState(false);
+
+  /////2. 초기 데이터셋팅
+  //------------현위치
+  const { location, isLoading } = useContext(LocationContext);
+  //------------현재 영역
+  const [currentRegion, updateRegion] = useState({
+    latitude: location[0],
+    longitude: location[1],
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  });
+
+  const [rectNW, setRectNW] = useState("1,1");
+  const [rectSE, setRectSE] = useState("0,0");
+  useEffect(() => {
+    const NWLat = currentRegion.latitude + currentRegion.latitudeDelta;
+    const NWLng = currentRegion.longitude + currentRegion.longitudeDelta;
+    const SELat = currentRegion.latitude - currentRegion.latitudeDelta;
+    const SELng = currentRegion.longitude - currentRegion.longitudeDelta;
+    setRectNW(`${NWLng},${NWLat}`);
+    setRectSE(`${SELng},${SELat}`);
+  }, [currentRegion, writeMode]);
+  //---------------장소선택
   const [pressedLocation, setPressedLocation] = useState({
     latitude: 0,
     longitude: 0,
@@ -116,51 +119,8 @@ export const MapScreen = ({ navigation, route }) => {
       longitude: Number(location[1]),
     },
   ]);
-
-  const [currentRegion, updateRegion] = useState({
-    // 지도의 센터값 위도 경도
-    latitude: location[0],
-    longitude: location[1],
-    //ZoomLevel 아래에 있는 것은 건드리지 않아도 됨
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA,
-  });
-
-  const [rectNW, setRectNW] = useState("1,1");
-  const [rectSE, setRectSE] = useState("0,0");
-  const [Places, setPlaces] = useState([]);
-
-  useEffect(() => {
-    const NWLat = currentRegion.latitude + currentRegion.latitudeDelta;
-    const NWLng = currentRegion.longitude + currentRegion.longitudeDelta;
-    const SELat = currentRegion.latitude - currentRegion.latitudeDelta;
-    const SELng = currentRegion.longitude - currentRegion.longitudeDelta;
-    setRectNW(`${NWLng},${NWLat}`);
-    setRectSE(`${SELng},${SELat}`);
-    LoadPlaces();
-  }, [currentRegion, writeMode]);
-
-  const LoadPlaces = useCallback(() => {
-    axios
-      .get(
-        `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=CE7&rect=${rectNW},${rectSE}`,
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `KakaoAK ${KakaoKey}`,
-          },
-        }
-      )
-      .then((res) => {
-        setPlaces(res.data.documents);
-
-        console.log("카페 불러옴");
-      })
-      .catch((error) => console.log("error = " + error));
-  }, [rectNW, rectSE]);
-
+  /////드롭다운로드
   const [drop, setDrop] = useState(null);
-
   const [dropTime, setDropTime] = useState(null);
   const [dropContent, setDropContent] = useState(null);
   const [drops, setDrops] = useState([
@@ -175,71 +135,52 @@ export const MapScreen = ({ navigation, route }) => {
     },
   ]);
 
-  const [definedLocation, setDefinedLocation] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
-  const [calibratedLocation, setCalibratedLocation] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
-  const [definedAddressID, setDefinedAddressID] = useState("");
   const [pressedAddressID, setPressedAddressID] = useState("");
   const [pressedAddress, setPressedAddress] = useState("");
   const [pressedAddressName, setPressedAddressName] = useState("새로운 장소");
-  const [newPlaceSelectionMode, setNewPlaceSelectioMode] = useState(false);
 
   ////////////////////////////여기서부터 useEffect 정의하기 시작//////////////////////////////////////////////////////
 
   //////희한하게 얘를 useEffect바깥에 놓으면 어떨땐 되고 어떨땐 안되는데... 조금 더 테스트를 해볼 필요가 있겠다. 만약에 드롭이 하나밖에 안뜨면 reload 하거나, useEffect안에 넣고 해볼 것.
 
-  // const LoadDrop = () => {
-  //   console.log("드롭 불러오는중...");
+  const LoadDrop = () => {
+    console.log("드롭 불러오는중...");
 
-  //   axiosInstance
-  //     .get(`http://${LOCAL_HOST}:3000/drops`)
-  //     .then((res) => {
-  //       console.log("드롭 불러옴");
-  //       setDrops(res.data.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log("error message: ", error.message);
-  //     });
-  // // };
+    axiosInstance
+      .get(`http://${LOCAL_HOST}:3000/drops`)
+      .then((res) => {
+        console.log("드롭 불러옴");
+        setDrops(res.data.data);
+      })
+      .catch((error) => {
+        console.log("error message: ", error.message);
+      });
+  };
 
   const isFocused = useIsFocused();
   /// 처음 시작시 useEffect가 세번 되풀이 되는데 막을 방법이 없을까? 찾아볼것.
   useEffect(() => {
-    LoadedDrop(setDrops);
+    LoadDrop();
   }, [currentRegion, isFocused]);
 
   const dropsList = (drops) => {
     return (
       <>
         <ClusteredMap
-         
           onPress={Keyboard.dismiss}
           onLongPress={(event) => {
-            if (!newPlaceSelectionMode) {
-              setDefinedLocation(event.nativeEvent.coordinate);
-              setMarkers([]);
-            } else {
-              setPressedLocation(event.nativeEvent.coordinate);
-              setMarkers([]);
-            }
+            setPressedLocation(event.nativeEvent.coordinate);
+            setMarkers([]);
           }}
           ref={map}
-          Places={Places}
           setMarkers={setMarkers}
           setPressedAddress={setPressedAddress}
           setPressedAddressName={setPressedAddressName}
-          setCalibratedLocation={setCalibratedLocation}
           location={location}
           LATITUDE_DELTA={LATITUDE_DELTA}
           LONGITUDE_DELTA={LONGITUDE_DELTA}
           writeMode={writeMode}
           isAddressLoading={isAddressLoading}
-          newPlaceSelectionMode={newPlaceSelectionMode}
           Markers={Markers}
           allCoords={allCoords}
           region={currentRegion}
@@ -303,8 +244,6 @@ export const MapScreen = ({ navigation, route }) => {
       )
         .then((response) => response.json())
         .then((responseJson) => {
-          // DefinedPlaceLoad(responseJson);
-
           const responseResultsNumber = 0;
 
           setPressedAddressID(
@@ -338,74 +277,13 @@ export const MapScreen = ({ navigation, route }) => {
   //////////정해진 장소정보 가져오는 함수
 
   useEffect(() => {
-    const getDefinedAddress = () => {
-      fetch(
-        "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-          definedLocation.latitude +
-          "," +
-          definedLocation.longitude +
-          `&key=${APIKey}`
-      )
-        .then((response) => response.json())
-        .then((responseJson) => {
-          for (let i = 0; i < 15; i++) {
-            if (
-              responseJson.results[i].geometry.location_type ===
-                "GEOMETRIC_CENTER" ||
-              responseJson.results[i].address_components[0].types.includes(
-                "point_of_interest"
-              ) ||
-              responseJson.results[i].address_components[0].types.includes(
-                "establishment"
-              ) ||
-              responseJson.results[i].address_components[0].types.includes(
-                "landmark"
-              )
-            ) {
-              setDefinedAddressID(responseJson.results[i].place_id);
-              setCalibratedLocation(responseJson.results[i].geometry.location);
-              break;
-            }
-          }
-        })
-        .catch((e) => setPressedAddressName("다른 장소를 눌러주세요"));
-    };
-
-    const getDefinedPlaceDetail = () => {
-      fetch(
-        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${definedAddressID}&key=${PlAPIKey}`
-      )
-        .then((response) => response.json())
-        .then(async (responseJson) => {
-          await setPressedAddress(responseJson.result.formatted_address);
-          await setPressedAddressName(responseJson.result.name);
-          console.log("b");
-        })
-        .catch((e) => setPressedAddressName("다른 장소를 눌러주세요"));
-    };
-    getDefinedAddress();
-    getDefinedPlaceDetail();
-
-    console.log("lightclicked");
-  }, [definedLocation, definedAddressID]);
-
-  useEffect(() => {
-    if (!newPlaceSelectionMode) {
-      setMarkers([
-        {
-          latitude: calibratedLocation.lat,
-          longitude: calibratedLocation.lng,
-        },
-      ]);
-    } else {
-      setMarkers([
-        {
-          latitude: pressedLocation.latitude,
-          longitude: pressedLocation.longitude,
-        },
-      ]);
-    }
-  }, [calibratedLocation, pressedLocation, newPlaceSelectionMode]);
+    setMarkers([
+      {
+        latitude: pressedLocation.latitude,
+        longitude: pressedLocation.longitude,
+      },
+    ]);
+  }, [pressedLocation]);
 
   const allCoords = drops.map((i) => ({
     geometry: {
@@ -584,7 +462,6 @@ export const MapScreen = ({ navigation, route }) => {
                           { pressedAddress },
                           { pressedAddressName },
                           { pressedLocation },
-                          { calibratedLocation },
                         ]);
                       }}
                     >

@@ -8,15 +8,9 @@ import { SvgXml } from "react-native-svg";
 import googleLogin from "../../../../../assets/Buttons/googleLogin";
 
 import whiteBackButton from "../../../../../assets/whiteBackButton";
-import { TextInput } from "react-native-gesture-handler";
-import SignInButton from "../../../../../assets/Buttons/SignInButton";
 
 import { LoginBg } from "../../Component/LoginBg";
-import axios from "axios";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import LOCAL_HOST from "../../../local.js";
 import { CloudBg } from "../../Component/CloudBg";
 import { InputBox } from "../../Component/InputBox";
 import { LoginButton } from "../../Component/LoginButton";

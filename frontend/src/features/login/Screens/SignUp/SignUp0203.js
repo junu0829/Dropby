@@ -11,14 +11,14 @@ import { LoginButton } from "../../Component/LoginButton";
 export const SignUp0203 = ({ navigation, route }) => {
   const userInfo = route.params;
 
-  const [nickName, setNickName] = useState("");
-  const handleNickName = (e) => {
-    setNickName(e);
+  const [nickname, setNickname] = useState("");
+  const handlenickname = (e) => {
+    setNickname(e);
   };
 
   const nextButton = async () => {
     // 닉네임 입력받음. SignUp0204로 넘어감
-    userInfo.nickName = nickName;
+    userInfo.nickname = nickname;
     navigation.navigate("SignUp0204", userInfo);
   };
 
@@ -65,8 +65,8 @@ export const SignUp0203 = ({ navigation, route }) => {
               style={styles.input}
               placeholderTextColor="#02B5AA"
               placeholder=""
-              onChangeText={(nickName) => handleNickName(nickName)}
-              value={nickName}
+              onChangeText={(nickname) => handlenickname(nickname)}
+              value={nickname}
             ></TextInput>
           </View>
           <LoginButton
