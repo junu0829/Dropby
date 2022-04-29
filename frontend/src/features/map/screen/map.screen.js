@@ -1,15 +1,6 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 
-import {
-  Dimensions,
-  View,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  StyleSheet,
-  Platform,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { SvgXml } from "react-native-svg";
+import { Dimensions, View, TouchableWithoutFeedback } from "react-native";
 
 //Services
 import { LocationContext } from "../../../services/location/location.context";
@@ -22,39 +13,12 @@ import { APIKey, PlAPIKey } from "../../../../APIkeys";
 import { dropsList } from "./component/dropsList";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { Loading } from "../../../components/Loading";
-import { Marker } from "react-native-maps";
 import { Text } from "../../../components/typography/text.component";
 import { DropPreview } from "./component/dropPreview";
-import {
-  SearchContainer,
-  Container,
-  PlaceContainer,
-  ContainerEnd,
-  TextContainer,
-  styles,
-  PlaceNameContainer,
-  PlaceContainer2,
-  PlaceContainer3,
-  SelectButtonContainer,
-  BackButtonContainer,
-  WriteButton,
-  CurrentLocationButton,
-  PlaceNameContainer2,
-  ContainerEnd2,
-} from "./map.screen.styles";
-import { Cloud } from "./component/cloud";
+import { SearchContainer, TextContainer } from "./map.screen.styles";
 import { SlideView } from "../../../components/animations/slide.animation";
-import LOCAL_HOST from "../../../services/local";
 
 //assets
-import Drops from "../../../../assets/images/Drops";
-import write from "../../../../assets/Buttons/write";
-import currentLocation from "../../../../assets/Buttons/currentLocation";
-import selectButton from "../../../../assets/Buttons/selectButton";
-import backButton2 from "../../../../assets/Buttons/backButton2";
-import PlacePlusIcon from "../../../../assets/Buttons/PlacePlusIcon";
-import PlaceAddIcon from "../../../../assets/Buttons/PlaceAddIcon";
-import axiosInstance from "../../../services/fetch";
 import { PlaceBox } from "./component/placeBox";
 import { PlaceBoxBlank } from "./component/placeBoxBlank";
 import { UpperBox } from "./component/upperBox";
@@ -91,6 +55,7 @@ export const MapScreen = ({ navigation, route }) => {
     longitudeDelta: LONGITUDE_DELTA,
   });
 
+
   const [rectNW, setRectNW] = useState("1,1");
   const [rectSE, setRectSE] = useState("0,0");
   useEffect(() => {
@@ -100,6 +65,7 @@ export const MapScreen = ({ navigation, route }) => {
     const SELng = currentRegion.longitude - currentRegion.longitudeDelta;
     setRectNW(`${NWLng},${NWLat}`);
     setRectSE(`${SELng},${SELat}`);
+    console.log(rectNW, rectSE);
   }, [currentRegion, writeMode]);
   //---------------장소선택
   const [pressedLocation, setPressedLocation] = useState({
