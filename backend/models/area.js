@@ -13,7 +13,7 @@ const Area = sequelize.define("Area", {
         allowNull:false,
     },
     polygon: {
-        type:DataTypes.GEOMETRY('POLYGON'),
+        type:DataTypes.GEOMETRY,
         allowNull:false
     }
 }, {
