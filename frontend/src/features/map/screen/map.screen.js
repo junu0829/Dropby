@@ -56,6 +56,8 @@ import PlacePlusIcon from "../../../../assets/Buttons/PlacePlusIcon";
 import PlaceAddIcon from "../../../../assets/Buttons/PlaceAddIcon";
 import axiosInstance from "../../../services/fetch";
 import { PlaceBox } from "./component/placeBox";
+import { PlaceBoxBlank } from "./component/placeBoxBlank";
+import { UpperBox } from "./component/upperBox";
 
 export const MapScreen = ({ navigation, route }) => {
   //////////////////////////지도 및 화면비율 정의///////////////////////////////////
@@ -185,24 +187,7 @@ export const MapScreen = ({ navigation, route }) => {
         {/*----------------------- 맨 상단 컴포넌트--------------------------- */}
         <SearchContainer>
           {!isDetail ? (
-            //Component빼기
-            <LinearGradient
-              colors={[
-                "rgba(166, 110, 159, 0.9)",
-                "rgba(166, 110, 159, 0.65)",
-                "rgba(166, 110, 159, 0.15)",
-                "rgba(166, 110, 159, 0.0)",
-              ]}
-              style={styles.background}
-              locations={[0.1, 0.45, 0.77, 1.0]}
-            >
-              {/* writeMode이지 않을 경우에 cloud */}
-              {!writeMode ? (
-                <TouchableOpacity onPress={() => {}}>
-                  <Cloud navigation={navigation} region={currentRegion} />
-                </TouchableOpacity>
-              ) : null}
-            </LinearGradient>
+            <>{UpperBox(writeMode, navigation, currentRegion)}</>
           ) : null}
 
           {writeMode && (
@@ -239,42 +224,14 @@ export const MapScreen = ({ navigation, route }) => {
         {/*----------------------- 맨 하단 컴포넌트--------------------------- */}
         {!writeMode && !dropViewMode ? (
           <>
-            <Container>
-              {/* 빼놓자 */}
-              <WriteButton
-                style={{ opacity: 0.95 }}
-                onPress={() => {
-                  setWriteMode(true);
-                  setPressedLocation({
-                    latitude: location[0],
-                    longitude: location[1],
-                  });
-                }}
-              >
-                <SvgXml xml={write} width={56} height={65} />
-              </WriteButton>
-
-              <ContainerEnd>
-                <CurrentLocationButton
-                  style={{ opacity: 0.95 }}
-                  onPress={() => {
-                    map.current.animateToRegion({
-                      // 현재위치 버튼
-                      latitude: location[0],
-                      longitude: location[1],
-                      latitudeDelta: LATITUDE_DELTA,
-                      longitudeDelta: LONGITUDE_DELTA,
-                    });
-                    setPressedLocation({
-                      latitude: location[0],
-                      longitude: location[1],
-                    });
-                  }}
-                >
-                  <SvgXml xml={currentLocation} width={50} height={50} />
-                </CurrentLocationButton>
-              </ContainerEnd>
-            </Container>
+            {PlaceBoxBlank(
+              setWriteMode,
+              setPressedLocation,
+              location,
+              map,
+              LATITUDE_DELTA,
+              LONGITUDE_DELTA
+            )}
           </>
         ) : writeMode ? (
           <>
@@ -309,27 +266,3 @@ export const MapScreen = ({ navigation, route }) => {
     );
   }
 };
-
-const styles3 = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  enter: {
-    fontSize: 17,
-    fontWeight: "500",
-    color: "#9A9A9A",
-    marginLeft: 5,
-    textAlign: "center",
-  },
-  TextBack: {
-    width: 200,
-    left: -8,
-    top: 3,
-    height: 25,
-    padding: 5,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "flex-start",
-    backgroundColor: "#F4F4F4",
-  },
-});
