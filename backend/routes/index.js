@@ -1,10 +1,13 @@
 const router = require("express").Router();
 
-
 const drop = require("./dropRouter");
 const auth = require("./authRouter");
+const place = require("./placeRouter");
+const area = require("./areaRouter");
 
-router.use("/drops", drop);
+router.use("/", place);
 router.use("/auth", auth);
-module.exports = router;
+router.use("/:placePk/drops", drop);
+router.use("/area", area);
 
+module.exports = router;

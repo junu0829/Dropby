@@ -1,10 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
 const {User} = require('../models');
-const {createBlackList} = require('jwt-blacklist')
 require('dotenv').config();
-const {verifyAccess, verifyRefresh} = require('../middlewares/auth');
+const {verifyAccess, verifyRefresh} = require('../utils/auth');
 
 exports.signUp = async ({nickname, email, password}) => {
     console.log(email);
@@ -111,19 +109,4 @@ exports.tokenRefresh = async (accessToken, refreshToken) => {
     }
 }
 
-exports.TokenBlacklist = async(refreshToken) => {
-    const blacklist = await createBlackList();
-    console.log(blacklist);
-    const blacklisted= await blacklist.add(refreshToken);
-    if (blacklisted) {
-        return {
-            'success':true,
-            'msg':'Token blacklisted'}
-    } else {
-        return {
-            'success':false,
-            'msg':'Token blacklist failed'
-        }
-    }
-
-}
+//TokenBlacklist 삭제. 필요한 경우 Dropby1 레거시 코드 참고

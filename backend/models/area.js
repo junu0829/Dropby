@@ -1,7 +1,7 @@
 const sequelize = require('../config/db');
 const {DataTypes} = require('sequelize');
 
-const Place = sequelize.define("Place", {
+const Area = sequelize.define("Area", {
     pk: {
         type:DataTypes.INTEGER,
         allowNull:false,
@@ -12,18 +12,14 @@ const Place = sequelize.define("Place", {
         type:DataTypes.STRING(20),
         allowNull:false,
     },
-    latitude: {
-        type:DataTypes.FLOAT,
-        allowNull:false,
-    },
-    longitude: {
-        type: DataTypes.FLOAT,
-        allowNull:false,
-    },
+    polygon: {
+        type:DataTypes.GEOMETRY,
+        allowNull:false
+    }
 }, {
     freezeTableName:true,
     timestamps:false
 }
 );
 
-module.exports = Place;
+module.exports = Area;
