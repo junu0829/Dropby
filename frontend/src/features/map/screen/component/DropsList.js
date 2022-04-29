@@ -47,7 +47,6 @@ export const dropsList = (
         updateRegion={updateRegion}
       >
         {drops.map((drop, i) => {
-          console.log(drop.pk);
           return (
             <Marker
               style={{ opacity: 0.85 }}

@@ -12,8 +12,8 @@ import { MapClusteringProps } from "./ClusteredMapViewTypes";
 import SuperCluster from "supercluster";
 import ClusterMarker from "./ClusteredMarker";
 import PlaceIcons from "../../../../../assets/PlaceIcons";
-import { TouchableOpacity, View } from "react-native";
-
+import { TouchableOpacity } from "react-native";
+import { Polygons } from "./Polygons";
 
 export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
   (
@@ -381,6 +381,7 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
               );
             })
           : null}
+        <Polygons />
       </Map>
     );
   }

@@ -19,7 +19,7 @@ import { getAddress, getPlaceDetail } from "../../../services/maps/address";
 import { APIKey, PlAPIKey } from "../../../../APIkeys";
 
 //Components
-import { dropsList } from "./component/dropsList";
+import { dropsList } from "./component/DropsList";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { Loading } from "../../../components/Loading";
 import { Marker } from "react-native-maps";
@@ -119,6 +119,7 @@ export const MapScreen = ({ navigation, route }) => {
       },
     ]);
   }, [pressedLocation]);
+  console.log(Markers);
 
   /////드롭다운로드
   //개별 드롭
