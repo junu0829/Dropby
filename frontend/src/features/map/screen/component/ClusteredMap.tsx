@@ -13,7 +13,7 @@ import SuperCluster from "supercluster";
 import ClusterMarker from "./ClusteredMarker";
 import PlaceIcons from "../../../../../assets/PlaceIcons";
 import { TouchableOpacity, View } from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+
 
 export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
   (
