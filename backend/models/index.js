@@ -5,6 +5,7 @@ const db = {};
 db.Drop = require('./drop');
 db.User = require('./user');
 db.Place = require('./place');
+db.Area = require('./area');
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
@@ -41,5 +42,20 @@ db.Drop.belongsTo(db.Place, {
     },
 });
 
+//한 구역에는 여러 개의 장소가 존재할 수 있음
 
+db.Area.hasMany(db.Place, {
+    foreignKey: {
+        name:'areaPk',
+        allowNull:false
+    },
+    onDelete:'CASCADE'
+});
+
+db.Place.belongsTo(db.Area, {
+    foreignKey: {
+        name:'areaPk',
+        allowNull:false
+    },
+});
 module.exports = db;
