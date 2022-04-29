@@ -1,5 +1,5 @@
 //###.###.#.## 부분에 localhost 주소를 입력해 주세요.
-export default LOCAL_HOST = "IP주소";
+export default LOCAL_HOST = "192.168.200.132";
 
 
 // 1. 터미널에서 ipconfig 입력
