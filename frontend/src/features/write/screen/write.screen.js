@@ -57,7 +57,6 @@ export const WriteScreen = ({ navigation, route }) => {
   useEffect(() => {
     setImage(route.params.source);
     setSelectedEmoji(route.params.selectedEmoji);
-    console.log(placeLatlng);
   }, [
     route,
     placeLatlng.latitude,

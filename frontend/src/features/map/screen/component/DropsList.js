@@ -46,7 +46,7 @@ export const dropsList = (
         region={currentRegion}
         updateRegion={updateRegion}
       >
-        {drops.map((drop, i) => {
+        {drops.map((drop) => {
           return (
             <Marker
               style={{ opacity: 0.85 }}
@@ -75,15 +75,14 @@ export const dropsList = (
                   justifyContent: "center",
                   alignItems: "center",
                 }}
+              ></ImageBackground>
+              <Text
+                style={{
+                  fontSize: 10,
+                }}
               >
-                <Text
-                  style={{
-                    fontSize: 25,
-                    left: 1,
-                    top: 1,
-                  }}
-                ></Text>
-              </ImageBackground>
+                {drop.content}
+              </Text>
             </Marker>
           );
         })}
