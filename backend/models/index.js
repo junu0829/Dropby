@@ -15,7 +15,7 @@ db.User.hasMany(db.Drop, {
         name:'creatorPk',
         allowNull:false
     },
-    onDelete:'SET NULL'
+    onDelete:'CASCADE'
 });
 
 db.Drop.belongsTo(db.User, {
