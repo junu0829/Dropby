@@ -1,4 +1,4 @@
-const { Area } = require("../models");
+const { Area, Place } = require("../models");
 
 exports.newArea = async (name, polygon) => {
     
