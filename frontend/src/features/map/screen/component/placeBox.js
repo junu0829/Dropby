@@ -44,13 +44,7 @@ export const PlaceBox = (
           marginLeft: 5,
           Index: 5,
         }}
-      >
-        {
-          <TouchableOpacity onPress={() => {}}>
-            <SvgXml xml={PlacePlusIcon} width={40} height={40} />
-          </TouchableOpacity>
-        }
-      </View>
+      ></View>
       <PlaceContainer2>
         <BackButtonContainer
           onPress={() => {

@@ -38,9 +38,8 @@ const APIresponse = {
 };
 
 // const polygon1 = APIresponse.data.Polygons[0].coordinates[0].map((coord) => {
-//     const poly = {
-
-//     }
+//     const poly = [
+//]
 // }
 // );
 // console.log(polygon1);

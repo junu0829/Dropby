@@ -1,6 +1,12 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 
-import { Dimensions, View, TouchableWithoutFeedback } from "react-native";
+import {
+  Dimensions,
+  View,
+  TouchableWithoutFeedback,
+  SvgXml,
+  TouchableOpacity,
+} from "react-native";
 
 //Services
 import { LocationContext } from "../../../services/location/location.context";
@@ -22,6 +28,7 @@ import { SlideView } from "../../../components/animations/slide.animation";
 import { PlaceBox } from "./component/placeBox";
 import { PlaceBoxBlank } from "./component/placeBoxBlank";
 import { UpperBox } from "./component/upperBox";
+import whiteBackButton from "../../../../assets/whiteBackButton";
 
 export const MapScreen = ({ navigation, route }) => {
   //////////////////////////지도 및 화면비율 정의///////////////////////////////////
@@ -54,7 +61,6 @@ export const MapScreen = ({ navigation, route }) => {
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
   });
-
 
   const [rectNW, setRectNW] = useState("1,1");
   const [rectSE, setRectSE] = useState("0,0");
@@ -157,11 +163,20 @@ export const MapScreen = ({ navigation, route }) => {
             <>{UpperBox(writeMode, navigation, currentRegion)}</>
           ) : null}
 
-          {writeMode && (
-            <TextContainer>
-              <Text variant="hint">드롭을 남길 장소를 눌러주세요</Text>
-            </TextContainer>
-          )}
+          {writeMode ? (
+            <View>
+              <TouchableOpacity
+                onPress={() => {}}
+                style={{
+                  alignSelf: "flex-start",
+                  position: "absolute",
+                  top: 30,
+                }}
+              >
+                <SvgXml xml={whiteBackButton} width={50}></SvgXml>
+              </TouchableOpacity>
+            </View>
+          ) : null}
         </SearchContainer>
 
         {/*----------------------- 지도 컴포넌트--------------------------- */}
