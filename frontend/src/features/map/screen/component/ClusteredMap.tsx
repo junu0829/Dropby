@@ -42,7 +42,6 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
       onMarkersChange,
       preserveClusterPressBehavior,
       clusteringEnabled,
-
       renderCluster,
       tracksViewChanges,
       spiralEnabled,
@@ -282,7 +281,6 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
     };
 
     /////////////
-
     return (
       <Map
         onLongPress={() => {
@@ -449,7 +447,7 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
               );
             })
           : null}
-        <Polygons />
+        <Polygons map={mapRef} />
       </Map>
     );
   }

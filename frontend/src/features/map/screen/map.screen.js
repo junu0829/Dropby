@@ -71,7 +71,6 @@ export const MapScreen = ({ navigation, route }) => {
     const SELng = currentRegion.longitude - currentRegion.longitudeDelta;
     setRectNW(`${NWLng},${NWLat}`);
     setRectSE(`${SELng},${SELat}`);
-    console.log(rectNW, rectSE);
   }, [currentRegion, writeMode]);
   //---------------장소선택
   const [pressedLocation, setPressedLocation] = useState({
@@ -93,25 +92,35 @@ export const MapScreen = ({ navigation, route }) => {
       },
     ]);
   }, [pressedLocation]);
-  console.log(Markers);
 
   /////드롭다운로드
   //개별 드롭
   const [drop, setDrop] = useState(null);
   const [dropTime, setDropTime] = useState(null);
   const [dropContent, setDropContent] = useState(null);
+
   //다운로드 받아진 드롭리스트
   const [drops, setDrops] = useState([
     {
       emoji: "😀",
-      content: "드롭바이짱",
+      content: "좌참살",
       createdAt: "2022-01-29T04:55:47.000Z",
-      latitude: 37.398811798656766,
-      longitude: 126.6377265751362,
+      latitude: 37.585069,
+      longitude: 127.029191,
       pk: 22,
       updatedAt: "2022-01-29T04:55:47.472Z",
     },
+    {
+      emoji: "😀",
+      content: "우참살",
+      createdAt: "2022-01-29T04:55:47.000Z",
+      latitude: 37.585069,
+      longitude: 127.029691,
+      pk: 33,
+      updatedAt: "2022-01-29T04:55:47.472Z",
+    },
   ]);
+
   // 선택한 장소의 이름/주소/좌표들어가는 것
   const [pressedAddressID, setPressedAddressID] = useState("");
   const [pressedAddress, setPressedAddress] = useState("");
