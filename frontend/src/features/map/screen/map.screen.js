@@ -6,9 +6,6 @@ import { Dimensions, View, TouchableWithoutFeedback } from "react-native";
 import { LocationContext } from "../../../services/location/location.context";
 import { getAddress, getPlaceDetail } from "../../../services/maps/address";
 
-//API
-import { APIKey, PlAPIKey } from "../../../../APIkeys";
-
 //Components
 import { dropsList } from "./component/DropsList";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
@@ -37,6 +34,7 @@ export const MapScreen = ({ navigation, route }) => {
   };
   const [writeMode, setWriteMode] = useState(false);
   const [isDetail, setIsDetail] = useState(false);
+  const [activePolygon, setActivePolygon] = useState(null);
 
   /////2. 초기 데이터셋팅
   //------------현위치
@@ -93,6 +91,7 @@ export const MapScreen = ({ navigation, route }) => {
   const [dropContent, setDropContent] = useState(null);
 
   //다운로드 받아진 드롭리스트
+  //service로 옮기기.
   const [drops, setDrops] = useState([
     {
       emoji: "😀",
@@ -119,17 +118,12 @@ export const MapScreen = ({ navigation, route }) => {
   const [pressedAddress, setPressedAddress] = useState("");
   const [pressedAddressName, setPressedAddressName] = useState("새로운 장소");
 
-  ////////////////////////////여기서부터 useEffect 정의하기 시작//////////////////////////////////////////////////////
+  ////////////////여기서부터 useEffect 정의하기 시작/////////////////////////
 
-  //////새로운  장소정보 가져오는 함수
+  //새로운  장소정보 가져오는 함수
   useEffect(() => {
-    getAddress(pressedLocation, setPressedAddressID, APIKey);
-    getPlaceDetail(
-      setPressedAddress,
-      setPressedAddressName,
-      pressedAddressID,
-      PlAPIKey
-    );
+    getAddress(pressedLocation, setPressedAddressID);
+    getPlaceDetail(setPressedAddress, setPressedAddressName, pressedAddressID);
 
     console.log("longclicked");
   }, [pressedAddressID, pressedLocation]);
@@ -147,97 +141,97 @@ export const MapScreen = ({ navigation, route }) => {
     },
   }));
 
-  ///////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////맵그리는 것 여기서부터 시작//////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    console.log(activePolygon);
+  }, [activePolygon]);
 
-  //----------return안에 if를 넣자
-  if (isLoading) {
-    return <Loading />;
-  } else {
-    return (
+  /////////맵그리는 것 여기서부터 시작///////
+
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <View>
+      <ExpoStatusBar style="auto" />
+      {/*----------------------- 맨 상단 컴포넌트--------------------------- */}
+      <SearchContainer>
+        {!isDetail ? (
+          <>{UpperBox(writeMode, navigation, currentRegion)}</>
+        ) : null}
+
+        {writeMode && (
+          <TextContainer>
+            <Text variant="hint">드롭을 남길 장소를 눌러주세요</Text>
+          </TextContainer>
+        )}
+      </SearchContainer>
+
+      {/*----------------------- 지도 컴포넌트--------------------------- */}
       <View>
-        <ExpoStatusBar style="auto" />
-
-        {/*----------------------- 맨 상단 컴포넌트--------------------------- */}
-        <SearchContainer>
-          {!isDetail ? (
-            <>{UpperBox(writeMode, navigation, currentRegion)}</>
-          ) : null}
-
-          {writeMode && (
-            <TextContainer>
-              <Text variant="hint">드롭을 남길 장소를 눌러주세요</Text>
-            </TextContainer>
-          )}
-        </SearchContainer>
-
-        {/*----------------------- 지도 컴포넌트--------------------------- */}
-        <View>
-          {dropsList(
-            drops,
+        {dropsList(
+          drops,
+          setPressedLocation,
+          setMarkers,
+          setPressedAddress,
+          setPressedAddressName,
+          location,
+          map,
+          LATITUDE_DELTA,
+          LONGITUDE_DELTA,
+          writeMode,
+          Markers,
+          allCoords,
+          currentRegion,
+          updateRegion,
+          showModal,
+          setWriteMode,
+          setDropContent,
+          setDrop,
+          setDropTime,
+          activePolygon,
+          setActivePolygon
+        )}
+      </View>
+      {/*----------------------- 맨 하단 컴포넌트--------------------------- */}
+      {!writeMode && !dropViewMode ? (
+        <>
+          {PlaceBoxBlank(
+            setWriteMode,
             setPressedLocation,
-            setMarkers,
-            setPressedAddress,
-            setPressedAddressName,
             location,
             map,
             LATITUDE_DELTA,
-            LONGITUDE_DELTA,
-            writeMode,
-            Markers,
-            allCoords,
-            currentRegion,
-            updateRegion,
-            showModal,
-            setWriteMode,
-            setDropContent,
-            setDrop,
-            setDropTime
+            LONGITUDE_DELTA
           )}
-        </View>
-        {/*----------------------- 맨 하단 컴포넌트--------------------------- */}
-        {!writeMode && !dropViewMode ? (
-          <>
-            {PlaceBoxBlank(
-              setWriteMode,
-              setPressedLocation,
-              location,
-              map,
-              LATITUDE_DELTA,
-              LONGITUDE_DELTA
-            )}
-          </>
-        ) : writeMode ? (
-          <>
-            {PlaceBox(
-              setWriteMode,
-              pressedAddressName,
-              pressedAddress,
-              navigation,
-              pressedLocation
-            )}
-          </>
-        ) : dropViewMode ? (
-          <>
-            <TouchableWithoutFeedback onPress={() => {}}>
-              <SlideView isDetail={isDetail}>
-                <DropPreview
-                  pressedAddress={pressedAddress}
-                  pressedAddressName={pressedAddressName}
-                  dropContent={dropContent}
-                  pressedLocation={pressedLocation}
-                  navigation={navigation}
-                  drop={drop}
-                  dropTime={dropTime}
-                  isDetail={isDetail}
-                  setIsDetail={setIsDetail}
-                />
-              </SlideView>
-            </TouchableWithoutFeedback>
-          </>
-        ) : null}
-      </View>
-    );
-  }
+        </>
+      ) : writeMode ? (
+        <>
+          {PlaceBox(
+            setWriteMode,
+            pressedAddressName,
+            pressedAddress,
+            navigation,
+            pressedLocation
+          )}
+        </>
+      ) : dropViewMode ? (
+        <>
+          <TouchableWithoutFeedback onPress={() => {}}>
+            <SlideView isDetail={isDetail}>
+              <DropPreview
+                pressedAddress={pressedAddress}
+                pressedAddressName={pressedAddressName}
+                dropContent={dropContent}
+                pressedLocation={pressedLocation}
+                navigation={navigation}
+                drop={drop}
+                dropTime={dropTime}
+                isDetail={isDetail}
+                setIsDetail={setIsDetail}
+              />
+            </SlideView>
+          </TouchableWithoutFeedback>
+        </>
+      ) : null}
+    </View>
+  );
 };

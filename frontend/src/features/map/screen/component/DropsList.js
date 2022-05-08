@@ -23,7 +23,9 @@ export const dropsList = (
   setWriteMode,
   setDropContent,
   setDrop,
-  setDropTime
+  setDropTime,
+  activePolygon,
+  setActivePolygon
 ) => {
   return (
     <>
@@ -45,6 +47,8 @@ export const dropsList = (
         allCoords={allCoords}
         region={currentRegion}
         updateRegion={updateRegion}
+        activePolygon={activePolygon}
+        setActivePolygon={setActivePolygon}
       >
         {drops.map((drop) => {
           return (
