@@ -154,9 +154,7 @@ export const MapScreen = ({ navigation, route }) => {
       <ExpoStatusBar style="auto" />
       {/*----------------------- 맨 상단 컴포넌트--------------------------- */}
       <SearchContainer>
-        {!isDetail ? (
-          <>{UpperBox(writeMode, navigation, currentRegion)}</>
-        ) : null}
+        {!isDetail && <>{UpperBox(writeMode, navigation, currentRegion)}</>}
 
         {writeMode && (
           <TextContainer>
@@ -192,7 +190,7 @@ export const MapScreen = ({ navigation, route }) => {
         )}
       </View>
       {/*----------------------- 맨 하단 컴포넌트--------------------------- */}
-      {!writeMode && !dropViewMode ? (
+      {!writeMode && !dropViewMode && activePolygon == null ? (
         <>
           {PlaceBoxBlank(
             setWriteMode,
@@ -216,22 +214,24 @@ export const MapScreen = ({ navigation, route }) => {
       ) : dropViewMode ? (
         <>
           <TouchableWithoutFeedback onPress={() => {}}>
-            <SlideView isDetail={isDetail}>
-              <DropPreview
-                pressedAddress={pressedAddress}
-                pressedAddressName={pressedAddressName}
-                dropContent={dropContent}
-                pressedLocation={pressedLocation}
-                navigation={navigation}
-                drop={drop}
-                dropTime={dropTime}
-                isDetail={isDetail}
-                setIsDetail={setIsDetail}
-              />
-            </SlideView>
+            {/* <SlideView isDetail={isDetail}> 안드로이드에서 문제가 생기는 이유*/}
+            <DropPreview
+              pressedAddress={pressedAddress}
+              pressedAddressName={pressedAddressName}
+              dropContent={dropContent}
+              pressedLocation={pressedLocation}
+              navigation={navigation}
+              drop={drop}
+              dropTime={dropTime}
+              isDetail={isDetail}
+              setIsDetail={setIsDetail}
+            />
+            {/* </SlideView> */}
           </TouchableWithoutFeedback>
         </>
-      ) : null}
+      ) : (
+        <>{/* 여기에 polygon 클릭 후 나타나는 컴포넌트 배치. */}</>
+      )}
     </View>
   );
 };
