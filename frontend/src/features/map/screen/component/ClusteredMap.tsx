@@ -23,8 +23,6 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
       region = {},
       updateRegion,
       location = {},
-      LATITUDE_DELTA = {},
-      LONGITUDE_DELTA = {},
       Places = {},
       writeMode = {},
       isAddressLoading = {},
@@ -48,6 +46,8 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
       superClusterRef,
       setPressedAddress,
       setPressedAddressName,
+      activePolygon,
+      setActivePolygon,
       ...restProps
     },
     ref
@@ -447,7 +447,11 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
               );
             })
           : null}
-        <Polygons map={mapRef} />
+        <Polygons
+          map={mapRef}
+          activePolygon={activePolygon}
+          setActivePolygon={setActivePolygon}
+        />
       </Map>
     );
   }

@@ -1,4 +1,6 @@
-export const getAddress = (pressedLocation, setPressedAddressID, APIKey) => {
+import { APIKey, PlAPIKey } from "../../../APIkeys";
+
+export const getAddress = (pressedLocation, setPressedAddressID) => {
   fetch(
     "https://maps.googleapis.com/maps/api/geocode/json?address=" +
       pressedLocation.latitude +
@@ -16,8 +18,7 @@ export const getAddress = (pressedLocation, setPressedAddressID, APIKey) => {
 export const getPlaceDetail = (
   setPressedAddress,
   setPressedAddressName,
-  pressedAddressID,
-  PlAPIKey
+  pressedAddressID
 ) => {
   fetch(
     `https://maps.googleapis.com/maps/api/place/details/json?place_id=${pressedAddressID}&key=${PlAPIKey}`
