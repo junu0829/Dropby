@@ -38,6 +38,19 @@ height: 165px
   width: 100%;
  
 `;
+
+export const PlaceSearchBoxContainer = styled.View`
+position: absolute
+
+flex-direction: column
+padding: ${(props) => props.theme.space[3]};
+  z-index: 998;
+  bottom: 60px
+height: 165px
+  width: 80%;
+  left: 10%
+ 
+`;
 export const PlaceContainer2 = styled.View`
   top: -50px;
   flex-direction: row;

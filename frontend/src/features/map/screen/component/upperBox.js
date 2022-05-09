@@ -1,9 +1,15 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableOpacity } from "react-native";
-import { Cloud } from "./cloud";
-import { styles } from "../map.screen.styles";
+import { SvgXml } from "react-native-svg";
+import { Text } from "../../../../components/typography/text.component";
+import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
+import { styles, TextContainer } from "../map.screen.styles";
 
-export const UpperBox = (writeMode, navigation, currentRegion) => {
+export const UpperBox = (
+  activePolygon,
+  activePolygonName,
+  setActivePolygon
+) => {
   return (
     <LinearGradient
       colors={[
@@ -15,12 +21,19 @@ export const UpperBox = (writeMode, navigation, currentRegion) => {
       style={styles.background}
       locations={[0.1, 0.45, 0.77, 1.0]}
     >
-      {/* writeMode이지 않을 경우에 cloud */}
-      {!writeMode ? (
-        <TouchableOpacity onPress={() => {}}>
-          <Cloud navigation={navigation} region={currentRegion} />
-        </TouchableOpacity>
-      ) : null}
+      <TouchableOpacity
+        style={{
+          alignSelf: "flex-start",
+          position: "absolute",
+          top: 60,
+          left: 20,
+        }}
+        onPress={() => {
+          setActivePolygon(null);
+        }}
+      >
+        <SvgXml xml={backButtonWhite} width={20} height={20}></SvgXml>
+      </TouchableOpacity>
     </LinearGradient>
   );
 };

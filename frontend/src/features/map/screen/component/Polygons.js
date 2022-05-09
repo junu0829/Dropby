@@ -10,7 +10,13 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.004; //Very high zoom level, 아마 "몇 미터"를 나타내는 것 같다.
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-export const Polygons = ({ map, activePolygon, setActivePolygon }) => {
+export const Polygons = ({
+  map,
+  activePolygon,
+  setActivePolygon,
+  activePolygonName,
+  setActivePolygonName,
+}) => {
   //polygon 이 클릭되었을 때 해당 폴리곤의 위치로 맵뷰 옮기기
   const onPress = (polygon) => {
     map.current.animateToRegion({
@@ -20,6 +26,7 @@ export const Polygons = ({ map, activePolygon, setActivePolygon }) => {
       longitudeDelta: LONGITUDE_DELTA,
     });
     setActivePolygon(polygon.id);
+    setActivePolygonName(polygon.name);
   };
 
   return (

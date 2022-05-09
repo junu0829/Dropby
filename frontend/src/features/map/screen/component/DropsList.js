@@ -25,7 +25,9 @@ export const dropsList = (
   setDrop,
   setDropTime,
   activePolygon,
-  setActivePolygon
+  setActivePolygon,
+  activePolygonName,
+  setActivePolygonName
 ) => {
   return (
     <>
@@ -49,6 +51,8 @@ export const dropsList = (
         updateRegion={updateRegion}
         activePolygon={activePolygon}
         setActivePolygon={setActivePolygon}
+        activePolygonName={activePolygonName}
+        setActivePolygonName={setActivePolygonName}
       >
         {drops.map((drop) => {
           return (

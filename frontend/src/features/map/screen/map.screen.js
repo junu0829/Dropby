@@ -4,9 +4,11 @@ import {
   Dimensions,
   View,
   TouchableWithoutFeedback,
-  SvgXml,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
+import { SvgXml } from "react-native-svg";
 
 //Services
 import { LocationContext } from "../../../services/location/location.context";
@@ -20,12 +22,13 @@ import { Text } from "../../../components/typography/text.component";
 import { DropPreview } from "./component/dropPreview";
 import { SearchContainer, TextContainer } from "./map.screen.styles";
 import { SlideView } from "../../../components/animations/slide.animation";
+import { PlaceSearchBox } from "./component/PlaceSearchBox";
 
 //assets
 import { PlaceBox } from "./component/placeBox";
 import { PlaceBoxBlank } from "./component/placeBoxBlank";
 import { UpperBox } from "./component/upperBox";
-import whiteBackButton from "../../../../assets/whiteBackButton";
+import StartButton from "../../../../assets/Buttons/StartButton";
 
 export const MapScreen = ({ navigation, route }) => {
   //////////////////////////지도 및 화면비율 정의///////////////////////////////////
@@ -42,6 +45,7 @@ export const MapScreen = ({ navigation, route }) => {
   const [writeMode, setWriteMode] = useState(false);
   const [isDetail, setIsDetail] = useState(false);
   const [activePolygon, setActivePolygon] = useState(null);
+  const [activePolygonName, setActivePolygonName] = useState(null);
 
   /////2. 초기 데이터셋팅
   //------------현위치
@@ -157,88 +161,101 @@ export const MapScreen = ({ navigation, route }) => {
   return isLoading ? (
     <Loading />
   ) : (
-    <View>
-      <ExpoStatusBar style="auto" />
-      {/*----------------------- 맨 상단 컴포넌트--------------------------- */}
-      <SearchContainer>
-        {!isDetail && <>{UpperBox(writeMode, navigation, currentRegion)}</>}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView>
+        <View>
+          {/*----------------------- 맨 상단 컴포넌트--------------------------- */}
+          <SearchContainer>
+            {UpperBox(activePolygon, activePolygonName, setActivePolygon)}
+            <TextContainer>
+              {activePolygon != null ? (
+                <>
+                  <Text variant="hint">
+                    {activePolygonName} 구역을 검색해보세요
+                  </Text>
+                </>
+              ) : (
+                <Text variant="hint">구역을 선택해주세요</Text>
+              )}
+            </TextContainer>
+          </SearchContainer>
 
-        {writeMode && (
-          <TextContainer>
-            <Text variant="hint">드롭을 남길 장소를 눌러주세요</Text>
-          </TextContainer>
-        )}
-      </SearchContainer>
-
-      {/*----------------------- 지도 컴포넌트--------------------------- */}
-      <View>
-        {dropsList(
-          drops,
-          setPressedLocation,
-          setMarkers,
-          setPressedAddress,
-          setPressedAddressName,
-          location,
-          map,
-          LATITUDE_DELTA,
-          LONGITUDE_DELTA,
-          writeMode,
-          Markers,
-          allCoords,
-          currentRegion,
-          updateRegion,
-          showModal,
-          setWriteMode,
-          setDropContent,
-          setDrop,
-          setDropTime,
-          activePolygon,
-          setActivePolygon
-        )}
-      </View>
-      {/*----------------------- 맨 하단 컴포넌트--------------------------- */}
-      {!writeMode && !dropViewMode && activePolygon == null ? (
-        <>
-          {PlaceBoxBlank(
-            setWriteMode,
-            setPressedLocation,
-            location,
-            map,
-            LATITUDE_DELTA,
-            LONGITUDE_DELTA
+          {/*----------------------- 지도 컴포넌트--------------------------- */}
+          <View>
+            {dropsList(
+              drops,
+              setPressedLocation,
+              setMarkers,
+              setPressedAddress,
+              setPressedAddressName,
+              location,
+              map,
+              LATITUDE_DELTA,
+              LONGITUDE_DELTA,
+              writeMode,
+              Markers,
+              allCoords,
+              currentRegion,
+              updateRegion,
+              showModal,
+              setWriteMode,
+              setDropContent,
+              setDrop,
+              setDropTime,
+              activePolygon,
+              setActivePolygon,
+              activePolygonName,
+              setActivePolygonName
+            )}
+          </View>
+          {/*----------------------- 맨 하단 컴포넌트--------------------------- */}
+          {!writeMode && !dropViewMode && activePolygon == null ? (
+            <>
+              {PlaceBoxBlank(
+                setWriteMode,
+                setPressedLocation,
+                location,
+                map,
+                LATITUDE_DELTA,
+                LONGITUDE_DELTA
+              )}
+            </>
+          ) : writeMode ? (
+            <>
+              {PlaceBox(
+                setWriteMode,
+                pressedAddressName,
+                pressedAddress,
+                navigation,
+                pressedLocation
+              )}
+            </>
+          ) : dropViewMode ? (
+            <>
+              <TouchableWithoutFeedback onPress={() => {}}>
+                {/* <SlideView isDetail={isDetail}> 안드로이드에서 문제가 생기는 이유*/}
+                <DropPreview
+                  pressedAddress={pressedAddress}
+                  pressedAddressName={pressedAddressName}
+                  dropContent={dropContent}
+                  pressedLocation={pressedLocation}
+                  navigation={navigation}
+                  drop={drop}
+                  dropTime={dropTime}
+                  isDetail={isDetail}
+                  setIsDetail={setIsDetail}
+                />
+                {/* </SlideView> */}
+              </TouchableWithoutFeedback>
+            </>
+          ) : (
+            <>
+              {/* 여기에 polygon 클릭 후 나타나는 컴포넌트 배치. */}
+              <PlaceSearchBox></PlaceSearchBox>
+            </>
           )}
-        </>
-      ) : writeMode ? (
-        <>
-          {PlaceBox(
-            setWriteMode,
-            pressedAddressName,
-            pressedAddress,
-            navigation,
-            pressedLocation
-          )}
-        </>
-      ) : dropViewMode ? (
-        <>
-          <TouchableWithoutFeedback onPress={() => {}}>
-            {/* <SlideView isDetail={isDetail}> 안드로이드에서 문제가 생기는 이유*/}
-            <DropPreview
-              pressedAddress={pressedAddress}
-              pressedAddressName={pressedAddressName}
-              dropContent={dropContent}
-              pressedLocation={pressedLocation}
-              navigation={navigation}
-              drop={drop}
-              dropTime={dropTime}
-              isDetail={isDetail}
-              setIsDetail={setIsDetail}
-            />
-            {/* </SlideView> */}
-          </TouchableWithoutFeedback>
-        </>
-      ) : (
-        <>{/* 여기에 polygon 클릭 후 나타나는 컴포넌트 배치. */}</>
-      )}
-    </View>
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };

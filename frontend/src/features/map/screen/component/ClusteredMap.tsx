@@ -23,6 +23,8 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
       region = {},
       updateRegion,
       location = {},
+      LATITUDE_DELTA = {},
+      LONGITUDE_DELTA = {},
       Places = {},
       writeMode = {},
       isAddressLoading = {},
@@ -48,6 +50,8 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
       setPressedAddressName,
       activePolygon,
       setActivePolygon,
+      activePolygonName,
+      setActivePolygonName,
       ...restProps
     },
     ref
@@ -304,6 +308,14 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
             { latitude: 37.57720582175098, longitude: 127.02493898570536 }
           );
         }}
+        initialRegion={{
+          // 지도의 센터값 위도 경도
+          latitude: 37.585069,
+          longitude: 127.029191,
+          //ZoomLevel 아래에 있는 것은 건드리지 않아도 됨
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        }}
         minZoomLevel={17}
         customMapStyle={[
           {
@@ -451,6 +463,8 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
           map={mapRef}
           activePolygon={activePolygon}
           setActivePolygon={setActivePolygon}
+          setActivePolygonName={setActivePolygonName}
+          activePolygonName={activePolygonName}
         />
       </Map>
     );
