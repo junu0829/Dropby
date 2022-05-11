@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
+import { useFocusEffect } from "@react-navigation/native";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -15,18 +17,22 @@ import whiteBackButton from "../../../../../assets/whiteBackButton";
 
 import { LoginBg } from "../../Component/LoginBg";
 import { LoginButton } from "../../Component/LoginButton";
-import { CloudBg } from "../../Component/CloudBg";
 
 export const SignIn0201 = ({ navigation }) => {
   const inputRef = React.createRef();
 
   // 화면 오갈때마다 키보드 띄우기
-  useEffect(() => {
-    inputRef.current.focus();
-    navigation.addListener("focus", () => {
+
+  useFocusEffect(
+    React.useCallback(() => {
       inputRef.current.focus();
-    });
-  }, [inputRef, navigation]);
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [inputRef])
+  );
 
   // 전화번호, 이메일을 구분하는 method state
   const [method, setMethod] = useState(true);

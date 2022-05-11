@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+import { useFocusEffect } from "@react-navigation/native";
 import { StyleSheet, TouchableOpacity, View, Text, Alert } from "react-native";
 import { theme } from "../../../../infrastructure/theme";
 import { SvgXml } from "react-native-svg";
@@ -8,8 +10,9 @@ import { LoginBg } from "../../Component/LoginBg";
 import { LoginButton } from "../../Component/LoginButton";
 
 export const SignUp0204 = ({ navigation, route }) => {
-  const { userInfo, setUserInfo } = route.params;
+  const userInfo = route.params;
 
+  const [password, setPassword] = useState("");
   const [isCheck, setIsCheck] = useState(false);
   const [pwCheck, setPwCheck] = useState("");
 
@@ -17,9 +20,7 @@ export const SignUp0204 = ({ navigation, route }) => {
     if (isCheck) {
       setPwCheck(e);
     } else {
-      setUserInfo((state) => {
-        return { ...state, password: e };
-      });
+      setPassword(e);
     }
   };
 
@@ -30,14 +31,30 @@ export const SignUp0204 = ({ navigation, route }) => {
     if (!isCheck) {
       setIsCheck(true);
     } else {
-      if (pwCheck == userInfo.password) {
-        navigation.navigate("SignUp0205");
+      if (pwCheck == password) {
+        userInfo.password = password;
+        navigation.navigate("SignUp0205", userInfo);
       } else {
         Alert.alert("비밀번호가 틀렸습니다! 다시 입력해주세요");
         setPwCheck("");
       }
     }
   };
+
+  // 화면 오갈때마다 키보드 띄우기
+
+  const inputRef = React.createRef();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      inputRef.current.focus();
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [inputRef])
+  );
 
   return (
     <>
@@ -65,11 +82,12 @@ export const SignUp0204 = ({ navigation, route }) => {
         <View style={styles.container3}>
           <View style={styles.inputBox}>
             <TextInput
+              ref={inputRef}
               style={styles.input}
               placeholderTextColor="#02B5AA"
               placeholder=""
               onChangeText={(password) => handlePassword(password)}
-              value={isCheck ? pwCheck : userInfo.password}
+              value={isCheck ? pwCheck : password}
             ></TextInput>
           </View>
           <LoginButton
@@ -109,7 +127,6 @@ const styles = StyleSheet.create({
     flex: 0,
     alignItems: "center",
     justifyContent: "center",
-
     color: "white",
     fontFamily: theme.fonts.bold,
     fontWeight: "700",
@@ -117,7 +134,8 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: 200,
+    textAlign: "center",
+    width: 300,
 
     justifyContent: "center",
     alignItems: "center",

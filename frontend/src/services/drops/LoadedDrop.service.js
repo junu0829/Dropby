@@ -1,6 +1,5 @@
 import axiosInstance from "../fetch.js";
-import LOCAL_HOST from "../../features/local.js";
-import { useMemo } from "react";
+import LOCAL_HOST from "../local.js";
 export const LoadedDrop = (setDrops) => {
   console.log("드롭 불러오는중...");
 
