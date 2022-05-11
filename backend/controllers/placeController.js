@@ -27,3 +27,18 @@ exports.getPlace = async (req, res, next) => {
         next(error);
     }
 }
+
+exports.getPlaces = async (req, res, next) => {
+    try {
+        const areaPk = req.params.areaPk;
+        const placesData = await placeServices.getPlaces(areaPk);
+
+        res.status(200).json({
+            msg: `${placesData.areaName} 구역정보 조회 성공`,
+            areaName:placesData.areaName,
+            data:placesData.places
+        })
+    } catch(error) {
+        next(error);
+    }
+}

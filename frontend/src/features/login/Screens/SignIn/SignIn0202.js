@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+
 import {
   StyleSheet,
   TouchableOpacity,
@@ -9,7 +10,7 @@ import {
 } from "react-native";
 import { theme } from "../../../../infrastructure/theme";
 import { SvgXml } from "react-native-svg";
-import { TextInput } from "react-native-gesture-handler";
+
 import whiteBackButton from "../../../../../assets/whiteBackButton";
 
 import { LoginBg } from "../../Component/LoginBg";
@@ -23,16 +24,22 @@ export const SignIn0202 = ({ navigation, route }) => {
   // 이전 스크린에서 method, input받아오기
   const { method, input } = route.params;
 
-  const handleCode = (e) => {
-    setCode(e);
-  };
-
-  const nextButton = async () => {
-    // 인증 코드 입력받음
-    // 코드 확인하고, signUp0202로 넘어감
-    console.log(value);
-
-    navigation.navigate("MapScreen");
+  const nextButton = () => {
+    if (input) {
+      if (method) {
+        // 전화번호 입력 받음.
+        // 인증 코드 스크린에 입력된 전화번호 넘겨주기
+        // 전화번호로 인증 코드 보내기
+        navigation.navigate("SignIn0204", { method, input });
+      } else {
+        // 이메일 입력 받음.
+        // 인증 코드 스크린에 입력된 이메일 넘겨주기
+        // 이메일로 인증 코드 보내기
+        navigation.navigate("SignIn0204", { method, input });
+      }
+    } else {
+      alert("회원정보를 입력하세요!");
+    }
   };
   return (
     <>
@@ -87,19 +94,12 @@ export const SignIn0202 = ({ navigation, route }) => {
               <Text style={styles.methodText}>인증 코드 재전송</Text>
             </Pressable>
           </View>
-          {/* 
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.input}
-              placeholderTextColor="#02B5AA"
-              placeholder="인증 코드 6자리"
-              onChangeText={(code) => handleCode(code)}
-              value={code}
-            ></TextInput>
-           
-          </View>
-           */}
-          <CertificationCode value={value} setValue={setValue} />
+
+          <CertificationCode
+            navigation={navigation}
+            value={value}
+            setValue={setValue}
+          />
           <LoginButton
             style={{ marginTop: 24 }}
             value="다 음"

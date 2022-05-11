@@ -12,8 +12,8 @@ import { MapClusteringProps } from "./ClusteredMapViewTypes";
 import SuperCluster from "supercluster";
 import ClusterMarker from "./ClusteredMarker";
 import PlaceIcons from "../../../../../assets/PlaceIcons";
-import { TouchableOpacity, View } from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
+import { Polygons } from "./Polygons";
 
 export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
   (
@@ -42,13 +42,16 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
       onMarkersChange,
       preserveClusterPressBehavior,
       clusteringEnabled,
-
       renderCluster,
       tracksViewChanges,
       spiralEnabled,
       superClusterRef,
       setPressedAddress,
       setPressedAddressName,
+      activePolygon,
+      setActivePolygon,
+      activePolygonName,
+      setActivePolygonName,
       ...restProps
     },
     ref
@@ -161,6 +164,14 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
       return res;
     };
     /////////////////////////
+
+    const KOREA_BOUNDS = {
+      NW: [127.04561244696379, 37.619047563271586],
+      SE: [127.0126025006175, 37.562442566816166],
+    };
+    ///////////////
+
+    useEffect(() => {});
     useEffect(() => {
       const rawData = [];
       const otherChildren = [];
@@ -272,8 +283,8 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
         onRegionChangeComplete(region);
       }
     };
-    /////////////
 
+    /////////////
     return (
       <Map
         onLongPress={() => {
@@ -290,15 +301,82 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
         showsUserLocation={true}
         showsCompass={true}
         provider={PROVIDER_GOOGLE}
+        onRegionChangeComplete={_onRegionChangeComplete}
+        onMapReady={() => {
+          mapRef.current.setMapBoundaries(
+            { latitude: 37.593205590131035, longitude: 127.03426904976367 },
+            { latitude: 37.57720582175098, longitude: 127.02493898570536 }
+          );
+        }}
         initialRegion={{
           // 지도의 센터값 위도 경도
-          latitude: location[0],
-          longitude: location[1],
+          latitude: 37.585069,
+          longitude: 127.029191,
           //ZoomLevel 아래에 있는 것은 건드리지 않아도 됨
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         }}
-        onRegionChangeComplete={_onRegionChangeComplete}
+        minZoomLevel={17}
+        customMapStyle={[
+          {
+            featureType: "administrative",
+            elementType: "geometry",
+            stylers: [
+              {
+                visibility: "off",
+              },
+            ],
+          },
+          {
+            featureType: "poi.business",
+            stylers: [
+              {
+                visibility: "off",
+              },
+            ],
+          },
+          {
+            featureType: "poi.medical",
+            stylers: [
+              {
+                visibility: "off",
+              },
+            ],
+          },
+
+          {
+            featureType: "poi.sports_complex",
+            stylers: [
+              {
+                visibility: "off",
+              },
+            ],
+          },
+          {
+            featureType: "poi.school",
+            stylers: [
+              {
+                visibility: "off",
+              },
+            ],
+          },
+          {
+            featureType: "poi.government",
+            stylers: [
+              {
+                visibility: "off",
+              },
+            ],
+          },
+          {
+            featureType: "poi.place_of_worship",
+            stylers: [
+              {
+                visibility: "off",
+              },
+            ],
+          },
+        ]}
       >
         {markers.map((marker) =>
           marker.properties.point_count === 0 ? (
@@ -381,6 +459,13 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
               );
             })
           : null}
+        <Polygons
+          map={mapRef}
+          activePolygon={activePolygon}
+          setActivePolygon={setActivePolygon}
+          setActivePolygonName={setActivePolygonName}
+          activePolygonName={activePolygonName}
+        />
       </Map>
     );
   }

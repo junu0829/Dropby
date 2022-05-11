@@ -6,9 +6,15 @@ import { TextInput } from "react-native-gesture-handler";
 import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
 import { LoginBg } from "../../Component/LoginBg";
 import { LoginButton } from "../../Component/LoginButton";
+import { signUp } from "../../../../services/login/login";
 
-export const SignUp0205 = ({ navigation }) => {
-  const nextButton = async () => {
+export const SignUp0205 = ({ navigation, route }) => {
+  const userInfo = route.params;
+
+  const nextButton = () => {
+    // 여기서 서버에 회원가입 정보 보내기. userInfo 에 object 형태로 모든 정보가 들어있음.
+    console.log(userInfo);
+    signUp(userInfo.nickname, userInfo.email, userInfo.password);
     navigation.navigate("MapScreen");
   };
 

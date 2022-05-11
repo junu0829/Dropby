@@ -8,18 +8,13 @@ import { SvgXml } from "react-native-svg";
 import googleLogin from "../../../../../assets/Buttons/googleLogin";
 
 import whiteBackButton from "../../../../../assets/whiteBackButton";
-import { TextInput } from "react-native-gesture-handler";
-import SignInButton from "../../../../../assets/Buttons/SignInButton";
 
 import { LoginBg } from "../../Component/LoginBg";
-import axios from "axios";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import LOCAL_HOST from "../../../local.js";
 import { CloudBg } from "../../Component/CloudBg";
 import { InputBox } from "../../Component/InputBox";
 import { LoginButton } from "../../Component/LoginButton";
+import { signIn } from "../../../../services/login/login";
 
 export const SignIn0101 = ({ navigation }) => {
   const [password, setPassword] = useState("");
@@ -37,42 +32,15 @@ export const SignIn0101 = ({ navigation }) => {
     // 인증 코드 입력받음
     // 코드 확인하고, signUp0202로 넘어감
     console.log("nextbutton 작동!");
-
+    signIn(email, password);
     navigation.navigate("MapScreen");
   };
 
-  const signIn = async () => {
-    const response = await axios(`http://${LOCAL_HOST}:3000/auth/login`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: {
-        email,
-        password,
-      },
-    })
-      .then((res) => {
-        const accessToken = res.data.data.tokens.access;
-        const refreshToken = res.data.data.tokens.refresh;
-        const nickname = res.data.data.userData.nickname;
-        AsyncStorage.setItem("accessToken", accessToken);
-        AsyncStorage.setItem("refreshToken", refreshToken);
-        AsyncStorage.setItem("nickname", nickname);
-        console.log("tokens saved in asyncstorage");
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-
-    return response;
-  };
   return (
     <>
       <LoginBg>
         <View style={styles.container2}>
-            {/* 뒤로가기 버튼 */}
+          {/* 뒤로가기 버튼 */}
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
@@ -81,11 +49,11 @@ export const SignIn0101 = ({ navigation }) => {
           >
             <SvgXml xml={whiteBackButton} width={50}></SvgXml>
           </TouchableOpacity>
-           {/* 아이콘 */}
+          {/* 아이콘 */}
           <SvgXml xml={LoadIcon} width={72} height={123} />
         </View>
         <View style={styles.container3}>
-            {/* 이메일 비밀번호 입력란 */}
+          {/* 이메일 비밀번호 입력란 */}
           <InputBox
             placeholderText={"이메일주소"}
             handleWhat={handleEmail}
@@ -97,7 +65,7 @@ export const SignIn0101 = ({ navigation }) => {
         </View>
 
         <View style={styles.container4}>
-           {/* 비밀번호 찾기 버튼 */}
+          {/* 비밀번호 찾기 버튼 */}
           <TouchableOpacity
             style={{
               top: 14,
@@ -129,7 +97,7 @@ export const SignIn0101 = ({ navigation }) => {
           ></LoginButton>
           <CloudBg></CloudBg>
 
-         {/* 소셜 로그인 버튼 */}
+          {/* 소셜 로그인 버튼 */}
           <TouchableOpacity style={{ marginTop: 5, zIndex: 998 }}>
             <SvgXml xml={googleLogin} width={45} height={45} />
           </TouchableOpacity>

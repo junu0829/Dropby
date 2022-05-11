@@ -8,6 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { theme } from "../../../../infrastructure/theme";
+import { useFocusEffect } from "@react-navigation/native";
 import { SvgXml } from "react-native-svg";
 import { TextInput } from "react-native-gesture-handler";
 import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
@@ -18,40 +19,76 @@ import { LoginButton } from "../../Component/LoginButton";
 
 export const SignUp0101 = ({ navigation }) => {
   // 전화번호, 이메일을 구분하는 method state
-  const [userInfo, setUserInfo] = useState({
+  const userInfo = {
     method: true,
     phoneNum: "",
     email: "",
-    name: "ex)김동민",
-    nickName: "ex)Min",
-    password: "ex)12345678",
-  });
+    name: "",
+    nickname: "",
+    password: "",
+  };
+  const [method, setMethod] = useState(true);
+  const [phoneNum, setPhoneNum] = useState("");
+  const [email, setEmail] = useState("");
 
   const handlePhoneNum = (e) => {
-    setUserInfo((state) => {
-      return { ...state, phoneNum: e };
-    });
+    setPhoneNum(e);
   };
 
   const handleEmail = (e) => {
-    setUserInfo((state) => {
-      return { ...state, email: e };
-    });
+    setEmail(e);
   };
 
+  // const nextButton = () => {
+  //   if (userInfo.method) {
+  //     // 전화번호 입력 받음.
+  //     // 인증 코드 스크린에 입력된 전화번호 넘겨주기
+  //     // 전화번호로 인증 코드 보내기
+  //     navigation.navigate("SignUp0201", { userInfo, setUserInfo });
+  //   } else {
+  //     // 이메일 입력 받음.
+  //     // 인증 코드 스크린에 입력된 이메일 넘겨주기
+  //     // 이메일로 인증 코드 보내기
+  //     navigation.navigate("SignUp0201", { userInfo, setUserInfo });
+  //   }
+  // };
+
   const nextButton = () => {
-    if (userInfo.method) {
-      // 전화번호 입력 받음.
-      // 인증 코드 스크린에 입력된 전화번호 넘겨주기
-      // 전화번호로 인증 코드 보내기
-      navigation.navigate("SignUp0201", { userInfo, setUserInfo });
+    if (phoneNum || email) {
+      if (method) {
+        userInfo.phoneNum = phoneNum;
+        // 전화번호 입력 받음.
+        // 인증 코드 스크린에 입력된 전화번호 넘겨주기
+        // 전화번호로 인증 코드 보내기
+        navigation.navigate("SignUp0201", userInfo);
+      } else {
+        userInfo.method = false;
+        userInfo.email = email;
+        // 이메일 입력 받음.
+        // 인증 코드 스크린에 입력된 이메일 넘겨주기
+        // 이메일로 인증 코드 보내기
+        navigation.navigate("SignUp0201", userInfo);
+      }
     } else {
-      // 이메일 입력 받음.
-      // 인증 코드 스크린에 입력된 이메일 넘겨주기
-      // 이메일로 인증 코드 보내기
-      navigation.navigate("SignUp0201", { userInfo, setUserInfo });
+      alert("회원정보를 입력하세요!");
     }
   };
+
+  // 화면 오갈때마다 키보드 띄우기
+
+  const inputRef = React.createRef();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      inputRef.current.focus();
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [inputRef])
+  );
+
   return (
     <>
       <LoginBg>
@@ -75,55 +112,45 @@ export const SignUp0101 = ({ navigation }) => {
           <View style={styles.buttonContainer}>
             <Pressable
               style={styles.methodButton}
-              onPress={() =>
-                setUserInfo((state) => {
-                  return { ...state, method: true };
-                })
-              }
+              onPress={() => setMethod(true)}
             >
               <Text
-                style={
-                  userInfo.method ? styles.methodTextPressed : styles.methodText
-                }
+                style={method ? styles.methodTextPressed : styles.methodText}
               >
                 전화번호
               </Text>
             </Pressable>
             <Pressable
               style={styles.methodButton}
-              onPress={() =>
-                setUserInfo((state) => {
-                  return { ...state, method: false };
-                })
-              }
+              onPress={() => setMethod(false)}
             >
               <Text
-                style={
-                  userInfo.method ? styles.methodText : styles.methodTextPressed
-                }
+                style={method ? styles.methodText : styles.methodTextPressed}
               >
                 이메일 주소
               </Text>
             </Pressable>
           </View>
-          {userInfo.method ? (
+          {method ? (
             <View style={styles.inputBox}>
               <TextInput
+                ref={inputRef}
                 style={styles.input}
                 placeholderTextColor="#02B5AA"
                 placeholder="KR+82"
                 onChangeText={(phoneNum) => handlePhoneNum(phoneNum)}
-                value={userInfo.phoneNum}
+                value={phoneNum}
               ></TextInput>
             </View>
           ) : (
             <View style={styles.inputBox}>
               <TextInput
+                ref={inputRef}
                 style={styles.input}
                 placeholderTextColor="#02B5AA"
                 placeholder="이메일 주소"
                 onChangeText={(email) => handleEmail(email)}
-                value={userInfo.email}
+                value={email}
               ></TextInput>
             </View>
           )}

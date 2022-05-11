@@ -12,6 +12,8 @@ import { CameraScreen } from "../../features/write/screen/camera.screen";
 import { SignIn0101 } from "../../features/login/Screens/SignIn/SignIn0101.js";
 import { SignIn0201 } from "../../features/login/Screens/SignIn/SignIn0201.js";
 import { SignIn0202 } from "../../features/login/Screens/SignIn/SignIn0202";
+import { SignIn0203 } from "../../features/login/Screens/SignIn/SignIn0203";
+import { SignIn0204 } from "../../features/login/Screens/SignIn/SignIn0204";
 import { FeedScreen } from "../../features/Feed/feed.screen";
 
 import { WalkThrough0101 } from "../../features/login/Screens/WalkThrough/WalkThrough0101.js";
@@ -33,6 +35,8 @@ export const MainNavigator = () => {
         <MainStack.Screen name="SignIn0101" component={SignIn0101} />
         <MainStack.Screen name="SignIn0201" component={SignIn0201} />
         <MainStack.Screen name="SignIn0202" component={SignIn0202} />
+        <MainStack.Screen name="SignIn0203" component={SignIn0203} />
+        <MainStack.Screen name="SignIn0204" component={SignIn0204} />
         <MainStack.Screen name="SignUp0101" component={SignUp0101} />
         <MainStack.Screen name="SignUp0201" component={SignUp0201} />
         <MainStack.Screen name="SignUp0202" component={SignUp0202} />
