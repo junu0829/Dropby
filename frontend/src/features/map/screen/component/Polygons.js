@@ -28,12 +28,12 @@ export const Polygons = ({
   //polygon 이 클릭되었을 때 해당 폴리곤의 위치로 맵뷰 옮기기
   const onPress = (polygon) => {
     map.current.animateToRegion({
-      latitude: polygon.centerCorrdinates[0],
-      longitude: polygon.centerCorrdinates[1],
+      latitude: polygon.polygon.coordinates[0].latitude,
+      longitude: polygon.polygon.coordinates[0].longitude,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     });
-    setActivePolygon(polygon.id);
+    setActivePolygon(polygon.pk);
     setActivePolygonName(polygon.name);
   };
 
