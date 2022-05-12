@@ -18,10 +18,11 @@ export const Polygons = ({
   activePolygonName,
   setActivePolygonName,
 }) => {
-  const [areaData, setAreaData] = useState(null);
+  const [areaData, setAreaData] = useState(["가나다"]);
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    polygonDatatest(setAreaData);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    await polygonDatatest(setAreaData);
     setIsLoading(false);
     console.log(areaData);
   }, []);
@@ -36,6 +37,8 @@ export const Polygons = ({
     setActivePolygon(polygon.pk);
     setActivePolygonName(polygon.name);
   };
+
+  //비동기를 사용해보자. async await.
 
   return isLoading ? (
     <></>
@@ -62,7 +65,7 @@ export const Polygons = ({
 
 const styles = {
   activeFillColor: "rgba(159, 25, 255, 0.5)",
-  fillColor: "rgba(183, 132, 220, 0.4)",
+  fillColor: "transparent",
   strokeColor: "rgba(174, 60, 255, 0.6)",
   strokeWidth: 2,
 };
