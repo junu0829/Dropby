@@ -1,7 +1,8 @@
 const { Area, Place } = require("../models");
 
 exports.newArea = async (name, polygon) => {
-    
+    console.log(`name = ${name}`);
+    console.log(polygon);
     const area = await Area.create({
         name,
         polygon
@@ -10,12 +11,13 @@ exports.newArea = async (name, polygon) => {
 };
 
 
-exports.getPlaces = async (areaPk) => {
-    const places = await Place.findAll({
-        where:{
-            pk:areaPk
-        }
-    });
-
-    return places;
+exports.getAreas = async() => {
+    try {
+        const allAreas = await Area.findAll();
+        return allAreas;
+    } catch(error) {
+        console.log(error.message);
+        next(error);
+    }
 }
+

@@ -3,6 +3,7 @@ const passport = require('passport');
 const controller = require('../controllers/authController');
 
 const LocalPassportAuth = passport.authenticate('local', {session:false}); //id, pw 검증
+const RefreshJwtAuth = passport.authenticate('jwtRefresh', {session:false}) //RefreshToken 확인
 
 router.post('/signup', controller.signUp, LocalPassportAuth, controller.logIn); //회원가입
 router.post('/login', LocalPassportAuth, controller.logIn); //로그인_accessToken, refreshToken 발급

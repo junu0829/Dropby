@@ -17,16 +17,15 @@ exports.newArea = async (req, res, next) => {
     }
 }
 
-exports.getPlaces = async (req, res, next) => {
+exports.getAreas = async(req, res, next) => {
     try {
-        const areaPk = req.params.areaPk;
-        const places = await areaServices.getPlaces(areaPk);
-
+        const allAreas = await areaServices.getAreas();
         res.status(200).json({
-            msg: '장소 정보 조회 성공',
-            data:places
+            'msg':'전 구역 조회 완료',
+            data:allAreas
         })
     } catch(error) {
+        console.log(error.message);
         next(error);
     }
 }
