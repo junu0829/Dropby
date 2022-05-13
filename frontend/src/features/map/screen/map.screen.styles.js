@@ -13,7 +13,6 @@ export const Map = styled(MapView)`
 export const SearchContainer = styled.View`
   position: absolute;
   z-index: 999;
-
   width: 100%;
 `;
 
@@ -37,6 +36,19 @@ padding: ${(props) => props.theme.space[3]};
   bottom: 0px
 height: 165px
   width: 100%;
+ 
+`;
+
+export const PlaceSearchBoxContainer = styled.View`
+position: absolute
+
+flex-direction: column
+padding: ${(props) => props.theme.space[3]};
+  z-index: 998;
+  bottom: 60px
+height: 165px
+  width: 80%;
+  left: 10%
  
 `;
 export const PlaceContainer2 = styled.View`

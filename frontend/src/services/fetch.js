@@ -1,6 +1,6 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import LOCAL_HOST from "../features/local.js";
+import LOCAL_HOST from "./local.js";
 
 const axiosInstance = axios.create();
 // fetch data from API using config
