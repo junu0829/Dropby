@@ -46,7 +46,7 @@ export const polygonData = {
 // Api의 polygon coordinate 데이터 변환, type을 맞추기.
 
 const polygonNum = polygonData.data.polygons.length;
-for (i = 0; i < polygonNum; i++) {
+for (var i = 0; i < polygonNum; i++) {
   const polygonCoord = [];
   polygonData.data.polygons[i].coordinates.map((coord) => {
     polygonCoord.push({ latitude: coord[0], longitude: coord[1] });
