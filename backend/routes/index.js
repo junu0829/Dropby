@@ -7,3 +7,6 @@ router.use("/auth", auth);
 router.use("/", area);
 
 module.exports = router;
+
+ //   host/<int:areaPk>/<int:placePk>/<int:dropPk>/
+ //   host/auth
