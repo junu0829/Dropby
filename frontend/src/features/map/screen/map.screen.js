@@ -29,6 +29,7 @@ import { PlaceBox } from "./component/placeBox";
 import { PlaceBoxBlank } from "./component/placeBoxBlank";
 import { UpperBox } from "./component/upperBox";
 import StartButton from "../../../../assets/Buttons/StartButton";
+import { placeDatatest } from "../../../services/maps/placeData";
 
 export const MapScreen = ({ navigation, route }) => {
   //////////////////////////지도 및 화면비율 정의///////////////////////////////////
@@ -46,6 +47,8 @@ export const MapScreen = ({ navigation, route }) => {
   const [isDetail, setIsDetail] = useState(false);
   const [activePolygon, setActivePolygon] = useState(null);
   const [activePolygonName, setActivePolygonName] = useState(null);
+  //선택한 구역의 장소리스트 API에서 받아와 넣는 곳
+  const [placeList, setPlaceList] = useState([]);
 
   /////2. 초기 데이터셋팅
   //------------현위치
@@ -135,14 +138,18 @@ export const MapScreen = ({ navigation, route }) => {
   useEffect(() => {
     getAddress(pressedLocation, setPressedAddressID);
     getPlaceDetail(setPressedAddress, setPressedAddressName, pressedAddressID);
-
-    console.log("longclicked");
   }, [pressedAddressID, pressedLocation]);
 
   /////----writePage에서 다시 되돌아올 때 초기화면으로
   useEffect(() => {
     setWriteMode(false);
   }, [route.params]);
+
+  //polygon누를 때 장소리스트 받아오기
+  useEffect(() => {
+    console.log(activePolygon);
+    placeDatatest(activePolygon, setPlaceList);
+  }, [activePolygon]);
 
   //////////정해진 장소정보 가져오는 함수
 
@@ -152,17 +159,13 @@ export const MapScreen = ({ navigation, route }) => {
     },
   }));
 
-  useEffect(() => {
-    console.log(activePolygon);
-  }, [activePolygon]);
-
   /////////맵그리는 것 여기서부터 시작///////
 
   return isLoading ? (
     <Loading />
   ) : (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView behavior="position">
         <View>
           {/*----------------------- 맨 상단 컴포넌트--------------------------- */}
           <SearchContainer>
@@ -181,7 +184,7 @@ export const MapScreen = ({ navigation, route }) => {
           </SearchContainer>
 
           {/*----------------------- 지도 컴포넌트--------------------------- */}
-          <View>
+          <View onPress={Keyboard.dismiss}>
             {dropsList(
               drops,
               setPressedLocation,
@@ -251,7 +254,7 @@ export const MapScreen = ({ navigation, route }) => {
           ) : (
             <>
               {/* 여기에 polygon 클릭 후 나타나는 컴포넌트 배치. */}
-              <PlaceSearchBox></PlaceSearchBox>
+              <PlaceSearchBox placeList={placeList}></PlaceSearchBox>
             </>
           )}
         </View>

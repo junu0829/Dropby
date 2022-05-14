@@ -1,4 +1,6 @@
 import React from "react";
+import LOCAL_HOST from "../../../../services/local";
+import axios from "axios";
 
 import { SvgXml } from "react-native-svg";
 
@@ -16,6 +18,37 @@ import {
 import write from "../../../../../assets/Buttons/write";
 import currentLocation from "../../../../../assets/Buttons/currentLocation";
 
+// {
+//   latitude: 37.58441910526165,
+//   longitude: 127.02587004750966,
+// },
+// {
+//   latitude: 37.58412524996814,
+//   longitude: 127.02602628618477,
+// },
+// {
+//   latitude: 37.58473899704727,
+//   longitude: 127.02733956277372,
+// },
+// {
+//   latitude: 37.584999373067255,
+//   longitude: 127.0271135866642,
+// },
+
+const data = {
+  name: "과도1",
+  pk: 5,
+  polygon: {
+    coordinates: [
+      [37.58441910526165, 127.02587004750966],
+      [37.58412524996814, 127.02602628618477],
+      [37.58473899704727, 127.02733956277372],
+      [37.584999373067255, 127.0271135866642],
+    ],
+    type: "Polygon",
+  },
+};
+
 export const PlaceBoxBlank = (
   setWriteMode,
   setPressedLocation,
@@ -28,12 +61,36 @@ export const PlaceBoxBlank = (
     <Container>
       <WriteButton
         style={{ opacity: 0.95 }}
-        onPress={() => {
-          setWriteMode(true);
-          setPressedLocation({
-            latitude: location[0],
-            longitude: location[1],
-          });
+        onPress={async () => {
+          console.log("전송시도");
+          await axios(`http://${LOCAL_HOST}:3000/`, {
+            method: "POST",
+
+            dataType: "geojson",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: {
+              name: "과도!",
+              polygon: {
+                coordinates: [
+                  [
+                    [100.0, 0.0],
+                    [101.0, 0.0],
+                    [101.0, 1.0],
+                    [100.0, 1.0],
+                    [100.0, 0.0],
+                  ],
+                ],
+
+                type: "Polygon",
+              },
+            },
+          })
+            .then((res) => {
+              console.log("전송완료");
+            })
+            .catch((e) => console.log(e));
         }}
       >
         <SvgXml xml={write} width={56} height={65} />
