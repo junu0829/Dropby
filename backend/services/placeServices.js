@@ -1,12 +1,13 @@
 const { Place, Area } = require("../models");
 
-exports.newPlace = async (body) => {
+exports.newPlace = async (body, areaPk) => {
     const { name, latitude, longitude } = body;
 
     const place = await Place.create({
         name,
         latitude,
         longitude,
+        areaPk
     });
     return place;
 };
