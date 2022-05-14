@@ -298,6 +298,9 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
           }
           restProps.mapRef(map);
         }}
+        onPress={(event) => {
+          console.log(event.nativeEvent.coordinate);
+        }}
         showsUserLocation={true}
         showsCompass={true}
         provider={PROVIDER_GOOGLE}

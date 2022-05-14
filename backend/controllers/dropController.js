@@ -3,8 +3,7 @@ const {getAccess} = require('../utils/auth');
 
 exports.newDrop = async (req, res, next) => {
     try {
-        console.log(req)
-        const placePk = req.params.placePk;
+        const {placePk} = req.params;
         const accessToken = getAccess(req.headers);
         const drop = await dropServices.newDrop(accessToken, req.body, placePk);
         res.status(201).json({
@@ -20,9 +19,7 @@ exports.newDrop = async (req, res, next) => {
 
 exports.getDrops = async (req, res, next) => {
     try {
-        console.log(req);
-        console.log(req.params);
-        const placePk= req.params.placePk;
+        const {placePk} = req.params;
         const drops = await dropServices.getDrops(placePk);
         console.log('drops sent');
         res.status(200).json({
@@ -36,7 +33,7 @@ exports.getDrops = async (req, res, next) => {
 
 exports.updateDrop = async (req, res, next) => {
     try {
-        const dropPk = req.params.pk;
+        const dropPk = req.params.dropPk;
         const updatedDrop = await dropServices.updateDrop(req.body, dropPk);
         res.status(200).json({
             msg:'드롭 내용 수정 완료',
@@ -49,9 +46,9 @@ exports.updateDrop = async (req, res, next) => {
 
 exports.deleteDrop = async (req, res, next) => {
     try {
-        const dropPk = req.params.pk;
+        const dropPk = req.params.dropPk;
         const dropDeleted = await dropServices.deleteDrop(dropPk);
-        res.status(204).json({
+        res.status(200).json({
             msg:'드롭 삭제 완료',
             data:null
         })

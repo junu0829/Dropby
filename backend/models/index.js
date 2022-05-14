@@ -61,14 +61,14 @@ db.Place.belongsTo(db.Area, {
     },
 });
 
-db.Emoji.hasMany(db.Drop, {
-    foreignKey: {
-        name:emojiPk,
-        allowNull:false
-    },
-    ondelete:'do'
+// db.Emoji.hasMany(db.Drop, {
+//     foreignKey: {
+//         name:emojiPk,
+//         allowNull:false
+//     },
+//     ondelete:'do'
 
-})
+// })
 
-db.
+// db.
 module.exports = db;

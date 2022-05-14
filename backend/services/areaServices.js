@@ -13,6 +13,7 @@ exports.newArea = async (name, polygon) => {
 
 exports.getAreas = async() => {
     try {
+        console.log(__dirname);
         const allAreas = await Area.findAll();
         return allAreas;
     } catch(error) {

@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { styles, PlaceSearchBoxContainer } from "../map.screen.styles";
 
-import { View, TouchableOpacity, TextInput, FlatList } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  TextInput,
+  FlatList,
+  StyleSheet,
+} from "react-native";
 
 import { SvgXml } from "react-native-svg";
 
@@ -13,44 +19,82 @@ import { theme } from "../../../../infrastructure/theme";
 
 //assets
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-];
+export const PlaceSearchBox = ({ placeList }) => {
+  const [searchfield, setSearchfield] = useState("");
+  const [DATA, setDATA] = useState([]);
 
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.title, textColor]}>{item.title}</Text>
-  </TouchableOpacity>
-);
+  useEffect(() => {
+    setDATA(placeList);
+  }, [placeList]);
 
-export const PlaceSearchBox = () => {
-  const [selectedId, setSelectedId] = useState(null);
+  useEffect(() => {
+    const filteredPlace = DATA.filter((place) => {
+      return place.name.includes(searchfield);
+    });
+    console.log(filteredPlace);
+    if (!searchfield || searchfield === "") {
+      console.log("change state");
+      setDATA(placeList);
+    }
+    // if no name matches to text output
+    else if (!Array.isArray(filteredPlace) && !filteredPlace.length) {
+      console.log("장소 없음");
+      setDATA([]);
+    }
+    // if name matches then display
+    else if (filteredPlace.length > 0) {
+      console.log(filteredPlace);
+      setDATA(filteredPlace);
+    }
+  }, [placeList, searchfield]);
+
+  // const renderItem = ({ item }) => {
+  //   const backgroundColor = item.pk === selectedpk ? "#6e3b6e" : "#f9c2ff";
+  //   const color = item.pk === selectedpk ? "white" : "black";
+
+  //   const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  //     <TouchableOpacity
+  //       onPress={onPress}
+  //       style={[styless.placeBox, backgroundColor]}
+  //     >
+  //       <Text>{item.name}</Text>
+  //     </TouchableOpacity>
+  //   );
+
+  //   return (
+  //     <Item
+  //       item={item}
+  //       onPress={() => setSelectedpk(item.pk)}
+  //       backgroundColor={{ backgroundColor }}
+  //       textColor={{ color }}
+  //     />
+  //   );
+  // };
+
+  const [selectedpk, setSelectedpk] = useState(null);
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-    const color = item.id === selectedId ? "white" : "black";
+    const backgroundColor = item.pk === selectedpk ? "#6e3b6e" : "#f9c2ff";
+    const color = item.pk === selectedpk ? "white" : "black";
+
+    const Item = ({ item, onPress, backgroundColor, textColor }) => (
+      <TouchableOpacity
+        onPress={onPress}
+        style={[styless.placeBox, backgroundColor]}
+      >
+        <Text>{item.name}</Text>
+      </TouchableOpacity>
+    );
 
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => setSelectedpk(item.pk)}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
     );
   };
 
-  const [searchfield, setSearchfield] = useState("");
   return (
     <PlaceSearchBoxContainer>
       <TextInput
@@ -64,9 +108,15 @@ export const PlaceSearchBox = () => {
         horizontal={true}
         data={DATA}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        extraData={selectedId}
+        keyExtractor={(item) => item.pk}
       ></FlatList>
     </PlaceSearchBoxContainer>
   );
 };
+
+export const styless = StyleSheet.create({
+  placeBox: {
+    width: 80,
+    backgroundColor: "blue",
+  },
+});
