@@ -244,6 +244,7 @@ export const MapScreen = ({ navigation, route }) => {
                 placeList={placeList}
                 setSelectedPlace={setSelectedPlace}
                 setSelectedPlaceName={setSelectedPlaceName}
+                navigation={navigation}
               ></PlaceSearchBox>
             </>
           ) : activePolygon && selectedPlace ? (

@@ -30,11 +30,19 @@ import PlacePlusIcon from "../../../../../assets/Buttons/PlacePlusIcon";
 export const PlaceBox = ({
   navigation,
   selectedPlace = {},
+
   selectedPlaceName = {},
   activePolygon = {},
 }) => {
   return (
     <PlaceContainer>
+      <TouchableOpacity
+        onPress={(item) => {
+          navigation.navigate("PlaceFeedScreen");
+        }}
+      >
+        <Text>게시판보기</Text>
+      </TouchableOpacity>
       <View
         style={{
           bottom: 70,
@@ -44,6 +52,7 @@ export const PlaceBox = ({
           Index: 5,
         }}
       ></View>
+
       <PlaceContainer2>
         <PlaceNameContainer>
           {

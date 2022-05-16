@@ -23,6 +23,7 @@ export const PlaceSearchBox = ({
   placeList = {},
   setSelectedPlace,
   setSelectedPlaceName,
+  navigation,
 }) => {
   const [searchfield, setSearchfield] = useState("");
   const [DATA, setDATA] = useState([]);
@@ -56,14 +57,13 @@ export const PlaceSearchBox = ({
     const backgroundColor = item.pk === selectedpk ? "#6e3b6e" : "#f9c2ff";
     const color = item.pk === selectedpk ? "white" : "black";
 
-    const onPress = (item) => {
-      setSelectedpk(item.pk);
-      navigation.navigate("PlaceFeedScreen");
-    };
-
     const Place = ({ item, backgroundColor, textColor }) => (
       <TouchableOpacity
-        onPress={() => onPress(item)}
+        onPress={() => {
+          setSelectedpk(item.pk);
+          setSelectedPlace(item.pk);
+          setSelectedPlaceName(item.name);
+        }}
         style={[styless.placeBox, backgroundColor]}
       >
         <Text>{item.name}</Text>
@@ -73,11 +73,6 @@ export const PlaceSearchBox = ({
     return (
       <Place
         item={item}
-        onPress={() => {
-          setSelectedpk(item.pk);
-          setSelectedPlace(item.pk);
-          setSelectedPlaceName(item.name);
-        }}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
@@ -99,6 +94,14 @@ export const PlaceSearchBox = ({
         renderItem={renderPlace}
         keyExtractor={(item) => item.pk}
       ></FlatList>
+      <TouchableOpacity
+        onPress={(item) => {
+          setSelectedpk(item.pk);
+          navigation.navigate("PlaceFeedScreen");
+        }}
+      >
+        <Text>게시판보기</Text>
+      </TouchableOpacity>
     </PlaceSearchBoxContainer>
   );
 };
