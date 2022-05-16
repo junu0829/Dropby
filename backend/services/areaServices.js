@@ -10,21 +10,10 @@ exports.newArea = async (name, polygon) => {
     return area;
 };
 
-exports.getAreas = async(req, res, next) => {
-    try {
-        const allAreas = await areaServices.getAreas();
-        res.status(200).json({
-            'msg':'전 구역 조회 완료',
-            data:allAreas
-        })
-    } catch(error) {
-        console.log(error.message);
-        next(error);
-    }
-}
 
 exports.getAreas = async() => {
     try {
+        console.log(__dirname);
         const allAreas = await Area.findAll();
         return allAreas;
     } catch(error) {
@@ -33,12 +22,3 @@ exports.getAreas = async() => {
     }
 }
 
-exports.getPlaces = async (areaPk) => {
-    const places = await Place.findAll({
-        where:{
-            pk:areaPk
-        }
-    });
-
-    return places;
-}
