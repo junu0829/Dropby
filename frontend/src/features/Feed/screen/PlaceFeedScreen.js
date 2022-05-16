@@ -13,22 +13,23 @@ import { getPlaceDrops } from "../../../services/drops/GetDrops";
 import { FeedDropComponent } from "../component/FeedDropComponent";
 
 export const PlaceFeedScreen = ({ navigation, route }) => {
-  const placeData = route.params;
+  const place = route.params;
   const [drops, setDrops] = useState([
     {
-      pk: 1,
-      content: "드롭1",
-      createdAt: "2022-05-14T11:35:11.000Z",
-      creatorPk: 1,
-      placePk: 13,
+      areaPk: 0,
+      latitude: 1,
+      longitude: 1,
+      name: "",
+      pk: 0,
     },
   ]);
 
-  useEffect(() => {
+  useEffect(async () => {
+    await getPlaceDrops(place.areaPk, place.pk, setDrops);
     // Place 정보 받아서 해당 장소의 drop들 호출하기
     // placeData에 받아와져 있음.
     // setDrops => getPlaceDrops 이용,
-  });
+  }, []);
 
   return (
     <>
@@ -39,7 +40,7 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
       </View>
       {/* 장소 정보 container */}
       <View style={styles.container2}>
-        <Text style={styles.placeTitle}>{placeData.name}</Text>
+        <Text style={styles.placeTitle}>{place.name}</Text>
         <Text style={styles.placeInfo}>
           서울특별시 성북구 안암로 145, South Korea
         </Text>
@@ -54,7 +55,7 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
       {/* drops */}
       <View style={styles.container4}>
         <ScrollView style={styles.dropsContainer}>
-          {getPlaceDrops.data.map((feedDrop) => (
+          {drops.map((feedDrop) => (
             <FeedDropComponent navigation={navigation} feedDrop={feedDrop} />
           ))}
         </ScrollView>
