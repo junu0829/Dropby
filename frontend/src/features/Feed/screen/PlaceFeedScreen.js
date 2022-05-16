@@ -8,12 +8,12 @@ import {
 } from "react-native";
 import { SvgXml } from "react-native-svg";
 import backButton2 from "../../../../assets/Buttons/backButton2";
-import backButtonWhite from "../../../../assets/Buttons/backButtonWhite";
 import { theme } from "../../../infrastructure/theme";
 import { getPlaceDrops } from "../../../services/drops/GetDrops";
 import { FeedDropComponent } from "../component/FeedDropComponent";
 
 export const PlaceFeedScreen = ({ navigation, route }) => {
+  const placeData = route.params;
   const [drops, setDrops] = useState([
     {
       pk: 1,
@@ -26,6 +26,8 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     // Place 정보 받아서 해당 장소의 drop들 호출하기
+    // placeData에 받아와져 있음.
+    // setDrops => getPlaceDrops 이용,
   });
 
   return (
@@ -35,18 +37,21 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
           <SvgXml xml={backButton2} width={60} height={60} />
         </TouchableOpacity>
       </View>
+      {/* 장소 정보 container */}
       <View style={styles.container2}>
-        <Text style={styles.placeTitle}>인촌기념관</Text>
+        <Text style={styles.placeTitle}>{placeData.name}</Text>
         <Text style={styles.placeInfo}>
           서울특별시 성북구 안암로 145, South Korea
         </Text>
       </View>
+      {/* 공지사항 container */}
       <View style={styles.container3}>
         <Text style={styles.placeTitle}>공지사항</Text>
         <Text style={styles.placeInfo}>
           시설예약은 9:00 ~ 15:00 까지 아래 링크에서 가능합니다.
         </Text>
       </View>
+      {/* drops */}
       <View style={styles.container4}>
         <ScrollView style={styles.dropsContainer}>
           {getPlaceDrops.data.map((feedDrop) => (
