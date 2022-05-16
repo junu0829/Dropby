@@ -14,6 +14,7 @@ export const FeedDropComponent = ({ navigation, feedDrop }) => {
   const onPress = () => {
     navigation.navigate("DetailScreen");
   };
+
   return (
     <>
       <TouchableOpacity onPress={onPress}>
