@@ -29,7 +29,7 @@ import { PlaceBox } from "./component/placeBox";
 import { PlaceBoxBlank } from "./component/placeBoxBlank";
 import { UpperBox } from "./component/upperBox";
 import StartButton from "../../../../assets/Buttons/StartButton";
-import { placeDatatest } from "../../../services/maps/getPlaceData";
+import { getPlaceData } from "../../../services/maps/placeData";
 
 export const MapScreen = ({ navigation, route }) => {
   //////////////////////////지도 및 화면비율 정의///////////////////////////////////

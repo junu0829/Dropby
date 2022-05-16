@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text } from "react-native";
-
+import { ScrollView, Text, TouchableOpacity } from "react-native";
 export const FeedScreen = ({ navigation, route }) => {
   const [drops, setDrops] = useState([
     {
@@ -42,21 +41,13 @@ export const FeedScreen = ({ navigation, route }) => {
     },
   ]);
 
-  const region = route.params[0].region;
-  const [regionLat, regionLng, regionLatD, regionLngD] = [
-    region.latitude,
-    region.longitude,
-    region.latitudeDelta,
-    region.longitudeDelta,
-  ];
-
   useEffect(() => {
     /////다시생각해보니까 애초에 axios로 get을 할때부터 위 조건에 따라 쿼리를 하는것이 낫겠다.
   });
 
   return (
-    <ScrollView>
-      <Text>드롭 내용</Text>
-    </ScrollView>
+    <>
+      <Text>FeedScreen화면</Text>
+    </>
   );
 };
