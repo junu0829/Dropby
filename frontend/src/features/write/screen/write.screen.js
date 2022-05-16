@@ -26,14 +26,19 @@ import LockButtonUnlocked from "../../../../assets/Buttons/LockButton(Unlocked)"
 
 import { container, styles } from "./writescreen.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { postDrop } from "../../../services/drops/postDrop";
 
 export const WriteScreen = ({ navigation, route }) => {
-  const getToken = async () => AsyncStorage.getItem("accessToken");
+  // const getToken = async () => AsyncStorage.getItem("accessToken");
+
+  //accessToken 아래에 붙여넣기
+  const accessToken = "";
 
   const [placeName, setPlaceName] = useState("새로운 장소");
   const [placeAddress, setPlaceAddress] = useState("새로운 장소-주소");
-  const [placeLatlng, setPlaceLatlng] = useState({});
+  const [placePk, setPlacePk] = useState(null);
   const [selectedEmoji, setSelectedEmoji] = useState("😀");
+  const [area, setArea] = useState(null);
 
   /////////////////////로컬 이미지 여기에 담김
   const [image, setImage] = useState(null);
@@ -41,30 +46,26 @@ export const WriteScreen = ({ navigation, route }) => {
   let user_idx = Constants.installationId;
 
   useEffect(() => {
-    setPlaceAddress(route.params[0].pressedAddress);
-    setPlaceName(route.params[1].pressedAddressName);
-    if (route.params[3].calibratedLocation) {
-      setPlaceLatlng(route.params[3].calibratedLocation);
-      handleLatitude(placeLatlng.lat);
-      handleLongitude(placeLatlng.lng);
-    } else {
-      setPlaceLatlng(route.params[2].pressedLocation);
-      handleLatitude(placeLatlng.latitude);
-      handleLongitude(placeLatlng.longitude);
-    }
-  }, [route, placeLatlng.latitude, placeLatlng.longitude, placeLatlng]);
+    setPlaceName(route.params.selectedPlaceName);
+    setPlacePk(route.params.selectedPlace);
+    setArea(route.params.activePolygon);
+    // setPlaceAddress(route.params[0].pressedAddress);
+    // setPlaceName(route.params[1].pressedAddressName);
+    // if (route.params[3].calibratedLocation) {
+    //   setPlaceLatlng(route.params[3].calibratedLocation);
+    //   handleLatitude(placeLatlng.lat);
+    //   handleLongitude(placeLatlng.lng);
+    // } else {
+    //   setPlaceLatlng(route.params[2].pressedLocation);
+    //   handleLatitude(placeLatlng.latitude);
+    //   handleLongitude(placeLatlng.longitude);
+    // }
+  }, []);
 
   useEffect(() => {
     setImage(route.params.source);
     setSelectedEmoji(route.params.selectedEmoji);
-  }, [
-    route,
-    placeLatlng.latitude,
-    placeLatlng.longitude,
-    image,
-    selectedEmoji,
-    placeLatlng,
-  ]);
+  }, [route, image, selectedEmoji]);
 
   ////////////////////
 
@@ -100,22 +101,9 @@ export const WriteScreen = ({ navigation, route }) => {
 
   const PostWrite = async () => {
     console.log("Postwrite request sent");
-    const accessToken = await AsyncStorage.getItem("accessToken");
-    await axios(`http://${LOCAL_HOST}:3000/drops`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      data: {
-        content,
-        latitude,
-        longitude,
-      },
-    })
-      .then((res) => {
-        console.log(`${res.data.data.content} 내용으로 ${res.data.msg}!`);
-      })
-      .catch((e) => console.log(e));
+    // const accessToken = await AsyncStorage.getItem("accessToken");
+
+    await postDrop(area, placePk, accessToken, content);
   };
 
   return (
@@ -159,7 +147,6 @@ export const WriteScreen = ({ navigation, route }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              console.log(placeLatlng);
               PostWrite();
               navigation.navigate("MapScreen");
             }}

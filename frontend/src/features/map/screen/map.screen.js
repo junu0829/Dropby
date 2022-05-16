@@ -45,10 +45,15 @@ export const MapScreen = ({ navigation, route }) => {
   };
   const [writeMode, setWriteMode] = useState(false);
   const [isDetail, setIsDetail] = useState(false);
+
+  //선택된 polygon
   const [activePolygon, setActivePolygon] = useState(null);
   const [activePolygonName, setActivePolygonName] = useState(null);
   //선택한 구역의 장소리스트 API에서 받아와 넣는 곳
   const [placeList, setPlaceList] = useState([]);
+  //선택된 place
+  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [selectedPlaceName, setSelectedPlaceName] = useState(null);
 
   /////2. 초기 데이터셋팅
   //------------현위치
@@ -134,6 +139,11 @@ export const MapScreen = ({ navigation, route }) => {
 
   ////////////////여기서부터 useEffect 정의하기 시작/////////////////////////
 
+  useEffect(() => {
+    console.log(selectedPlace);
+    console.log(activePolygon);
+  }, [selectedPlace, activePolygon]);
+
   //새로운  장소정보 가져오는 함수
   useEffect(() => {
     getAddress(pressedLocation, setPressedAddressID);
@@ -147,7 +157,6 @@ export const MapScreen = ({ navigation, route }) => {
 
   //polygon누를 때 장소리스트 받아오기
   useEffect(() => {
-    console.log(activePolygon);
     getPlaceData(activePolygon, setPlaceList);
   }, [activePolygon]);
 
@@ -169,7 +178,12 @@ export const MapScreen = ({ navigation, route }) => {
         <View>
           {/*----------------------- 맨 상단 컴포넌트--------------------------- */}
           <SearchContainer>
-            {UpperBox(activePolygon, activePolygonName, setActivePolygon)}
+            <UpperBox
+              activePolygon={activePolygon}
+              setActivePolygon={setActivePolygon}
+              selectedPlace={selectedPlace}
+              setSelectedPlace={setSelectedPlace}
+            ></UpperBox>
             <TextContainer>
               {activePolygon != null ? (
                 <>
@@ -212,7 +226,7 @@ export const MapScreen = ({ navigation, route }) => {
             )}
           </View>
           {/*----------------------- 맨 하단 컴포넌트--------------------------- */}
-          {!writeMode && !dropViewMode && activePolygon == null ? (
+          {selectedPlace == null && activePolygon == null ? (
             <>
               {PlaceBoxBlank(
                 setWriteMode,
@@ -223,43 +237,26 @@ export const MapScreen = ({ navigation, route }) => {
                 LONGITUDE_DELTA
               )}
             </>
-          ) : writeMode ? (
-            <>
-              {PlaceBox(
-                setWriteMode,
-                pressedAddressName,
-                pressedAddress,
-                navigation,
-                pressedLocation
-              )}
-            </>
-          ) : dropViewMode ? (
-            <>
-              <TouchableWithoutFeedback onPress={() => {}}>
-                {/* <SlideView isDetail={isDetail}> 안드로이드에서 문제가 생기는 이유*/}
-                <DropPreview
-                  pressedAddress={pressedAddress}
-                  pressedAddressName={pressedAddressName}
-                  dropContent={dropContent}
-                  pressedLocation={pressedLocation}
-                  navigation={navigation}
-                  drop={drop}
-                  dropTime={dropTime}
-                  isDetail={isDetail}
-                  setIsDetail={setIsDetail}
-                />
-                {/* </SlideView> */}
-              </TouchableWithoutFeedback>
-            </>
-          ) : (
+          ) : selectedPlace == null && activePolygon != null ? (
             <>
               {/* 여기에 polygon 클릭 후 나타나는 컴포넌트 배치. */}
               <PlaceSearchBox
                 placeList={placeList}
+                setSelectedPlace={setSelectedPlace}
+                setSelectedPlaceName={setSelectedPlaceName}
                 navigation={navigation}
               ></PlaceSearchBox>
             </>
-          )}
+          ) : activePolygon && selectedPlace ? (
+            <>
+              <PlaceBox
+                selectedPlaceName={selectedPlaceName}
+                selectedPlace={selectedPlace}
+                activePolygon={activePolygon}
+                navigation={navigation}
+              />
+            </>
+          ) : null}
         </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>

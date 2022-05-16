@@ -19,7 +19,12 @@ import { theme } from "../../../../infrastructure/theme";
 
 //assets
 
-export const PlaceSearchBox = ({ placeList, navigation }) => {
+export const PlaceSearchBox = ({
+  placeList = {},
+  setSelectedPlace,
+  setSelectedPlaceName,
+  navigation,
+}) => {
   const [searchfield, setSearchfield] = useState("");
   const [DATA, setDATA] = useState([]);
 
@@ -31,59 +36,34 @@ export const PlaceSearchBox = ({ placeList, navigation }) => {
     const filteredPlace = DATA.filter((place) => {
       return place.name.includes(searchfield);
     });
-    console.log(filteredPlace);
+
     if (!searchfield || searchfield === "") {
-      console.log("change state");
       setDATA(placeList);
     }
     // if no name matches to text output
     else if (!Array.isArray(filteredPlace) && !filteredPlace.length) {
-      console.log("장소 없음");
       setDATA([]);
     }
     // if name matches then display
     else if (filteredPlace.length > 0) {
-      console.log(filteredPlace);
       setDATA(filteredPlace);
     }
   }, [placeList, searchfield]);
 
-  // const renderItem = ({ item }) => {
-  //   const backgroundColor = item.pk === selectedpk ? "#6e3b6e" : "#f9c2ff";
-  //   const color = item.pk === selectedpk ? "white" : "black";
-
-  //   const Item = ({ item, onPress, backgroundColor, textColor }) => (
-  //     <TouchableOpacity
-  //       onPress={onPress}
-  //       style={[styless.placeBox, backgroundColor]}
-  //     >
-  //       <Text>{item.name}</Text>
-  //     </TouchableOpacity>
-  //   );
-
-  //   return (
-  //     <Item
-  //       item={item}
-  //       onPress={() => setSelectedpk(item.pk)}
-  //       backgroundColor={{ backgroundColor }}
-  //       textColor={{ color }}
-  //     />
-  //   );
-  // };
+  //item변수를 place로 이름을 바꾸려하면 에러가 생긴다. 왜그럴까?
 
   const [selectedpk, setSelectedpk] = useState(null);
   const renderPlace = ({ item }) => {
     const backgroundColor = item.pk === selectedpk ? "#6e3b6e" : "#f9c2ff";
     const color = item.pk === selectedpk ? "white" : "black";
 
-    const onPress = (item) => {
-      setSelectedpk(item.pk);
-      navigation.navigate("PlaceFeedScreen");
-    };
-
     const Place = ({ item, backgroundColor, textColor }) => (
       <TouchableOpacity
-        onPress={() => onPress(item)}
+        onPress={() => {
+          setSelectedpk(item.pk);
+          setSelectedPlace(item.pk);
+          setSelectedPlaceName(item.name);
+        }}
         style={[styless.placeBox, backgroundColor]}
       >
         <Text>{item.name}</Text>
@@ -114,6 +94,14 @@ export const PlaceSearchBox = ({ placeList, navigation }) => {
         renderItem={renderPlace}
         keyExtractor={(item) => item.pk}
       ></FlatList>
+      <TouchableOpacity
+        onPress={(item) => {
+          setSelectedpk(item.pk);
+          navigation.navigate("PlaceFeedScreen");
+        }}
+      >
+        <Text>게시판보기</Text>
+      </TouchableOpacity>
     </PlaceSearchBoxContainer>
   );
 };
