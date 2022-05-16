@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Polygon } from "react-native-maps";
-import { polygonDatatest } from "../../../../services/maps/polygonData";
+import { getPolygonData } from "../../../../services/maps/polygonData";
 
 import { Dimensions } from "react-native";
 import { Loading } from "../../../../components/Loading";
@@ -13,7 +13,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export const Polygons = ({
   map,
-  activePolygon,
+  activePolygon = {},
   setActivePolygon,
   activePolygonName,
   setActivePolygonName,
@@ -22,9 +22,8 @@ export const Polygons = ({
   const [isLoading, setIsLoading] = useState(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await polygonDatatest(setAreaData);
+    await getPolygonData(setAreaData);
     setIsLoading(false);
-    console.log(areaData);
   }, []);
   //polygon 이 클릭되었을 때 해당 폴리곤의 위치로 맵뷰 옮기기
   const onPress = (polygon) => {
@@ -34,6 +33,7 @@ export const Polygons = ({
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     });
+
     setActivePolygon(polygon.pk);
     setActivePolygonName(polygon.name);
   };

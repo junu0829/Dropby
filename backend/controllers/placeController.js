@@ -2,8 +2,7 @@ const placeServices = require('../services/placeServices');
 
 exports.newPlace = async (req, res, next) => {
     try {
-        const areaPk = req.params.areaPk;
-        const place = await placeServices.newPlace(req.body, areaPk);
+        const place = await placeServices.newPlace(req.body);
         res.status(201).json({
             msg:'장소 생성 완료',
             data:place
