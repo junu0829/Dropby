@@ -29,7 +29,7 @@ import { PlaceBox } from "./component/placeBox";
 import { PlaceBoxBlank } from "./component/placeBoxBlank";
 import { UpperBox } from "./component/upperBox";
 import StartButton from "../../../../assets/Buttons/StartButton";
-import { placeDatatest } from "../../../services/maps/placeData";
+import { getPlaceData } from "../../../services/maps/placeData";
 
 export const MapScreen = ({ navigation, route }) => {
   //////////////////////////지도 및 화면비율 정의///////////////////////////////////
@@ -148,7 +148,7 @@ export const MapScreen = ({ navigation, route }) => {
   //polygon누를 때 장소리스트 받아오기
   useEffect(() => {
     console.log(activePolygon);
-    placeDatatest(activePolygon, setPlaceList);
+    getPlaceData(activePolygon, setPlaceList);
   }, [activePolygon]);
 
   //////////정해진 장소정보 가져오는 함수
@@ -254,7 +254,10 @@ export const MapScreen = ({ navigation, route }) => {
           ) : (
             <>
               {/* 여기에 polygon 클릭 후 나타나는 컴포넌트 배치. */}
-              <PlaceSearchBox placeList={placeList}></PlaceSearchBox>
+              <PlaceSearchBox
+                placeList={placeList}
+                navigation={navigation}
+              ></PlaceSearchBox>
             </>
           )}
         </View>

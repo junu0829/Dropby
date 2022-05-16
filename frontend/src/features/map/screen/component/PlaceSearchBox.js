@@ -19,7 +19,7 @@ import { theme } from "../../../../infrastructure/theme";
 
 //assets
 
-export const PlaceSearchBox = ({ placeList }) => {
+export const PlaceSearchBox = ({ placeList, navigation }) => {
   const [searchfield, setSearchfield] = useState("");
   const [DATA, setDATA] = useState([]);
 
@@ -72,13 +72,18 @@ export const PlaceSearchBox = ({ placeList }) => {
   // };
 
   const [selectedpk, setSelectedpk] = useState(null);
-  const renderItem = ({ item }) => {
+  const renderPlace = ({ item }) => {
     const backgroundColor = item.pk === selectedpk ? "#6e3b6e" : "#f9c2ff";
     const color = item.pk === selectedpk ? "white" : "black";
 
-    const Item = ({ item, onPress, backgroundColor, textColor }) => (
+    const onPress = (item) => {
+      setSelectedpk(item.pk);
+      navigation.navigate("PlaceFeedScreen");
+    };
+
+    const Place = ({ item, backgroundColor, textColor }) => (
       <TouchableOpacity
-        onPress={onPress}
+        onPress={() => onPress(item)}
         style={[styless.placeBox, backgroundColor]}
       >
         <Text>{item.name}</Text>
@@ -86,9 +91,8 @@ export const PlaceSearchBox = ({ placeList }) => {
     );
 
     return (
-      <Item
+      <Place
         item={item}
-        onPress={() => setSelectedpk(item.pk)}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
@@ -107,7 +111,7 @@ export const PlaceSearchBox = ({ placeList }) => {
       <FlatList
         horizontal={true}
         data={DATA}
-        renderItem={renderItem}
+        renderItem={renderPlace}
         keyExtractor={(item) => item.pk}
       ></FlatList>
     </PlaceSearchBoxContainer>

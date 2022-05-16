@@ -14,7 +14,7 @@ import { SignIn0201 } from "../../features/login/Screens/SignIn/SignIn0201.js";
 import { SignIn0202 } from "../../features/login/Screens/SignIn/SignIn0202";
 import { SignIn0203 } from "../../features/login/Screens/SignIn/SignIn0203";
 import { SignIn0204 } from "../../features/login/Screens/SignIn/SignIn0204";
-import { FeedScreen } from "../../features/Feed/feed.screen";
+import { FeedScreen } from "../../features/Feed/screen/FeedScreen.js";
 
 import { WalkThrough0101 } from "../../features/login/Screens/WalkThrough/WalkThrough0101.js";
 
@@ -24,6 +24,8 @@ import { SignUp0202 } from "../../features/login/Screens/SignUp/SignUp0202";
 import { SignUp0203 } from "../../features/login/Screens/SignUp/SignUp0203";
 import { SignUp0204 } from "../../features/login/Screens/SignUp/SignUp0204";
 import { SignUp0205 } from "../../features/login/Screens/SignUp/SignUp0205";
+import { DetailScreen } from "../../features/map/screen/DetailScreen";
+import { PlaceFeedScreen } from "../../features/Feed/screen/PlaceFeedScreen";
 
 const MainStack = createStackNavigator();
 
@@ -47,7 +49,10 @@ export const MainNavigator = () => {
         <MainStack.Screen name="Loading" component={Loading} />
         <MainStack.Screen name="MapScreen" component={MapScreen} />
         <MainStack.Screen name="FeedScreen" component={FeedScreen} />
+        <MainStack.Screen name="PlaceFeedScreen" component={PlaceFeedScreen} />
+
         <MainStack.Screen name="WriteScreen" component={WriteScreen} />
+        <MainStack.Screen name="DetailScreen" component={DetailScreen} />
 
         <MainStack.Group screenOptions={{ presentation: "modal" }}>
           <MainStack.Screen name="Emoji" component={EmojiSelectScreen} />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Polygon } from "react-native-maps";
-import { polygonDatatest } from "../../../../services/maps/polygonData";
+import { getPolygonData } from "../../../../services/maps/polygonData";
 
 import { Dimensions } from "react-native";
 import { Loading } from "../../../../components/Loading";
@@ -22,7 +22,7 @@ export const Polygons = ({
   const [isLoading, setIsLoading] = useState(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await polygonDatatest(setAreaData);
+    await getPolygonData(setAreaData);
     setIsLoading(false);
     console.log(areaData);
   }, []);
@@ -34,6 +34,7 @@ export const Polygons = ({
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     });
+
     setActivePolygon(polygon.pk);
     setActivePolygonName(polygon.name);
   };
