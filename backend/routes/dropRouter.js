@@ -3,6 +3,11 @@ const passport = require('passport');
 const controller = require('../controllers/dropController');
 const jwtpassportAuth = passport.authenticate('jwtAccess', {session:false});
 
+const getPlacePk = (req, res, next) => {
+    req.params.placePk = req.placePk;
+    next();
+}
+
 router.post('/', jwtpassportAuth, controller.newDrop);
 router.get('/', jwtpassportAuth, controller.getDrops);
 router.put('/:dropPk', jwtpassportAuth, controller.updateDrop);

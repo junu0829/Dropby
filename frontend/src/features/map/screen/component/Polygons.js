@@ -13,7 +13,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export const Polygons = ({
   map,
-  activePolygon,
+  activePolygon = {},
   setActivePolygon,
   activePolygonName,
   setActivePolygonName,
@@ -24,7 +24,6 @@ export const Polygons = ({
   useEffect(async () => {
     await getPolygonData(setAreaData);
     setIsLoading(false);
-    console.log(areaData);
   }, []);
   //polygon 이 클릭되었을 때 해당 폴리곤의 위치로 맵뷰 옮기기
   const onPress = (polygon) => {

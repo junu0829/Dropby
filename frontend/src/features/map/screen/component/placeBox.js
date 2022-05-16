@@ -27,15 +27,22 @@ import selectButton from "../../../../../assets/Buttons/selectButton";
 import backButton2 from "../../../../../assets/Buttons/backButton2";
 import PlacePlusIcon from "../../../../../assets/Buttons/PlacePlusIcon";
 
-export const PlaceBox = (
-  setWriteMode,
-  pressedAddressName,
-  pressedAddress,
+export const PlaceBox = ({
   navigation,
-  pressedLocation
-) => {
+  selectedPlace = {},
+
+  selectedPlaceName = {},
+  activePolygon = {},
+}) => {
   return (
     <PlaceContainer>
+      <TouchableOpacity
+        onPress={(item) => {
+          navigation.navigate("PlaceFeedScreen");
+        }}
+      >
+        <Text>게시판보기</Text>
+      </TouchableOpacity>
       <View
         style={{
           bottom: 70,
@@ -45,22 +52,16 @@ export const PlaceBox = (
           Index: 5,
         }}
       ></View>
+
       <PlaceContainer2>
-        <BackButtonContainer
-          onPress={() => {
-            setWriteMode(false);
-          }}
-        >
-          <SvgXml xml={backButton2} width={50} height={50} />
-        </BackButtonContainer>
         <PlaceNameContainer>
           {
             <PlaceNameContainer2>
-              <Text style={styles.placename}>{pressedAddressName}</Text>
+              <Text style={styles.placename}>{selectedPlaceName}</Text>
             </PlaceNameContainer2>
           }
 
-          <Text style={styles.placeaddress}>{pressedAddress}</Text>
+          <Text style={styles.placeaddress}>주소</Text>
         </PlaceNameContainer>
 
         <ContainerEnd2>
@@ -74,11 +75,11 @@ export const PlaceBox = (
       <PlaceContainer3>
         <SelectButtonContainer
           onPress={() => {
-            navigation.navigate("WriteScreen", [
-              { pressedAddress },
-              { pressedAddressName },
-              { pressedLocation },
-            ]);
+            navigation.navigate("WriteScreen", {
+              selectedPlace,
+              selectedPlaceName,
+              activePolygon,
+            });
           }}
         >
           <SvgXml xml={selectButton} width={170} height={32} />
