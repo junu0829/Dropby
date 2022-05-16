@@ -157,7 +157,7 @@ export const MapScreen = ({ navigation, route }) => {
 
   //polygon누를 때 장소리스트 받아오기
   useEffect(() => {
-    placeDatatest(activePolygon, setPlaceList);
+    getPlaceData(activePolygon, setPlaceList);
   }, [activePolygon]);
 
   //////////정해진 장소정보 가져오는 함수
