@@ -1,4 +1,4 @@
-const { Place, Area } = require("../models");
+const { Place, Area, Drop } = require("../models");
 
 exports.newPlace = async (body, areaPk) => {
     const { name, latitude, longitude } = body;
@@ -37,4 +37,24 @@ exports.getPlaces = async (areaPk) => {
     });
 
     return {'areaName':areaName, 'places':places};
+}
+
+exports.getAreaDrops = async (areaPk) => {
+    const area = await Area.findOne({
+        where:{
+            pk:areaPk
+        }
+    });
+    const areaName = area.name;
+    const dropsData = await Drop.findAll({
+        where:{
+            areaPk
+        }
+    });
+
+    return {
+        'areaName':areaName,
+        'areaPk':areaPk,
+        'dropsData':dropsData
+    }
 }
