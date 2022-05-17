@@ -16,21 +16,28 @@ import { SvgXml } from "react-native-svg";
 
 import { Text } from "../../../../components/typography/text.component";
 import { theme } from "../../../../infrastructure/theme";
+import { getPlaceData } from "../../../../services/maps/placeData";
 
 //assets
 
 export const PlaceSearchBox = ({
   placeList = {},
+  setPlaceList,
   selectedPlace,
   setSelectedPlace,
   navigation,
+  activePolygon,
 }) => {
   const [searchfield, setSearchfield] = useState("");
   const [DATA, setDATA] = useState([]);
 
+  //placeList 에 저장된 값을 사용하면 된다. DATA 필요X
+  useEffect(async () => {
+    await getPlaceData(activePolygon.pk, setPlaceList);
+  }, [activePolygon]);
   useEffect(() => {
     setDATA(placeList);
-  }, [placeList]);
+  }, []);
 
   useEffect(() => {
     const filteredPlace = DATA.filter((place) => {
@@ -96,7 +103,7 @@ export const PlaceSearchBox = ({
       <TouchableOpacity
         onPress={(item) => {
           setSelectedpk(item.pk);
-          navigation.navigate("PlaceFeedScreen");
+          navigation.navigate("AreaFeedScreen", activePolygon);
         }}
       >
         <Text>게시판보기</Text>
