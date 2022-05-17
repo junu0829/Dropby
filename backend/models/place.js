@@ -20,6 +20,10 @@ const Place = sequelize.define("Place", {
         type: DataTypes.FLOAT,
         allowNull:false,
     },
+    address: {
+        type: DataTypes.STRING(50),
+        allowNull:false
+    }
 }, {
     freezeTableName:true,
     timestamps:false
