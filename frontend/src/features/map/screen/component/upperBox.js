@@ -7,7 +7,6 @@ import { styles, TextContainer } from "../map.screen.styles";
 
 export const UpperBox = ({
   activePolygon = {},
-
   setActivePolygon,
   selectedPlace = {},
   setSelectedPlace,
@@ -33,6 +32,7 @@ export const UpperBox = ({
               left: 20,
             }}
             onPress={() => {
+              setActivePolygon(null);
               setSelectedPlace(null);
             }}
           >
@@ -50,6 +50,7 @@ export const UpperBox = ({
             }}
             onPress={() => {
               setActivePolygon(null);
+              setSelectedPlace(null);
             }}
           >
             <SvgXml xml={backButtonWhite} width={20} height={20}></SvgXml>
