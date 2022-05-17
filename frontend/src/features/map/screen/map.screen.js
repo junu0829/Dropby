@@ -139,7 +139,6 @@ export const MapScreen = ({ navigation, route }) => {
   ////////////////여기서부터 useEffect 정의하기 시작/////////////////////////
 
   useEffect(() => {
-    console.log(activePolygon);
     setSelectedPlace(null);
   }, [activePolygon]);
 
@@ -243,6 +242,7 @@ export const MapScreen = ({ navigation, route }) => {
                 placeList={placeList}
                 setSelectedPlace={setSelectedPlace}
                 setSelectedPlaceName={setSelectedPlaceName}
+                activePolygon={activePolygon}
                 navigation={navigation}
               ></PlaceSearchBox>
             </>

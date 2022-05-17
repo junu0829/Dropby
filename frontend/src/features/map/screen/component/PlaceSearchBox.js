@@ -24,6 +24,7 @@ export const PlaceSearchBox = ({
   selectedPlace,
   setSelectedPlace,
   navigation,
+  activePolygon,
 }) => {
   const [searchfield, setSearchfield] = useState("");
   const [DATA, setDATA] = useState([]);
@@ -96,7 +97,7 @@ export const PlaceSearchBox = ({
       <TouchableOpacity
         onPress={(item) => {
           setSelectedpk(item.pk);
-          navigation.navigate("PlaceFeedScreen");
+          navigation.navigate("AreaFeedScreen", activePolygon);
         }}
       >
         <Text>게시판보기</Text>

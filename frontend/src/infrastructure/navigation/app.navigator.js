@@ -25,7 +25,8 @@ import { SignUp0203 } from "../../features/login/Screens/SignUp/SignUp0203";
 import { SignUp0204 } from "../../features/login/Screens/SignUp/SignUp0204";
 import { SignUp0205 } from "../../features/login/Screens/SignUp/SignUp0205";
 import { DetailScreen } from "../../features/map/screen/DetailScreen";
-import { PlaceFeedScreen } from "../../features/Feed/screen/PlaceFeedScreen";
+import { PlaceFeedScreen } from "../../features/Feed/screen/place.feed.screen";
+import { AreaFeedScreen } from "../../features/Feed/screen/area.feed.screen";
 
 const MainStack = createStackNavigator();
 
@@ -50,6 +51,7 @@ export const MainNavigator = () => {
         <MainStack.Screen name="MapScreen" component={MapScreen} />
         <MainStack.Screen name="FeedScreen" component={FeedScreen} />
         <MainStack.Screen name="PlaceFeedScreen" component={PlaceFeedScreen} />
+        <MainStack.Screen name="AreaFeedScreen" component={AreaFeedScreen} />
 
         <MainStack.Screen name="WriteScreen" component={WriteScreen} />
         <MainStack.Screen name="DetailScreen" component={DetailScreen} />
