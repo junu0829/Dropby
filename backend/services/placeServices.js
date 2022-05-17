@@ -1,16 +1,16 @@
 const { Place, Area, Drop } = require("../models");
 
 exports.newPlace = async (body, areaPk) => {
-    const { name, latitude, longitude, address } = body;
+  const { name, latitude, longitude, address } = body;
 
-    const place = await Place.create({
-        name,
-        latitude,
-        longitude,
-        address,
-        areaPk
-    });
-    return place;
+  const place = await Place.create({
+    name,
+    latitude,
+    longitude,
+    address,
+    areaPk,
+  });
+  return place;
 };
 
 exports.getPlace = async (placePk) => {
@@ -36,43 +36,38 @@ exports.getPlaces = async (areaPk) => {
     },
   });
 
-<<<<<<< HEAD
   return { areaName: areaName, places: places };
 };
-=======
-    return {'areaName':areaName, 'places':places};
-}
 
 exports.getAreaDrops = async (areaPk) => {
-    const area = await Area.findOne({
-        where:{
-            pk:areaPk
-        }
-    });
-    const areaName = area.name;
+  const area = await Area.findOne({
+    where: {
+      pk: areaPk,
+    },
+  });
+  const areaName = area.name;
 
-    const AreaPlaces = await Place.findAll({
-        where:{
-            areaPk
-        }
-    });
+  const AreaPlaces = await Place.findAll({
+    where: {
+      areaPk,
+    },
+  });
 
-    let allDrops = []
-    for (let place of AreaPlaces) {
-        let placePk = place.dataValues.pk;
-        let drops = await Drop.findAll({
-            where: {
-                placePk
-            }
-        })
-        if (drops.length > 0) {
-            allDrops.push(...drops);
-        }
+  let allDrops = [];
+  for (let place of AreaPlaces) {
+    let placePk = place.dataValues.pk;
+    let drops = await Drop.findAll({
+      where: {
+        placePk,
+      },
+    });
+    if (drops.length > 0) {
+      allDrops.push(...drops);
     }
-    return {
-        'areaName':areaName,
-        'areaPk':areaPk,
-        'drops':allDrops
-    }
-}
->>>>>>> 2422da5c218cf19ea3a36c32618dd7f7868ddb2e
+  }
+  return {
+    areaName: areaName,
+    areaPk: areaPk,
+    drops: allDrops,
+  };
+};
