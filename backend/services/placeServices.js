@@ -1,12 +1,13 @@
-const { Place, Area } = require("../models");
+const { Place, Area, Drop } = require("../models");
 
 exports.newPlace = async (body, areaPk) => {
-    const { name, latitude, longitude } = body;
+    const { name, latitude, longitude, address } = body;
 
     const place = await Place.create({
         name,
         latitude,
         longitude,
+        address,
         areaPk
     });
     return place;
@@ -37,4 +38,37 @@ exports.getPlaces = async (areaPk) => {
     });
 
     return {'areaName':areaName, 'places':places};
+}
+
+exports.getAreaDrops = async (areaPk) => {
+    const area = await Area.findOne({
+        where:{
+            pk:areaPk
+        }
+    });
+    const areaName = area.name;
+
+    const AreaPlaces = await Place.findAll({
+        where:{
+            areaPk
+        }
+    });
+
+    let allDrops = []
+    for (let place of AreaPlaces) {
+        let placePk = place.dataValues.pk;
+        let drops = await Drop.findAll({
+            where: {
+                placePk
+            }
+        })
+        if (drops.length > 0) {
+            allDrops.push(...drops);
+        }
+    }
+    return {
+        'areaName':areaName,
+        'areaPk':areaPk,
+        'drops':allDrops
+    }
 }

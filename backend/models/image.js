@@ -1,7 +1,7 @@
 const sequelize = require('../config/db');
 const {DataTypes} = require('sequelize');
 
-const Image = sequelize.define("Drop", {
+const Image = sequelize.define("Image", {
                 pk: {
                     type:DataTypes.INTEGER,
                     allowNull:false,
