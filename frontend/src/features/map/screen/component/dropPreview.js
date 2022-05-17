@@ -75,7 +75,6 @@ export const DropPreview = ({
           } else if (Math.abs(e.nativeEvent.pageY - touchY) > 20) {
             setIsDetail(false);
           }
-          console.log(isDetail);
         }}
       >
         <PlaceContainer style={{ flex: 1 }}>

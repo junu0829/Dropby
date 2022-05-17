@@ -8,28 +8,20 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
-import { SvgXml } from "react-native-svg";
-
 //Services
 import { LocationContext } from "../../../services/location/location.context";
 import { getAddress, getPlaceDetail } from "../../../services/maps/address";
-
 //Components
 import { dropsList } from "./component/DropsList";
-import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { Loading } from "../../../components/Loading";
 import { Text } from "../../../components/typography/text.component";
-import { DropPreview } from "./component/dropPreview";
 import { SearchContainer, TextContainer } from "./map.screen.styles";
-import { SlideView } from "../../../components/animations/slide.animation";
 import { PlaceSearchBox } from "./component/PlaceSearchBox";
-
 //assets
 import { PlaceBox } from "./component/placeBox";
 import { PlaceBoxBlank } from "./component/placeBoxBlank";
 import { UpperBox } from "./component/upperBox";
-import StartButton from "../../../../assets/Buttons/StartButton";
-import { getPlaceData } from "../../../services/maps/placeData";
+import { getMapDrops } from "../../../services/drops/GetDrops";
 
 export const MapScreen = ({ navigation, route }) => {
   //////////////////////////지도 및 화면비율 정의///////////////////////////////////
@@ -52,7 +44,6 @@ export const MapScreen = ({ navigation, route }) => {
   const [placeList, setPlaceList] = useState([]);
   //선택된 place
   const [selectedPlace, setSelectedPlace] = useState(null);
-  const [selectedPlaceName, setSelectedPlaceName] = useState(null);
 
   /////2. 초기 데이터셋팅
   //------------현위치
@@ -109,27 +100,8 @@ export const MapScreen = ({ navigation, route }) => {
   const [dropContent, setDropContent] = useState(null);
 
   //다운로드 받아진 드롭리스트
-  //service로 옮기기.
-  const [drops, setDrops] = useState([
-    {
-      emoji: "😀",
-      content: "좌참살",
-      createdAt: "2022-01-29T04:55:47.000Z",
-      latitude: 37.585069,
-      longitude: 127.029191,
-      pk: 22,
-      updatedAt: "2022-01-29T04:55:47.472Z",
-    },
-    {
-      emoji: "😀",
-      content: "우참살",
-      createdAt: "2022-01-29T04:55:47.000Z",
-      latitude: 37.585069,
-      longitude: 127.029691,
-      pk: 33,
-      updatedAt: "2022-01-29T04:55:47.472Z",
-    },
-  ]);
+  //getMapDrops 수정해야 함. 서버와 통신 없이 데이터만 들어가 있는 상태.
+  const [drops, setDrops] = useState(getMapDrops);
 
   // 선택한 장소의 이름/주소/좌표들어가는 것
   const [pressedAddressID, setPressedAddressID] = useState("");
@@ -138,6 +110,7 @@ export const MapScreen = ({ navigation, route }) => {
 
   ////////////////여기서부터 useEffect 정의하기 시작/////////////////////////
 
+  //다른 구역 클릭하면 장소 클릭 x 상태로 돌아가기.
   useEffect(() => {
     setSelectedPlace(null);
   }, [activePolygon]);
@@ -153,15 +126,7 @@ export const MapScreen = ({ navigation, route }) => {
     setWriteMode(false);
   }, [route.params]);
 
-  //polygon누를 때 장소리스트 받아오기
-  useEffect(() => {
-    if (activePolygon != null) {
-      getPlaceData(activePolygon.pk, setPlaceList);
-    }
-  }, [activePolygon]);
-
   //////////정해진 장소정보 가져오는 함수
-
   const allCoords = drops.map((i) => ({
     geometry: {
       coordinates: [i.latitude, i.longitude],
@@ -240,8 +205,8 @@ export const MapScreen = ({ navigation, route }) => {
               {/* 여기에 polygon 클릭 후 나타나는 컴포넌트 배치. */}
               <PlaceSearchBox
                 placeList={placeList}
+                setPlaceList={setPlaceList}
                 setSelectedPlace={setSelectedPlace}
-                setSelectedPlaceName={setSelectedPlaceName}
                 activePolygon={activePolygon}
                 navigation={navigation}
               ></PlaceSearchBox>
@@ -249,7 +214,6 @@ export const MapScreen = ({ navigation, route }) => {
           ) : activePolygon && selectedPlace ? (
             <>
               <PlaceBox
-                selectedPlaceName={selectedPlaceName}
                 selectedPlace={selectedPlace}
                 activePolygon={activePolygon}
                 navigation={navigation}

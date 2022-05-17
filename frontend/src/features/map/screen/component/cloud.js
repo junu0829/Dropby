@@ -37,7 +37,7 @@ export const Cloud = ({ navigation, region }) => {
                   zIndex: 999,
                 }}
                 onPress={() => {
-                  navigation.navigate("FeedScreen", [{ region }]);
+                  // feedScreen으로 이동 부분, 임시로 지워둠
                 }}
               >
                 <SvgXml xml={FeedTransitionButton} height={35} width={35} />

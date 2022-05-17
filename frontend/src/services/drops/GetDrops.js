@@ -21,3 +21,24 @@ export const getAreaDrops = async (areaPk, placePk, setDrops) => {
     })
     .catch((e) => console.log(e));
 };
+
+export const getMapDrops = [
+  {
+    emoji: "😀",
+    content: "좌참살",
+    createdAt: "2022-01-29T04:55:47.000Z",
+    latitude: 37.585069,
+    longitude: 127.029191,
+    pk: 22,
+    updatedAt: "2022-01-29T04:55:47.472Z",
+  },
+  {
+    emoji: "😀",
+    content: "우참살",
+    createdAt: "2022-01-29T04:55:47.000Z",
+    latitude: 37.585069,
+    longitude: 127.029691,
+    pk: 33,
+    updatedAt: "2022-01-29T04:55:47.472Z",
+  },
+];

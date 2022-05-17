@@ -14,7 +14,6 @@ import { SignIn0201 } from "../../features/login/Screens/SignIn/SignIn0201.js";
 import { SignIn0202 } from "../../features/login/Screens/SignIn/SignIn0202";
 import { SignIn0203 } from "../../features/login/Screens/SignIn/SignIn0203";
 import { SignIn0204 } from "../../features/login/Screens/SignIn/SignIn0204";
-import { FeedScreen } from "../../features/Feed/screen/FeedScreen.js";
 
 import { WalkThrough0101 } from "../../features/login/Screens/WalkThrough/WalkThrough0101.js";
 
@@ -49,7 +48,6 @@ export const MainNavigator = () => {
 
         <MainStack.Screen name="Loading" component={Loading} />
         <MainStack.Screen name="MapScreen" component={MapScreen} />
-        <MainStack.Screen name="FeedScreen" component={FeedScreen} />
         <MainStack.Screen name="PlaceFeedScreen" component={PlaceFeedScreen} />
         <MainStack.Screen name="AreaFeedScreen" component={AreaFeedScreen} />
 

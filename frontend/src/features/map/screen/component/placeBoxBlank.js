@@ -96,7 +96,6 @@ export const PlaceBoxBlank = (
         <CurrentLocationButton
           style={{ opacity: 0.95 }}
           onPress={() => {
-            console.log("currentlocationbutton Clicked");
             map.current.animateToRegion({
               // 현재위치 버튼
               latitude: location[0],
