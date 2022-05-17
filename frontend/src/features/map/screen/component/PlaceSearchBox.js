@@ -21,8 +21,8 @@ import { theme } from "../../../../infrastructure/theme";
 
 export const PlaceSearchBox = ({
   placeList = {},
+  selectedPlace,
   setSelectedPlace,
-  setSelectedPlaceName,
   navigation,
 }) => {
   const [searchfield, setSearchfield] = useState("");
@@ -61,8 +61,7 @@ export const PlaceSearchBox = ({
       <TouchableOpacity
         onPress={() => {
           setSelectedpk(item.pk);
-          setSelectedPlace(item.pk);
-          setSelectedPlaceName(item.name);
+          setSelectedPlace(item);
         }}
         style={[styless.placeBox, backgroundColor]}
       >

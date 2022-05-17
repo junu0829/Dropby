@@ -1,7 +1,5 @@
 const placeServices = require("../services/placeServices");
 
-//수정됨
-
 exports.newPlace = async (req, res, next) => {
   try {
     const areaPk = req.params.areaPk;

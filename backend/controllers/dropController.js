@@ -1,8 +1,6 @@
 const dropServices = require("../services/dropServices");
 const { getAccess } = require("../utils/auth");
 
-//수정됨
-
 exports.newDrop = async (req, res, next) => {
   try {
     const { placePk } = req.params;
