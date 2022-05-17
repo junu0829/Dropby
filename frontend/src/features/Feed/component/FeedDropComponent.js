@@ -9,10 +9,10 @@ import pictureIcon from "../../../../assets/pictureIcon";
 
 import { theme } from "../../../infrastructure/theme";
 
-export const FeedDropComponent = ({ navigation, feedDrop }) => {
+export const FeedDropComponent = ({ navigation, feedDrop, place = {} }) => {
   //touchable 되게 만들고 눌렀을 때 드롭 디테일 페이지로 넘기기.
   const onPress = () => {
-    navigation.navigate("DetailScreen");
+    navigation.navigate("DetailScreen", { place, feedDrop });
   };
 
   return (

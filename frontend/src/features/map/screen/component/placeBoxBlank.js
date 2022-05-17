@@ -60,38 +60,6 @@ export const PlaceBoxBlank = (
 ) => {
   return (
     <Container>
-      {/* <WriteButton
-        style={{ opacity: 0.95 }}
-        onPress={async () => {
-          // console.log("전송시도");
-          // await axios(`http://${LOCAL_HOST}:3000/`, {
-          //   method: "POST",
-          //   dataType: "json",
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //   },
-          //   data: {
-          //     name: "과학도서관",
-          //     points: [
-          //       [
-          //         [37.58441910526165, 127.02587004750966],
-          //         [37.58412524996814, 127.02602628618477],
-          //         [37.58473899704727, 127.02733956277372],
-          //         [37.584999373067255, 127.0271135866642],
-          //         [37.58441910526165, 127.02587004750966],
-          //       ],
-          //     ],
-          //   },
-          // })
-          //   .then((res) => {
-          //     console.log("전송완료");
-          //   })
-          //   .catch((e) => console.log(e));
-        }}
-      >
-        <SvgXml xml={write} width={56} height={65} />
-      </WriteButton> */}
-
       <ContainerEnd>
         <CurrentLocationButton
           style={{ opacity: 0.95 }}

@@ -23,7 +23,7 @@ import { SignUp0202 } from "../../features/login/Screens/SignUp/SignUp0202";
 import { SignUp0203 } from "../../features/login/Screens/SignUp/SignUp0203";
 import { SignUp0204 } from "../../features/login/Screens/SignUp/SignUp0204";
 import { SignUp0205 } from "../../features/login/Screens/SignUp/SignUp0205";
-import { DetailScreen } from "../../features/map/screen/DetailScreen";
+import { DetailScreen } from "../../features/detail/DetailScreen";
 import { PlaceFeedScreen } from "../../features/Feed/screen/place.feed.screen";
 import { AreaFeedScreen } from "../../features/Feed/screen/area.feed.screen";
 

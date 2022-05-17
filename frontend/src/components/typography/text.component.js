@@ -12,6 +12,14 @@ const defaultTextStyles = (theme) => `
 const body = (theme) => `
     font-size: ${theme.fontSizes.body};
 `;
+
+const place = (theme) => `
+    font-size: ${theme.fontSizes.title};
+    font-family: ${theme.fonts.body};
+font-weight: ${theme.fontWeights.regular};
+color: ${theme.colors.bg.white};
+
+`;
 const bold = (theme) => `
 font-size: ${theme.fontSizes.h5};
 font-family: ${theme.fonts.bold};
@@ -56,6 +64,7 @@ const variants = {
   error,
   hint,
   bold,
+  place,
 };
 
 export const Text = styled.Text`

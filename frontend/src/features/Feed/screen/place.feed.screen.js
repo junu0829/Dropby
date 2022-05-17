@@ -24,6 +24,8 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
     },
   ]);
 
+  console.log(place);
+
   // Place 정보 받아서 해당 장소의 drop들 호출하기
   useEffect(async () => {
     await getPlaceDrops(place.areaPk, place.pk, setDrops);
@@ -54,7 +56,11 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
       <View style={styles.container4}>
         <ScrollView style={styles.dropsContainer}>
           {drops.map((feedDrop) => (
-            <FeedDropComponent navigation={navigation} feedDrop={feedDrop} />
+            <FeedDropComponent
+              navigation={navigation}
+              feedDrop={feedDrop}
+              place={place}
+            />
           ))}
         </ScrollView>
       </View>
