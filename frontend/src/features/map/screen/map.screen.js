@@ -48,7 +48,6 @@ export const MapScreen = ({ navigation, route }) => {
 
   //선택된 polygon
   const [activePolygon, setActivePolygon] = useState(null);
-  const [activePolygonName, setActivePolygonName] = useState(null);
   //선택한 구역의 장소리스트 API에서 받아와 넣는 곳
   const [placeList, setPlaceList] = useState([]);
   //선택된 place
@@ -140,9 +139,9 @@ export const MapScreen = ({ navigation, route }) => {
   ////////////////여기서부터 useEffect 정의하기 시작/////////////////////////
 
   useEffect(() => {
-    console.log(selectedPlace);
     console.log(activePolygon);
-  }, [selectedPlace, activePolygon]);
+    setSelectedPlace(null);
+  }, [activePolygon]);
 
   //새로운  장소정보 가져오는 함수
   useEffect(() => {
@@ -157,7 +156,9 @@ export const MapScreen = ({ navigation, route }) => {
 
   //polygon누를 때 장소리스트 받아오기
   useEffect(() => {
-    getPlaceData(activePolygon, setPlaceList);
+    if (activePolygon != null) {
+      getPlaceData(activePolygon.pk, setPlaceList);
+    }
   }, [activePolygon]);
 
   //////////정해진 장소정보 가져오는 함수
@@ -188,7 +189,7 @@ export const MapScreen = ({ navigation, route }) => {
               {activePolygon != null ? (
                 <>
                   <Text variant="hint">
-                    {activePolygonName} 구역을 검색해보세요
+                    {activePolygon.name} 구역을 검색해보세요
                   </Text>
                 </>
               ) : (
@@ -220,9 +221,7 @@ export const MapScreen = ({ navigation, route }) => {
               setDrop,
               setDropTime,
               activePolygon,
-              setActivePolygon,
-              activePolygonName,
-              setActivePolygonName
+              setActivePolygon
             )}
           </View>
           {/*----------------------- 맨 하단 컴포넌트--------------------------- */}

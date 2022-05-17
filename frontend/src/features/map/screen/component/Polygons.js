@@ -11,13 +11,7 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.004; //Very high zoom level, 아마 "몇 미터"를 나타내는 것 같다.
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-export const Polygons = ({
-  map,
-  activePolygon = {},
-  setActivePolygon,
-  activePolygonName,
-  setActivePolygonName,
-}) => {
+export const Polygons = ({ map, activePolygon = {}, setActivePolygon }) => {
   const [areaData, setAreaData] = useState(["가나다"]);
   const [isLoading, setIsLoading] = useState(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -34,8 +28,7 @@ export const Polygons = ({
       longitudeDelta: LONGITUDE_DELTA,
     });
 
-    setActivePolygon(polygon.pk);
-    setActivePolygonName(polygon.name);
+    setActivePolygon(polygon);
   };
 
   //비동기를 사용해보자. async await.

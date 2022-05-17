@@ -24,17 +24,15 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
     },
   ]);
 
+  // Place 정보 받아서 해당 장소의 drop들 호출하기
   useEffect(async () => {
     await getPlaceDrops(place.areaPk, place.pk, setDrops);
-    // Place 정보 받아서 해당 장소의 drop들 호출하기
-    // placeData에 받아와져 있음.
-    // setDrops => getPlaceDrops 이용,
   }, []);
 
   return (
     <>
       <View style={styles.container1}>
-        <TouchableOpacity style={{}} onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <SvgXml xml={backButton2} width={60} height={60} />
         </TouchableOpacity>
       </View>
