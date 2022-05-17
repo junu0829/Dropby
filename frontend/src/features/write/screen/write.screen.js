@@ -29,15 +29,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { postDrop } from "../../../services/drops/postDrop";
 
 export const WriteScreen = ({ navigation, route }) => {
+  const place = route.params.selectedPlace;
   // const getToken = async () => AsyncStorage.getItem("accessToken");
-
   //accessToken 아래에 붙여넣기
   const accessToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNjUyNTI2NTUxLCJleHAiOjE2NTUxMTg1NTF9.eCGutzk0Zl7eJLCRvqY5yO6xcctIe9O7_Jvv5BxNuVA";
 
-  const [placeName, setPlaceName] = useState("새로운 장소");
   const [placeAddress, setPlaceAddress] = useState("새로운 장소-주소");
-  const [placePk, setPlacePk] = useState(null);
+
   const [selectedEmoji, setSelectedEmoji] = useState("😀");
   const [area, setArea] = useState(null);
 
@@ -47,8 +46,6 @@ export const WriteScreen = ({ navigation, route }) => {
   let user_idx = Constants.installationId;
 
   useEffect(() => {
-    setPlaceName(route.params.selectedPlaceName);
-    setPlacePk(route.params.selectedPlace);
     setArea(route.params.activePolygon);
     // setPlaceAddress(route.params[0].pressedAddress);
     // setPlaceName(route.params[1].pressedAddressName);
@@ -104,7 +101,7 @@ export const WriteScreen = ({ navigation, route }) => {
     console.log("Postwrite request sent");
     // const accessToken = await AsyncStorage.getItem("accessToken");
 
-    await postDrop(area, placePk, accessToken, content);
+    await postDrop(area, place.pk, accessToken, content);
   };
 
   return (
@@ -162,7 +159,7 @@ export const WriteScreen = ({ navigation, route }) => {
         </View>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.textContainer}>
-            <Text style={styles.place}>{placeName}</Text>
+            <Text style={styles.place}>{place.name}</Text>
             <Text style={styles.address}>{placeAddress}</Text>
             <SvgXml xml={bar} width={280} height={2} style={styles.bar} />
             <TextInput
@@ -174,14 +171,13 @@ export const WriteScreen = ({ navigation, route }) => {
           </View>
         </TouchableWithoutFeedback>
       </View>
-      {/* ---------------------------------------------------이미지 불러와서 미리보기--------------------------------------------------- */}
+      {/* -----------------------------------------------이미지 불러와서 미리보기--------------------------------------------------- */}
       {route.params.type === 1 ? (
         <View>
           <Image
             style={container.image}
             source={{ uri: route.params.source }}
             // eslint-disable-next-line react/jsx-no-duplicate-props
-            style={{ aspectRatio: 1 / 1, backgroundColor: "black" }}
           />
         </View>
       ) : route.params.type === 0 ? (
