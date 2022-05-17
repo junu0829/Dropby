@@ -22,7 +22,7 @@ const Place = sequelize.define("Place", {
     },
     address: {
         type: DataTypes.STRING(50),
-        allowNull:false
+        allowNull:true
     }
 }, {
     freezeTableName:true,

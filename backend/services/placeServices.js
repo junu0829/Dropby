@@ -1,12 +1,13 @@
 const { Place, Area, Drop } = require("../models");
 
 exports.newPlace = async (body, areaPk) => {
-    const { name, latitude, longitude } = body;
+    const { name, latitude, longitude, address } = body;
 
     const place = await Place.create({
         name,
         latitude,
         longitude,
+        address,
         areaPk
     });
     return place;
@@ -52,7 +53,7 @@ exports.getAreaDrops = async (areaPk) => {
             areaPk
         }
     });
-    
+
     let allDrops = []
     for (let place of AreaPlaces) {
         let placePk = place.dataValues.pk;
