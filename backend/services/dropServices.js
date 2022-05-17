@@ -4,9 +4,10 @@ const { getUserWithAccess } = require("../utils/auth");
 
 exports.newDrop = async (accessToken, body, placePk) => {
   const user = await getUserWithAccess(accessToken);
-  const content = body.content;
+  const {title, content} = body;
 
   const drop = await Drop.create({
+    title,
     content,
     createdAt: Date(),
     creatorPk: user.pk,

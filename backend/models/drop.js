@@ -8,6 +8,10 @@ const Drop = sequelize.define("Drop", {
                     primaryKey:true,
                     autoIncrement:true,
                 },
+                title : {
+                    type:DataTypes.STRING(50),
+                    allowNull:true,
+                },
                 content: {
                     type:DataTypes.TEXT,
                     allowNull:false,
