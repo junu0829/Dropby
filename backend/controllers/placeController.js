@@ -33,12 +33,28 @@ exports.getPlaces = async (req, res, next) => {
     const areaPk = req.params.areaPk;
     const placesData = await placeServices.getPlaces(areaPk);
 
-    res.status(200).json({
-      msg: `${placesData.areaName} 구역정보 조회 성공`,
-      areaName: placesData.areaName,
-      data: placesData.places,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+        res.status(200).json({
+            msg: `${placesData.areaName} 구역정보 조회 성공`,
+            areaName:placesData.areaName,
+            data:placesData.places
+        })
+    } catch(error) {
+        next(error);
+    }
+}
+
+exports.getAreaDrops = async (req, res, next) => {
+    try {
+        const areaPk = req.params.areaPk;
+        const dropsData = await placeServices.getAreaDrops(areaPk);
+
+        res.status(200).json({
+            msg: `구역 내 드롭 정보 조회 성공`,
+            areaName:dropsData.areaName,
+            areaPk:areaPk,
+            drops:dropsData.drops
+        })
+    } catch(error) {
+        next(error);
+    }
+}

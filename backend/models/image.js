@@ -1,24 +1,16 @@
 const sequelize = require('../config/db');
 const {DataTypes} = require('sequelize');
 
-const Drop = sequelize.define("Drop", {
+const Image = sequelize.define("Image", {
                 pk: {
                     type:DataTypes.INTEGER,
                     allowNull:false,
                     primaryKey:true,
                     autoIncrement:true,
                 },
-                title : {
-                    type:DataTypes.STRING(50),
-                    allowNull:true,
-                },
-                content: {
+                image_url: {
                     type:DataTypes.TEXT,
                     allowNull:false,
-                },
-                createdAt:{
-                    type:DataTypes.DATE,
-                    defaultValue: DataTypes.NOW
                 }
             }, {
                 freezeTableName:true,
@@ -26,4 +18,4 @@ const Drop = sequelize.define("Drop", {
             }
         );
 
-module.exports = Drop;
+module.exports = Image;
