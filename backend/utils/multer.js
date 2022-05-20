@@ -7,7 +7,7 @@ const upload = multer({
     storage: multerS3({
         s3: s3,
         bucket: 'dropbyimg',
-        acl: 'public-read',
+        acl: 'public-read-write',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         key: function (req, file, cb) {
             cb(null, `${Date.now()}_${file.originalname}`);
