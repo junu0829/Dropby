@@ -29,3 +29,16 @@ exports.getAreas = async(req, res, next) => {
         next(error);
     }
 }
+exports.getPlaces = async (req, res, next) => {
+    try {
+        const areaPk = req.params.areaPk;
+        const places = await areaServices.getPlaces(areaPk);
+
+        res.status(200).json({
+            msg: '장소 정보 조회 성공',
+            data:places
+        })
+    } catch(error) {
+        next(error);
+    }
+}

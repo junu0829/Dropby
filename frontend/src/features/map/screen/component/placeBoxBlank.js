@@ -1,4 +1,6 @@
 import React from "react";
+import LOCAL_HOST from "../../../../services/local";
+import axios from "axios";
 
 import { SvgXml } from "react-native-svg";
 
@@ -16,34 +18,52 @@ import {
 import write from "../../../../../assets/Buttons/write";
 import currentLocation from "../../../../../assets/Buttons/currentLocation";
 
+// {
+//   latitude: 37.58441910526165,
+//   longitude: 127.02587004750966,
+// },
+// {
+//   latitude: 37.58412524996814,
+//   longitude: 127.02602628618477,
+// },
+// {
+//   latitude: 37.58473899704727,
+//   longitude: 127.02733956277372,
+// },
+// {
+//   latitude: 37.584999373067255,
+//   longitude: 127.0271135866642,
+// },
+
+const data = {
+  name: "과도1",
+  pk: 5,
+  polygon: {
+    coordinates: [
+      [37.58441910526165, 127.02587004750966],
+      [37.58412524996814, 127.02602628618477],
+      [37.58473899704727, 127.02733956277372],
+      [37.584999373067255, 127.0271135866642],
+      [37.58441910526165, 127.02587004750966],
+    ],
+    type: "Polygon",
+  },
+};
+
 export const PlaceBoxBlank = (
   setWriteMode,
   setPressedLocation,
-  location,
+  location = {},
   map,
-  LATITUDE_DELTA,
-  LONGITUDE_DELTA
+  LATITUDE_DELTA = {},
+  LONGITUDE_DELTA = {}
 ) => {
   return (
     <Container>
-      <WriteButton
-        style={{ opacity: 0.95 }}
-        onPress={() => {
-          setWriteMode(true);
-          setPressedLocation({
-            latitude: location[0],
-            longitude: location[1],
-          });
-        }}
-      >
-        <SvgXml xml={write} width={56} height={65} />
-      </WriteButton>
-
       <ContainerEnd>
         <CurrentLocationButton
           style={{ opacity: 0.95 }}
           onPress={() => {
-            console.log("currentlocationbutton Clicked");
             map.current.animateToRegion({
               // 현재위치 버튼
               latitude: location[0],

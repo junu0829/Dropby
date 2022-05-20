@@ -50,8 +50,6 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
       setPressedAddressName,
       activePolygon,
       setActivePolygon,
-      activePolygonName,
-      setActivePolygonName,
       ...restProps
     },
     ref
@@ -298,6 +296,9 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
           }
           restProps.mapRef(map);
         }}
+        onPress={(event) => {
+          console.log(event.nativeEvent.coordinate);
+        }}
         showsUserLocation={true}
         showsCompass={true}
         provider={PROVIDER_GOOGLE}
@@ -463,8 +464,6 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
           map={mapRef}
           activePolygon={activePolygon}
           setActivePolygon={setActivePolygon}
-          setActivePolygonName={setActivePolygonName}
-          activePolygonName={activePolygonName}
         />
       </Map>
     );

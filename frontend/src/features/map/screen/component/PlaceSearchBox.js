@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { styles, PlaceSearchBoxContainer } from "../map.screen.styles";
 
-import { View, TouchableOpacity, TextInput, FlatList } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  TextInput,
+  FlatList,
+  StyleSheet,
+} from "react-native";
 
 import { SvgXml } from "react-native-svg";
 
@@ -10,47 +16,75 @@ import { SvgXml } from "react-native-svg";
 
 import { Text } from "../../../../components/typography/text.component";
 import { theme } from "../../../../infrastructure/theme";
+import { getPlaceData } from "../../../../services/maps/placeData";
 
 //assets
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-];
+export const PlaceSearchBox = ({
+  placeList = {},
+  setPlaceList,
+  selectedPlace,
+  setSelectedPlace,
+  navigation,
+  activePolygon,
+}) => {
+  const [searchfield, setSearchfield] = useState("");
+  const [DATA, setDATA] = useState([]);
 
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.title, textColor]}>{item.title}</Text>
-  </TouchableOpacity>
-);
+  //placeList 에 저장된 값을 사용하면 된다. DATA 필요X
+  useEffect(async () => {
+    await getPlaceData(activePolygon.pk, setPlaceList);
+  }, [activePolygon]);
+  useEffect(() => {
+    setDATA(placeList);
+  }, []);
 
-export const PlaceSearchBox = () => {
-  const [selectedId, setSelectedId] = useState(null);
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-    const color = item.id === selectedId ? "white" : "black";
+  useEffect(() => {
+    const filteredPlace = DATA.filter((place) => {
+      return place.name.includes(searchfield);
+    });
+
+    if (!searchfield || searchfield === "") {
+      setDATA(placeList);
+    }
+    // if no name matches to text output
+    else if (!Array.isArray(filteredPlace) && !filteredPlace.length) {
+      setDATA([]);
+    }
+    // if name matches then display
+    else if (filteredPlace.length > 0) {
+      setDATA(filteredPlace);
+    }
+  }, [placeList, searchfield]);
+
+  //item변수를 place로 이름을 바꾸려하면 에러가 생긴다. 왜그럴까?
+
+  const [selectedpk, setSelectedpk] = useState(null);
+  const renderPlace = ({ item }) => {
+    const backgroundColor = item.pk === selectedpk ? "#6e3b6e" : "#f9c2ff";
+    const color = item.pk === selectedpk ? "white" : "black";
+
+    const Place = ({ item, backgroundColor, textColor }) => (
+      <TouchableOpacity
+        onPress={() => {
+          setSelectedpk(item.pk);
+          setSelectedPlace(item);
+        }}
+        style={[styless.placeBox, backgroundColor]}
+      >
+        <Text>{item.name}</Text>
+      </TouchableOpacity>
+    );
 
     return (
-      <Item
+      <Place
         item={item}
-        onPress={() => setSelectedId(item.id)}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
     );
   };
 
-  const [searchfield, setSearchfield] = useState("");
   return (
     <PlaceSearchBoxContainer>
       <TextInput
@@ -63,10 +97,24 @@ export const PlaceSearchBox = () => {
       <FlatList
         horizontal={true}
         data={DATA}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        extraData={selectedId}
+        renderItem={renderPlace}
+        keyExtractor={(item) => item.pk}
       ></FlatList>
+      <TouchableOpacity
+        onPress={(item) => {
+          setSelectedpk(item.pk);
+          navigation.navigate("AreaFeedScreen", activePolygon);
+        }}
+      >
+        <Text>게시판보기</Text>
+      </TouchableOpacity>
     </PlaceSearchBoxContainer>
   );
 };
+
+export const styless = StyleSheet.create({
+  placeBox: {
+    width: 80,
+    backgroundColor: "blue",
+  },
+});

@@ -4,9 +4,10 @@ const { getUserWithAccess } = require("../utils/auth");
 
 exports.newDrop = async (accessToken, body, placePk) => {
   const user = await getUserWithAccess(accessToken);
-  const content = body.content;
+  const {title, content} = body;
 
   const drop = await Drop.create({
+    title,
     content,
     createdAt: Date(),
     creatorPk: user.pk,
@@ -25,7 +26,8 @@ exports.getDrops = async (placePk) => {
   return drops;
 };
 
-exports.updateDrop = async ({content}, dropPk) => {
+exports.updateDrop = async (body, dropPk) => {
+  const {title, content} = body;
   const drop = await Drop.findOne({
     where:{
       pk:dropPk
@@ -33,6 +35,7 @@ exports.updateDrop = async ({content}, dropPk) => {
   });
 
   drop.content = content;
+  drop.title = title;
   await drop.save();
 
   return drop;

@@ -1,14 +1,14 @@
 const sequelize = require('../config/db');
 const {DataTypes} = require('sequelize');
 
-const Image = sequelize.define("Drop", {
+const Image = sequelize.define("Image", {
                 pk: {
                     type:DataTypes.INTEGER,
                     allowNull:false,
                     primaryKey:true,
                     autoIncrement:true,
                 },
-                image_url: {
+                imageUrl: {
                     type:DataTypes.TEXT,
                     allowNull:false,
                 }

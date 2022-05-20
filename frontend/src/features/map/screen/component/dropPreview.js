@@ -21,7 +21,7 @@ import { Favourite } from "../../../../components/favorites/favourite.component"
 import { useState } from "react";
 import { theme } from "../../../../infrastructure/theme";
 import { FlatList } from "react-native-gesture-handler";
-import { DetailScreen } from "../DetailScreen";
+import { DetailScreen } from "../../../detail/DetailScreen";
 
 export const DropPreview = ({
   pressedLocation = {},
@@ -75,7 +75,6 @@ export const DropPreview = ({
           } else if (Math.abs(e.nativeEvent.pageY - touchY) > 20) {
             setIsDetail(false);
           }
-          console.log(isDetail);
         }}
       >
         <PlaceContainer style={{ flex: 1 }}>
