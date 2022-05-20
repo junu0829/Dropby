@@ -23,12 +23,10 @@
 //       return axiosInstance
 //         .get(`http://${LOCAL_HOST}:3000/drops`)
 //         .then((res) => {
-//           console.log("드롭 불러옴");
 
 //           return res.data.data;
 //         })
 //         .catch((error) => {
-//           console.log("error message: ", error.message);
 //         });
 //     default:
 //       return state;

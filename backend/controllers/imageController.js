@@ -1,9 +1,14 @@
-const { image } = require('../models');
+const { Image } = require('../models')
 
 module.exports = {
     post: async (req, res) => {
-        img.imageURL = req.file.location;
-        await img.save();
-        res.status(200).json({ img: req.file.location });
+        try {
+            const image = await Image.create({
+                imageUrl:req.file.location
+            });
+            res.status(200).json({ imageUrl: req.file.location });
+        } catch(e) {
+            console.log(e.message);
+        }
     }
 }

@@ -4,8 +4,6 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const signIn = async (email, password) => {
-  console.log("signIn 실행!");
-  console.log(email, password);
   const response = await axios(`http://${LOCAL_HOST}:3000/auth/login`, {
     method: "POST",
     headers: {
@@ -34,7 +32,6 @@ export const signIn = async (email, password) => {
 };
 
 export const signUp = async (nickname, email, password) => {
-  console.log("signup clicked!!!");
   const response = await axios(`http://${LOCAL_HOST}:3000/auth/signup`, {
     method: "POST",
     headers: {

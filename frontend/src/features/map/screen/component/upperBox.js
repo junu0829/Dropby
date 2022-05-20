@@ -5,11 +5,12 @@ import { Text } from "../../../../components/typography/text.component";
 import backButtonWhite from "../../../../../assets/Buttons/backButtonWhite";
 import { styles, TextContainer } from "../map.screen.styles";
 
-export const UpperBox = (
-  activePolygon,
-  activePolygonName,
-  setActivePolygon
-) => {
+export const UpperBox = ({
+  activePolygon = {},
+  setActivePolygon,
+  selectedPlace = {},
+  setSelectedPlace,
+}) => {
   return (
     <LinearGradient
       colors={[
@@ -21,19 +22,41 @@ export const UpperBox = (
       style={styles.background}
       locations={[0.1, 0.45, 0.77, 1.0]}
     >
-      <TouchableOpacity
-        style={{
-          alignSelf: "flex-start",
-          position: "absolute",
-          top: 60,
-          left: 20,
-        }}
-        onPress={() => {
-          setActivePolygon(null);
-        }}
-      >
-        <SvgXml xml={backButtonWhite} width={20} height={20}></SvgXml>
-      </TouchableOpacity>
+      {activePolygon != null && selectedPlace != null ? (
+        <>
+          <TouchableOpacity
+            style={{
+              alignSelf: "flex-start",
+              position: "absolute",
+              top: 60,
+              left: 20,
+            }}
+            onPress={() => {
+              setActivePolygon(null);
+              setSelectedPlace(null);
+            }}
+          >
+            <SvgXml xml={backButtonWhite} width={20} height={20}></SvgXml>
+          </TouchableOpacity>
+        </>
+      ) : activePolygon != null && selectedPlace == null ? (
+        <>
+          <TouchableOpacity
+            style={{
+              alignSelf: "flex-start",
+              position: "absolute",
+              top: 60,
+              left: 20,
+            }}
+            onPress={() => {
+              setActivePolygon(null);
+              setSelectedPlace(null);
+            }}
+          >
+            <SvgXml xml={backButtonWhite} width={20} height={20}></SvgXml>
+          </TouchableOpacity>
+        </>
+      ) : null}
     </LinearGradient>
   );
 };

@@ -25,14 +25,14 @@ export const EmojiSelectScreen = ({ navigation }) => {
       return emoji.name.toString().includes(searchfield);
     });
     setEmojis(filteredEmojis);
-    console.log(searchfield.toString());
+    //console.log(searchfield.toString());
   }, [searchfield]);
 
   const Item = ({ emoji }) => (
     <TouchableOpacity
       onPress={async () => {
         await setSelectedEmoji(emoji);
-        console.log(selectedEmoji);
+        //.log(selectedEmoji);
       }}
     >
       <View style={styles.item}>

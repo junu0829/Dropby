@@ -94,6 +94,3 @@ exports.logOut = async(req, res, next) => {
         console.log(error);
     }
 }
-
-
-//TokenBlacklist 삭제. 필요한 경우 Dropby1 레거시 코드 참고

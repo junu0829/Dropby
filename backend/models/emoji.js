@@ -9,7 +9,7 @@ const Emoji = sequelize.define("Emoji", {
         autoIncrement:true,
     },
     icon: {
-        type:DataTypes.STRING(),
+        type:DataTypes.STRING(191),
         allowNull:false,
     },
     skinToneSupport: {

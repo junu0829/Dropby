@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Polygon } from "react-native-maps";
-import { polygonDatatest } from "../../../../services/maps/polygonData";
+import { getPolygonData } from "../../../../services/maps/polygonData";
 
 import { Dimensions } from "react-native";
 import { Loading } from "../../../../components/Loading";
@@ -11,20 +11,13 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.004; //Very high zoom level, 아마 "몇 미터"를 나타내는 것 같다.
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-export const Polygons = ({
-  map,
-  activePolygon,
-  setActivePolygon,
-  activePolygonName,
-  setActivePolygonName,
-}) => {
+export const Polygons = ({ map, activePolygon = {}, setActivePolygon }) => {
   const [areaData, setAreaData] = useState(["가나다"]);
   const [isLoading, setIsLoading] = useState(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await polygonDatatest(setAreaData);
+    await getPolygonData(setAreaData);
     setIsLoading(false);
-    console.log(areaData);
   }, []);
   //polygon 이 클릭되었을 때 해당 폴리곤의 위치로 맵뷰 옮기기
   const onPress = (polygon) => {
@@ -34,8 +27,8 @@ export const Polygons = ({
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     });
-    setActivePolygon(polygon.pk);
-    setActivePolygonName(polygon.name);
+
+    setActivePolygon(polygon);
   };
 
   //비동기를 사용해보자. async await.
