@@ -31,7 +31,6 @@ export const SignIn0101 = ({ navigation }) => {
   const nextButton = async () => {
     // 인증 코드 입력받음
     // 코드 확인하고, signUp0202로 넘어감
-    console.log("nextbutton 작동!");
     signIn(email, password);
     navigation.navigate("MapScreen");
   };

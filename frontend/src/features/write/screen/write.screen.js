@@ -26,14 +26,19 @@ import LockButtonUnlocked from "../../../../assets/Buttons/LockButton(Unlocked)"
 
 import { container, styles } from "./writescreen.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { postDrop } from "../../../services/drops/postDrop";
 
 export const WriteScreen = ({ navigation, route }) => {
-  const getToken = async () => AsyncStorage.getItem("accessToken");
+  const place = route.params.selectedPlace;
+  // const getToken = async () => AsyncStorage.getItem("accessToken");
+  //accessToken 아래에 붙여넣기
+  const accessToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNjUyNTI2NTUxLCJleHAiOjE2NTUxMTg1NTF9.eCGutzk0Zl7eJLCRvqY5yO6xcctIe9O7_Jvv5BxNuVA";
 
-  const [placeName, setPlaceName] = useState("새로운 장소");
   const [placeAddress, setPlaceAddress] = useState("새로운 장소-주소");
-  const [placeLatlng, setPlaceLatlng] = useState({});
+
   const [selectedEmoji, setSelectedEmoji] = useState("😀");
+  const [area, setArea] = useState(null);
 
   /////////////////////로컬 이미지 여기에 담김
   const [image, setImage] = useState(null);
@@ -41,30 +46,24 @@ export const WriteScreen = ({ navigation, route }) => {
   let user_idx = Constants.installationId;
 
   useEffect(() => {
-    setPlaceAddress(route.params[0].pressedAddress);
-    setPlaceName(route.params[1].pressedAddressName);
-    if (route.params[3].calibratedLocation) {
-      setPlaceLatlng(route.params[3].calibratedLocation);
-      handleLatitude(placeLatlng.lat);
-      handleLongitude(placeLatlng.lng);
-    } else {
-      setPlaceLatlng(route.params[2].pressedLocation);
-      handleLatitude(placeLatlng.latitude);
-      handleLongitude(placeLatlng.longitude);
-    }
-  }, [route, placeLatlng.latitude, placeLatlng.longitude, placeLatlng]);
+    setArea(route.params.activePolygon);
+    // setPlaceAddress(route.params[0].pressedAddress);
+    // setPlaceName(route.params[1].pressedAddressName);
+    // if (route.params[3].calibratedLocation) {
+    //   setPlaceLatlng(route.params[3].calibratedLocation);
+    //   handleLatitude(placeLatlng.lat);
+    //   handleLongitude(placeLatlng.lng);
+    // } else {
+    //   setPlaceLatlng(route.params[2].pressedLocation);
+    //   handleLatitude(placeLatlng.latitude);
+    //   handleLongitude(placeLatlng.longitude);
+    // }
+  }, []);
 
   useEffect(() => {
     setImage(route.params.source);
     setSelectedEmoji(route.params.selectedEmoji);
-  }, [
-    route,
-    placeLatlng.latitude,
-    placeLatlng.longitude,
-    image,
-    selectedEmoji,
-    placeLatlng,
-  ]);
+  }, [route, image, selectedEmoji]);
 
   ////////////////////
 
@@ -100,22 +99,9 @@ export const WriteScreen = ({ navigation, route }) => {
 
   const PostWrite = async () => {
     console.log("Postwrite request sent");
-    const accessToken = await AsyncStorage.getItem("accessToken");
-    await axios(`http://${LOCAL_HOST}:3000/drops`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      data: {
-        content,
-        latitude,
-        longitude,
-      },
-    })
-      .then((res) => {
-        console.log(`${res.data.data.content} 내용으로 ${res.data.msg}!`);
-      })
-      .catch((e) => console.log(e));
+    // const accessToken = await AsyncStorage.getItem("accessToken");
+
+    await postDrop(area, place.pk, accessToken, content);
   };
 
   return (
@@ -159,7 +145,6 @@ export const WriteScreen = ({ navigation, route }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              console.log(placeLatlng);
               PostWrite();
               navigation.navigate("MapScreen");
             }}
@@ -174,7 +159,7 @@ export const WriteScreen = ({ navigation, route }) => {
         </View>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.textContainer}>
-            <Text style={styles.place}>{placeName}</Text>
+            <Text style={styles.place}>{place.name}</Text>
             <Text style={styles.address}>{placeAddress}</Text>
             <SvgXml xml={bar} width={280} height={2} style={styles.bar} />
             <TextInput
@@ -186,14 +171,13 @@ export const WriteScreen = ({ navigation, route }) => {
           </View>
         </TouchableWithoutFeedback>
       </View>
-      {/* ---------------------------------------------------이미지 불러와서 미리보기--------------------------------------------------- */}
+      {/* -----------------------------------------------이미지 불러와서 미리보기--------------------------------------------------- */}
       {route.params.type === 1 ? (
         <View>
           <Image
             style={container.image}
             source={{ uri: route.params.source }}
             // eslint-disable-next-line react/jsx-no-duplicate-props
-            style={{ aspectRatio: 1 / 1, backgroundColor: "black" }}
           />
         </View>
       ) : route.params.type === 0 ? (

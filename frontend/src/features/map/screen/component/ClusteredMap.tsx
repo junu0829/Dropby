@@ -50,8 +50,6 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
       setPressedAddressName,
       activePolygon,
       setActivePolygon,
-      activePolygonName,
-      setActivePolygonName,
       ...restProps
     },
     ref
@@ -466,8 +464,6 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
           map={mapRef}
           activePolygon={activePolygon}
           setActivePolygon={setActivePolygon}
-          setActivePolygonName={setActivePolygonName}
-          activePolygonName={activePolygonName}
         />
       </Map>
     );

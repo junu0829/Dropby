@@ -13,7 +13,6 @@ export const SignUp0205 = ({ navigation, route }) => {
 
   const nextButton = () => {
     // 여기서 서버에 회원가입 정보 보내기. userInfo 에 object 형태로 모든 정보가 들어있음.
-    console.log(userInfo);
     signUp(userInfo.nickname, userInfo.email, userInfo.password);
     navigation.navigate("MapScreen");
   };

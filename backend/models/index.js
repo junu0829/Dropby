@@ -6,8 +6,8 @@ db.Drop = require('./drop');
 db.User = require('./user');
 db.Place = require('./place');
 db.Area = require('./area');
-db.Emoji = require('./emoji');
-db.Image = require('./image');
+// db.Emoji = require('./emoji');
+// db.Image = require('./image');
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
@@ -60,15 +60,4 @@ db.Place.belongsTo(db.Area, {
         allowNull:false
     },
 });
-
-// db.Emoji.hasMany(db.Drop, {
-//     foreignKey: {
-//         name:emojiPk,
-//         allowNull:false
-//     },
-//     ondelete:'do'
-
-// })
-
-// db.
 module.exports = db;

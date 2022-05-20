@@ -6,7 +6,7 @@ import axios from "axios";
 //lat : 위아래, lon : 좌우, 왼쪽 위부터 1번, 반시계 방향으로 돌리기.
 // 받아진 api 예시.
 
-export const placeDatatest = async (activePolygon, setPlaceList) => {
+export const getPlaceData = async (activePolygon, setPlaceList) => {
   await axios(`http://${LOCAL_HOST}:3000/${activePolygon}`, {
     method: "GET",
     headers: {

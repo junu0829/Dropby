@@ -8,7 +8,6 @@ import { theme } from "../../../infrastructure/theme";
 // style prop을 통해 margin등의 스타일링 가능
 
 export const LoginButton = ({ value, onPress, width, height, style }) => {
-  // console.log(style);
   return (
     <TouchableOpacity
       // pressed 상태에 따라 스타일 바꾸기
