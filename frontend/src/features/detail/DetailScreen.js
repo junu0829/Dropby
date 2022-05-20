@@ -36,7 +36,11 @@ export const DetailScreen = ({ navigation, route }) => {
     <>
       <StatusBar style="black" />
 
-      <GNB place={place} navigation={navigation}></GNB>
+      <GNB
+        navigation={navigation}
+        title={place.name}
+        goBack={navigation.goBack}
+      ></GNB>
 
       <DetailView0>
         <DetailView contentContainerStyle={DetailViewStyle.center}>

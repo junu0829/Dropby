@@ -6,12 +6,14 @@ import backButton from "../../assets/Buttons/backButton";
 
 import { SafeArea } from "./utility/safe-area.component";
 import EditButton from "../../assets/Buttons/EditButton";
-import { TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, ViewPropTypes } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { Text } from "./typography/text.component";
 import { EditModal } from "../features/detail/component/EditModal";
+import { theme } from "../infrastructure/theme";
 
-export const GNB = ({ navigation, place = {} }) => {
+export const GNB = ({ navigation, goBack, title, subTitle, secondButton }) => {
+  //GNB 우측 메뉴. 스크린에 따라서 메뉴, +, 전송 버튼으로 나뉜다.
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <Container>
@@ -29,11 +31,13 @@ export const GNB = ({ navigation, place = {} }) => {
             <TouchableOpacity
               style={{ marginLeft: 20, marginTop: 8, flex: 1 }}
               onPress={() => {
-                navigation.goBack();
+                goBack();
               }}
             >
               <SvgXml xml={backButton} width={26} height={26}></SvgXml>
             </TouchableOpacity>
+
+            {/* GNB 우측 메뉴 이 부분이 스크린에 따라 바뀌어야 함. */}
             <GNBButtonPart2>
               <TouchableOpacity
                 style={{ marginRight: 20, marginTop: 8 }}
@@ -45,10 +49,12 @@ export const GNB = ({ navigation, place = {} }) => {
               </TouchableOpacity>
             </GNBButtonPart2>
           </GNBButtonPart>
+          {/* 여기 띄워야 하는 내용도 스크린에 따라서 많이 바뀐다. props로 넘겨야 할 듯. */}
           <GNBPlaceName>
-            <Text variant="place">{place.name}</Text>
-            <Text variant="place">{place.address}</Text>
+            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.subTitle}>{subTitle}</Text>
           </GNBPlaceName>
+
           <EditModal
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
@@ -61,7 +67,7 @@ export const GNB = ({ navigation, place = {} }) => {
 
 const Container = styled.View`
   width: 100%;
-  height: 25%;
+  height: 100%;
 `;
 
 const GNBButtonPart = styled.View`
@@ -74,7 +80,17 @@ const GNBButtonPart2 = styled.View`
   justify-content: flex-end;
 `;
 
-const GNBPlaceName = styled.Text`
+const GNBPlaceName = styled.View`
   margin-left: 20;
-  margin-top: 14;
+  margin-top: 8;
 `;
+const styles = StyleSheet.create({
+  title: {
+    fontSize: theme.fontSizes.title,
+    color: "white",
+  },
+  subTitle: {
+    fontSize: theme.fontSizes.caption,
+    color: "white",
+  },
+});
