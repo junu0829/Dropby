@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -27,10 +27,15 @@ import {
   DetailView0,
   DetailViewStyle,
 } from "./DetailSceen.styles";
+import { AreaFeedScreen } from "../Feed/screen/area.feed.screen";
 
 export const DetailScreen = ({ navigation, route }) => {
   const place = route.params.place;
   const drop = route.params.feedDrop;
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const hideModal = () => setModalVisible(false);
+  const showModal = () => setModalVisible(true);
 
   return (
     <>
@@ -40,7 +45,17 @@ export const DetailScreen = ({ navigation, route }) => {
         navigation={navigation}
         title={place.name}
         goBack={navigation.goBack}
+        showModal={showModal}
+        modalVisible={modalVisible}
+        secondButton={"true"}
       ></GNB>
+      <EditModal
+        visible={modalVisible}
+        dismiss={hideModal}
+        drop={drop}
+        place={place}
+        navigation={navigation}
+      ></EditModal>
 
       <DetailView0>
         <DetailView contentContainerStyle={DetailViewStyle.center}>

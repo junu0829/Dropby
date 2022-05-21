@@ -12,9 +12,17 @@ import { Text } from "./typography/text.component";
 import { EditModal } from "../features/detail/component/EditModal";
 import { theme } from "../infrastructure/theme";
 
-export const GNB = ({ navigation, goBack, title, subTitle, secondButton }) => {
+export const GNB = ({
+  navigation,
+  goBack,
+  title,
+  subTitle,
+  secondButton,
+  showModal,
+  modalVisible,
+}) => {
   //GNB 우측 메뉴. 스크린에 따라서 메뉴, +, 전송 버튼으로 나뉜다.
-  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <Container>
       <LinearGradient
@@ -38,27 +46,25 @@ export const GNB = ({ navigation, goBack, title, subTitle, secondButton }) => {
             </TouchableOpacity>
 
             {/* GNB 우측 메뉴 이 부분이 스크린에 따라 바뀌어야 함. */}
-            <GNBButtonPart2>
-              <TouchableOpacity
-                style={{ marginRight: 20, marginTop: 8 }}
-                onPress={() => {
-                  setModalVisible(true);
-                }}
-              >
-                <SvgXml xml={EditButton} width={26} height={26}></SvgXml>
-              </TouchableOpacity>
-            </GNBButtonPart2>
+            {secondButton != null ? (
+              <GNBButtonPart2>
+                <TouchableOpacity
+                  style={{ marginRight: 20, marginTop: 8 }}
+                  onPress={() => {
+                    showModal();
+                  }}
+                >
+                  <SvgXml xml={EditButton} width={26} height={26}></SvgXml>
+                </TouchableOpacity>
+              </GNBButtonPart2>
+            ) : null}
           </GNBButtonPart>
           {/* 여기 띄워야 하는 내용도 스크린에 따라서 많이 바뀐다. props로 넘겨야 할 듯. */}
+
           <GNBPlaceName>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.subTitle}>{subTitle}</Text>
           </GNBPlaceName>
-
-          <EditModal
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-          ></EditModal>
         </SafeArea>
       </LinearGradient>
     </Container>

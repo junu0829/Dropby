@@ -148,6 +148,7 @@ export const MapScreen = ({ navigation, route }) => {
             title={"Dropby"}
             subTitle={"현재 인촌기념관 구역에 있습니다."}
             goBack={navigation.goBack}
+            secondButton={null}
           ></GNB>
         </>
       ) : selectedPlace == null && activePolygon != null ? (
@@ -156,6 +157,7 @@ export const MapScreen = ({ navigation, route }) => {
             navigation={navigation}
             title={activePolygon.name + " 구역입니다"}
             goBack={setActivePolygon}
+            secondButton={null}
           ></GNB>
         </>
       ) : activePolygon && selectedPlace ? (
@@ -164,6 +166,7 @@ export const MapScreen = ({ navigation, route }) => {
             navigation={navigation}
             title={selectedPlace.name}
             goBack={setSelectedPlace}
+            secondButton={null}
           ></GNB>
         </>
       ) : null}

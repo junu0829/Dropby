@@ -27,9 +27,13 @@ import LockButtonUnlocked from "../../../../assets/Buttons/LockButton(Unlocked)"
 import { container, styles } from "./writescreen.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { postDrop } from "../../../services/drops/postDrop";
+import { UpdateDrop } from "../../../services/drops/UpdateDrop";
 
 export const WriteScreen = ({ navigation, route }) => {
-  const place = route.params.selectedPlace;
+  const place = route.params.selectedPlace
+    ? route.params.selectedPlace
+    : route.params.place;
+
   // const getToken = async () => AsyncStorage.getItem("accessToken");
   //accessToken 아래에 붙여넣기
   const accessToken =
@@ -43,10 +47,16 @@ export const WriteScreen = ({ navigation, route }) => {
   /////////////////////로컬 이미지 여기에 담김
   const [image, setImage] = useState(null);
   //////////////////////
-  let user_idx = Constants.installationId;
 
   useEffect(() => {
-    setArea(route.params.activePolygon);
+    if (route.params.activePolygon) {
+      setArea(route.params.activePolygon);
+    } else {
+      setArea(route.params.place.areaPk);
+      setContent(route.params.drop.content);
+    }
+    console.log(route.params);
+
     // setPlaceAddress(route.params[0].pressedAddress);
     // setPlaceName(route.params[1].pressedAddressName);
     // if (route.params[3].calibratedLocation) {
@@ -101,7 +111,15 @@ export const WriteScreen = ({ navigation, route }) => {
     console.log("Postwrite request sent");
     // const accessToken = await AsyncStorage.getItem("accessToken");
 
-    await postDrop(area, place.pk, accessToken, content);
+    route.params.drop
+      ? await UpdateDrop(
+          area,
+          place.pk,
+          route.params.drop.pk,
+          accessToken,
+          content
+        )
+      : await postDrop(area, place.pk, accessToken, content);
   };
 
   return (
@@ -162,12 +180,22 @@ export const WriteScreen = ({ navigation, route }) => {
             <Text style={styles.place}>{place.name}</Text>
             <Text style={styles.address}>{placeAddress}</Text>
             <SvgXml xml={bar} width={280} height={2} style={styles.bar} />
-            <TextInput
-              style={styles.enter}
-              placeholder="텍스트를 입력하세요"
-              onChangeText={(content) => handleContent(content)}
-              value={content}
-            />
+
+            {route.params.drop ? (
+              <TextInput
+                style={styles.enter}
+                placeholder={route.params.drop.content}
+                onChangeText={(content) => handleContent(content)}
+                value={content}
+              />
+            ) : (
+              <TextInput
+                style={styles.enter}
+                placeholder="텍스트를 입력하세요"
+                onChangeText={(content) => handleContent(content)}
+                value={content}
+              />
+            )}
           </View>
         </TouchableWithoutFeedback>
       </View>
