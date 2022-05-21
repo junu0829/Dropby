@@ -301,6 +301,7 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
         }}
         showsUserLocation={true}
         showsCompass={true}
+        showsMyLocationButton={false}
         provider={PROVIDER_GOOGLE}
         onRegionChangeComplete={_onRegionChangeComplete}
         onMapReady={() => {
@@ -318,66 +319,7 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
           longitudeDelta: LONGITUDE_DELTA,
         }}
         minZoomLevel={17}
-        customMapStyle={[
-          {
-            featureType: "administrative",
-            elementType: "geometry",
-            stylers: [
-              {
-                visibility: "off",
-              },
-            ],
-          },
-          {
-            featureType: "poi.business",
-            stylers: [
-              {
-                visibility: "off",
-              },
-            ],
-          },
-          {
-            featureType: "poi.medical",
-            stylers: [
-              {
-                visibility: "off",
-              },
-            ],
-          },
-
-          {
-            featureType: "poi.sports_complex",
-            stylers: [
-              {
-                visibility: "off",
-              },
-            ],
-          },
-          {
-            featureType: "poi.school",
-            stylers: [
-              {
-                visibility: "off",
-              },
-            ],
-          },
-          {
-            featureType: "poi.government",
-            stylers: [
-              {
-                visibility: "off",
-              },
-            ],
-          },
-          {
-            featureType: "poi.place_of_worship",
-            stylers: [
-              {
-                visibility: "off",
-              },
-            ],
-          },
-        ]}
+        customMapStyle={customMapStyle}
       >
         {markers.map((marker) =>
           marker.properties.point_count === 0 ? (
@@ -495,3 +437,64 @@ ClusteredMap.defaultProps = {
   superClusterRef: {},
   mapRef: () => {},
 };
+
+const customMapStyle = [
+  {
+    featureType: "administrative",
+    elementType: "geometry",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "poi.business",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "poi.medical",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+
+  {
+    featureType: "poi.sports_complex",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "poi.school",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "poi.government",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+  {
+    featureType: "poi.place_of_worship",
+    stylers: [
+      {
+        visibility: "off",
+      },
+    ],
+  },
+];
