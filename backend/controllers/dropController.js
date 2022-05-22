@@ -3,7 +3,6 @@ const { getAccess } = require("../utils/auth");
 
 exports.newDrop = async (req, res, next) => {
   try {
-    console.log(req.files)
     const { placePk } = req.params;
     const accessToken = getAccess(req.headers);
     const drop = await dropServices.newDrop(accessToken, req.body, req.files, placePk);
