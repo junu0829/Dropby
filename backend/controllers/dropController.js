@@ -11,6 +11,7 @@ exports.newDrop = async (req, res, next) => {
     res.status(201).json({
       msg: "드롭 생성 완료",
       data: drop,
+      success:true
     });
   } catch (error) {
     console.log(error.message);
