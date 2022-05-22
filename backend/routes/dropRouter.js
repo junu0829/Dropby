@@ -6,7 +6,7 @@ const upload = require('../utils/multer');
 
 router.post("/", jwtpassportAuth, upload.array('image', 5), controller.newDrop);
 router.get("/", controller.getDrops);
-router.put("/:dropPk", jwtpassportAuth, controller.updateDrop);
+router.put("/:dropPk", jwtpassportAuth, upload.array('image', 5), controller.updateDrop);
 router.delete("/:dropPk", jwtpassportAuth, controller.deleteDrop);
 
 module.exports = router;

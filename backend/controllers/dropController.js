@@ -3,11 +3,10 @@ const { getAccess } = require("../utils/auth");
 
 exports.newDrop = async (req, res, next) => {
   try {
-    console.log(`req.file`, req.files);
-    console.log(`req.body`, req.body);
     const { placePk } = req.params;
     const accessToken = getAccess(req.headers);
     const drop = await dropServices.newDrop(accessToken, req.body, req.files, placePk);
+
     res.status(201).json({
       msg: "드롭 생성 완료",
       data: drop,
@@ -23,7 +22,7 @@ exports.getDrops = async (req, res, next) => {
   try {
     const { placePk } = req.params;
     const drops = await dropServices.getDrops(placePk);
-    console.log("drops sent");
+
     res.status(200).json({
       msg: "드롭 조회 완료",
       data: drops,
