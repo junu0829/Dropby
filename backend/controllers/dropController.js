@@ -3,6 +3,7 @@ const { getAccess } = require("../utils/auth");
 
 exports.newDrop = async (req, res, next) => {
   try {
+    console.log(req.files)
     const { placePk } = req.params;
     const accessToken = getAccess(req.headers);
     const drop = await dropServices.newDrop(accessToken, req.body, req.files, placePk);
@@ -35,7 +36,7 @@ exports.getDrops = async (req, res, next) => {
 exports.updateDrop = async (req, res, next) => {
   try {
     const dropPk = req.params.dropPk;
-    const updatedDrop = await dropServices.updateDrop(req.body, dropPk);
+    const updatedDrop = await dropServices.updateDrop(req.body, req.files, dropPk);
     res.status(200).json({
       msg: "드롭 내용 수정 완료",
       data: updatedDrop,
