@@ -60,6 +60,7 @@ exports.getAreaDrops = async (areaPk) => {
       where: {
         placePk,
       },
+      include:["images", "emoji"]
     });
     if (drops.length > 0) {
       allDrops.push(...drops);
