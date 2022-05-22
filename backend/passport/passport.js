@@ -24,8 +24,8 @@ const loginVerify = async (email, password, done) => {
 }
 
 const JWTVerify = async (jwtpayload, done) => {
-    console.log('jwtpayload', jwtpayload);
-    console.log('jwtpayloadsub', jwtpayload.pk);
+    //console.log('jwtpayload', jwtpayload);
+    //console.log('jwtpayloadsub', jwtpayload.pk);
     const user = User.findOne({where:{pk:jwtpayload.pk}})
                 .then(user => {
                     return done(null, user);

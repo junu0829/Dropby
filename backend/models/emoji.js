@@ -36,7 +36,6 @@ const Emoji = sequelize.define("Emoji", {
 }, {
     freezeTableName:true,
     timestamps:false,
-    charset:'utf8mb4'
 }
 );
 
