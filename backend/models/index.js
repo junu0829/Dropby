@@ -63,9 +63,10 @@ db.Place.belongsTo(db.Area, {
 
 //한 드롭은 여러 개의 이미지를 가질 수 있음.
 db.Drop.hasMany(db.Image, {
+    as:'images',
     foreignKey: {
         name:'dropPk',
-        allowNull:false
+        allowNull:true
     },
     onDelete:'CASCADE'
 });
@@ -73,7 +74,7 @@ db.Drop.hasMany(db.Image, {
 db.Image.belongsTo(db.Drop, {
     foreignKey: {
         name:'dropPk',
-        allowNull:false
+        allowNull:true
     },
 });
 //한 드롭에 하나의 이모지를 등록할 수 있음.
@@ -84,10 +85,4 @@ db.Drop.hasOne(db.Emoji, {
     },
 })
 
-db.Emoji.hasOne(db.Drop, {
-    foreignKey:{
-        name:'dropPk',
-        allowNull:false
-    }
-})
 module.exports = db;

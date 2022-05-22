@@ -1,8 +1,8 @@
-const { Drop } = require("../models");
+const { Drop, Image } = require("../models");
 const { getUserWithAccess } = require("../utils/auth");
 
 
-exports.newDrop = async (accessToken, body, placePk) => {
+exports.newDrop = async (accessToken, body, files, placePk) => {
   const user = await getUserWithAccess(accessToken);
   const {title, content} = body;
 
@@ -12,7 +12,16 @@ exports.newDrop = async (accessToken, body, placePk) => {
     createdAt: Date(),
     creatorPk: user.pk,
     placePk
-  });
+    });
+  if (files) {
+    for (let image of files) {
+      const drop_image = await Image.create({
+        imageUrl:image.location,
+        dropPk:drop.pk
+    });
+    }
+  }
+
   return drop;
 };
 
@@ -21,7 +30,8 @@ exports.getDrops = async (placePk) => {
   const drops = await Drop.findAll({
     where:{
       placePk
-    }
+    },
+    include:["images"]
   });
   return drops;
 };
