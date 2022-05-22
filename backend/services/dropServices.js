@@ -1,17 +1,25 @@
-const { Drop, Image } = require("../models");
+const { Drop, Image, Emoji } = require("../models");
 const { getUserWithAccess } = require("../utils/auth");
 
 
 exports.newDrop = async (accessToken, body, files, placePk) => {
   const user = await getUserWithAccess(accessToken);
-  const {title, content} = body;
-
+  const {title, content, emojiSlug} = body;
+  console.log(emojiSlug);
+  const emoji = await Emoji.findOne({
+    where:{
+      slug:emojiSlug
+    }
+  })
+  console.log(emoji.slug);
+  console.log(emojiSlug);
   const drop = await Drop.create({
     title,
     content,
     createdAt: Date(),
     creatorPk: user.pk,
-    placePk
+    placePk,
+    emojiPk:emoji.pk
     });
   if (files) {
     for (let image of files) {
@@ -31,7 +39,7 @@ exports.getDrops = async (placePk) => {
     where:{
       placePk
     },
-    include:["images"]
+    include:["images", "emoji"]
   });
   return drops;
 };

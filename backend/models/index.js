@@ -78,10 +78,18 @@ db.Image.belongsTo(db.Drop, {
     },
 });
 //한 드롭에 하나의 이모지를 등록할 수 있음.
-db.Drop.hasOne(db.Emoji, {
+
+db.Emoji.hasMany(db.Drop, {
     foreignKey:{
-        name:'dropPk',
-        allowNull:false
+        name:'emojiPk',
+        allowNull:true
+    }
+})
+db.Drop.belongsTo(db.Emoji, {
+    as:'emoji',
+    foreignKey:{
+        name:'emojiPk',
+        allowNull:true
     },
 })
 
