@@ -5,14 +5,13 @@ const { getUserWithAccess } = require("../utils/auth");
 exports.newDrop = async (accessToken, body, files, placePk) => {
   const user = await getUserWithAccess(accessToken);
   const {title, content, emojiSlug} = body;
-  console.log(emojiSlug);
+
   const emoji = await Emoji.findOne({
     where:{
       slug:emojiSlug
     }
   })
-  console.log(emoji.slug);
-  console.log(emojiSlug);
+
   const drop = await Drop.create({
     title,
     content,
