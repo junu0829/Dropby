@@ -1,11 +1,13 @@
 import LOCAL_HOST from "../local.js";
 import axios from "axios";
+import { user } from "../user.js";
 
-export const postDrop = async (area, placePk, accessToken, content) => {
+export const postDrop = async (area, placePk, content) => {
+  user.getItemFromAsync();
   await axios(`http://${LOCAL_HOST}:3000/${area}/${placePk}/drops`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${user.accessToken}`,
     },
     data: {
       content,

@@ -27,12 +27,10 @@ export const Polygons = ({ map, activePolygon = {}, setActivePolygon }) => {
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
     });
-
     setActivePolygon(polygon);
   };
 
   //비동기를 사용해보자. async await.
-
   return isLoading ? (
     <></>
   ) : (
@@ -41,9 +39,7 @@ export const Polygons = ({ map, activePolygon = {}, setActivePolygon }) => {
         <Polygon
           coordinates={polygon.polygon.coordinates}
           fillColor={
-            activePolygon == polygon.pk
-              ? styles.activeFillColor
-              : styles.fillColor
+            activePolygon == polygon ? styles.activeFillColor : styles.fillColor
           }
           strokeColor={styles.strokeColor}
           strokeWidth={styles.strokeWidth}
