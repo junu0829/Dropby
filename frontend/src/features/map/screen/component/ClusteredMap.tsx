@@ -57,9 +57,6 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
     const [markers, updateMarkers] = useState([]);
     const [isPressed, setIsPressed] = useState(null);
     const mapRef = useRef();
-    // const [currentRegion, updateRegion] = useState(
-    //   restProps.region || restProps.initialRegion
-    // );
 
     const [spiderMarkers, updateSpiderMarker] = useState([]);
     const [clusterChildren, updateClusterChildren] = useState(null);
@@ -311,7 +308,7 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
           );
         }}
         initialRegion={{
-          // 지도의 센터값 위도 경도
+          // 지도의 센터값 위도 경도. 안암역 기준
           latitude: 37.585069,
           longitude: 127.029191,
           //ZoomLevel 아래에 있는 것은 건드리지 않아도 됨

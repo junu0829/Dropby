@@ -21,7 +21,7 @@ import { PlaceSearchBox } from "./component/PlaceSearchBox";
 import { PlaceBox } from "./component/placeBox";
 import { PlaceBoxBlank } from "./component/placeBoxBlank";
 import { UpperBox } from "./component/upperBox";
-import { getMapDrops } from "../../../services/drops/GetDrops";
+import { changedDrops, getMapDrops } from "../../../services/drops/GetDrops";
 import { GNB } from "../../../components/GlobalNavigationBar";
 import { MainContainerView } from "../../../infrastructure/style/styledComponent";
 
@@ -33,10 +33,6 @@ export const MapScreen = ({ navigation, route }) => {
 
   /////1. 모드들
 
-  const [dropViewMode, setDropViewMode] = useState(false);
-  const showModal = () => {
-    setDropViewMode(true);
-  };
   const [writeMode, setWriteMode] = useState(false);
   const [isDetail, setIsDetail] = useState(false);
 
@@ -112,8 +108,15 @@ export const MapScreen = ({ navigation, route }) => {
 
   ////////////////여기서부터 useEffect 정의하기 시작/////////////////////////
 
-  //다른 구역 클릭하면 장소 클릭 x 상태로 돌아가기.
+  // activePolygon 바뀌면 해당 구역의 드롭 받아오기.
+  // 다른 구역 클릭하면 장소 클릭 x 상태로 돌아가기.
   useEffect(() => {
+    if (activePolygon == null) {
+      setDrops(getMapDrops);
+    } else {
+      setDrops(changedDrops[activePolygon.pk - 1]);
+    }
+
     setSelectedPlace(null);
   }, [activePolygon]);
 
@@ -173,27 +176,6 @@ export const MapScreen = ({ navigation, route }) => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView behavior="position">
             <View>
-              {/*----------------------- 맨 상단 컴포넌트--------------------------- */}
-              {/* <SearchContainer>
-                <UpperBox
-                  activePolygon={activePolygon}
-                  setActivePolygon={setActivePolygon}
-                  selectedPlace={selectedPlace}
-                  setSelectedPlace={setSelectedPlace}
-                ></UpperBox>
-                <TextContainer>
-                  {activePolygon != null ? (
-                    <>
-                      <Text variant="hint">
-                        {activePolygon.name} 구역을 검색해보세요
-                      </Text>
-                    </>
-                  ) : (
-                    <Text variant="hint">구역을 선택해주세요</Text>
-                  )}
-                </TextContainer>
-              </SearchContainer> */}
-
               {/*----------------------- 지도 컴포넌트--------------------------- */}
               <View onPress={Keyboard.dismiss}>
                 {dropsList(
@@ -211,7 +193,6 @@ export const MapScreen = ({ navigation, route }) => {
                   allCoords,
                   currentRegion,
                   updateRegion,
-                  showModal,
                   setWriteMode,
                   setDropContent,
                   setDrop,

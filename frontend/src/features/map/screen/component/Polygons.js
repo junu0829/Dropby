@@ -14,6 +14,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 export const Polygons = ({ map, activePolygon = {}, setActivePolygon }) => {
   const [areaData, setAreaData] = useState(["가나다"]);
   const [isLoading, setIsLoading] = useState(true);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     await getPolygonData(setAreaData);
