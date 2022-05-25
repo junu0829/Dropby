@@ -22,6 +22,7 @@ const Drop = sequelize.define("Drop", {
                 },
                 isPrivate: {
                     type:DataTypes.BOOLEAN,
+                    defaultValue:false,
                     allowNull:false,
                 }
             }, {
