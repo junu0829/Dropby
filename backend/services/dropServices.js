@@ -1,18 +1,34 @@
-const { Drop } = require("../models");
+const { Drop, Image, Emoji } = require("../models");
 const { getUserWithAccess } = require("../utils/auth");
 
 
-exports.newDrop = async (accessToken, body, placePk) => {
+exports.newDrop = async (accessToken, body, files, placePk) => {
   const user = await getUserWithAccess(accessToken);
-  const {title, content} = body;
+  const {title, content, emojiSlug} = body;
+
+  const emoji = await Emoji.findOne({
+    where:{
+      slug:emojiSlug
+    }
+  })
 
   const drop = await Drop.create({
     title,
     content,
     createdAt: Date(),
     creatorPk: user.pk,
-    placePk
-  });
+    placePk,
+    emojiPk:emoji.pk
+    });
+  if (files) {
+    for (let image of files) {
+      const drop_image = await Image.create({
+        imageUrl:image.location,
+        dropPk:drop.pk
+    });
+    }
+  }
+
   return drop;
 };
 
@@ -21,21 +37,39 @@ exports.getDrops = async (placePk) => {
   const drops = await Drop.findAll({
     where:{
       placePk
-    }
+    },
+    include:["images", "emoji"]
   });
   return drops;
 };
 
-exports.updateDrop = async ({content}, dropPk) => {
+exports.updateDrop = async (body, files, dropPk) => {
+  const {title, content} = body;
   const drop = await Drop.findOne({
     where:{
       pk:dropPk
-    }
+    },
   });
 
-  drop.content = content;
+  drop.set({
+    title:title,
+    content:content
+  })
   await drop.save();
-
+  Image.destroy({
+    where: {
+      dropPk:drop.pk
+    }
+  })
+  if (files) {
+    for (let image of files) {
+      const drop_image = await Image.create({
+        imageUrl:image.location,
+        dropPk:drop.pk
+    });
+    }
+  }
+  // s3에서 이미지 삭제하는 로직 필요할까?
   return drop;
 
 }
@@ -48,7 +82,6 @@ exports.deleteDrop = async (dropPk) => {
   });
 
   await drop.destroy();
-
   return true;
 
 }

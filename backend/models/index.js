@@ -6,8 +6,8 @@ db.Drop = require('./drop');
 db.User = require('./user');
 db.Place = require('./place');
 db.Area = require('./area');
-// db.Emoji = require('./emoji');
-// db.Image = require('./image');
+db.Emoji = require('./emoji');
+db.Image = require('./image');
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
@@ -60,4 +60,37 @@ db.Place.belongsTo(db.Area, {
         allowNull:false
     },
 });
+
+//한 드롭은 여러 개의 이미지를 가질 수 있음.
+db.Drop.hasMany(db.Image, {
+    as:'images',
+    foreignKey: {
+        name:'dropPk',
+        allowNull:true
+    },
+    onDelete:'CASCADE'
+});
+
+db.Image.belongsTo(db.Drop, {
+    foreignKey: {
+        name:'dropPk',
+        allowNull:true
+    },
+});
+//한 드롭에 하나의 이모지를 등록할 수 있음.
+
+db.Emoji.hasMany(db.Drop, {
+    foreignKey:{
+        name:'emojiPk',
+        allowNull:true
+    }
+})
+db.Drop.belongsTo(db.Emoji, {
+    as:'emoji',
+    foreignKey:{
+        name:'emojiPk',
+        allowNull:true
+    },
+})
+
 module.exports = db;
