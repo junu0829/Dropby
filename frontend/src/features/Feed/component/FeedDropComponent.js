@@ -24,7 +24,7 @@ export const FeedDropComponent = ({ navigation, feedDrop, place = {} }) => {
           </View>
 
           <View style={styles.dropMainContainer}>
-            <Text style={styles.dropTitle}>{feedDrop.content}</Text>
+            <Text style={styles.dropTitle}>{feedDrop.title}</Text>
             <Text style={styles.content}>{feedDrop.content}</Text>
           </View>
           <View style={styles.dropInfoContainer}>

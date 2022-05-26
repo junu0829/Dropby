@@ -17,6 +17,7 @@ import { SvgXml } from "react-native-svg";
 import { Text } from "../../../../components/typography/text.component";
 import { theme } from "../../../../infrastructure/theme";
 import { getPlaceData } from "../../../../services/maps/placeData";
+import { getAreaDrops } from "../../../../services/drops/GetDrops";
 
 //assets
 
@@ -31,7 +32,7 @@ export const PlaceSearchBox = ({
   const [searchfield, setSearchfield] = useState("");
   const [DATA, setDATA] = useState([]);
 
-  //placeList 에 저장된 값을 사용하면 된다. DATA 필요X
+  //searchField 구현을 위해 DATA를 나눔.
   useEffect(async () => {
     await getPlaceData(activePolygon.pk, setPlaceList);
   }, [activePolygon]);

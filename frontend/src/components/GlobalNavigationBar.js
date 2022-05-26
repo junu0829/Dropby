@@ -28,10 +28,10 @@ export const GNB = ({
       <LinearGradient
         colors={["#7358ff", "#c16eff"]}
         style={{
-          height: "100%",
+          height: "25%",
         }}
-        end={{ x: 0.99, y: 0.99 }}
         start={{ x: 0.01, y: 0.01 }}
+        end={{ x: 0.99, y: 0.99 }}
         locations={[0.1, 1.0]}
       >
         <SafeArea>

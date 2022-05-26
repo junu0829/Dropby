@@ -8,7 +8,6 @@ import { theme } from "../../../infrastructure/theme";
 export const Map = styled(MapView)`
   height: 100%;
   width: 100%;
-  z-index: 1;
 `;
 export const SearchContainer = styled.View`
   position: absolute;

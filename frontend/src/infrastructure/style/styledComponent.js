@@ -13,6 +13,7 @@ export const MainContainerView = styled.View`
   height: 80%;
   top: 20%;
   background-color: white;
+  overflow: hidden;
 `;
 
 export const DetailView = styled.ScrollView`

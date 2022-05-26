@@ -19,7 +19,6 @@ export const dropsList = (
   allCoords,
   currentRegion,
   updateRegion,
-  showModal,
   setWriteMode,
   setDropContent,
   setDrop,
@@ -60,7 +59,6 @@ export const dropsList = (
                 longitude: drop && Number(drop.longitude),
               }}
               onPress={() => {
-                showModal();
                 setWriteMode(false);
                 setPressedLocation({
                   latitude: drop.latitude,
