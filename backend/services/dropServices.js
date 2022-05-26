@@ -4,7 +4,7 @@ const { getUserWithAccess } = require("../utils/auth");
 
 exports.newDrop = async (accessToken, body, files, placePk) => {
   const user = await getUserWithAccess(accessToken);
-  const {title, content, emojiSlug} = body;
+  const {title, content, emojiSlug, isPrivate} = body;
 
   const emoji = await Emoji.findOne({
     where:{
@@ -18,7 +18,8 @@ exports.newDrop = async (accessToken, body, files, placePk) => {
     createdAt: Date(),
     creatorPk: user.pk,
     placePk,
-    emojiPk:emoji.pk
+    emojiPk:emoji.pk,
+    isPrivate
     });
   if (files) {
     for (let image of files) {
