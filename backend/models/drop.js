@@ -19,6 +19,11 @@ const Drop = sequelize.define("Drop", {
                 createdAt:{
                     type:DataTypes.DATE,
                     defaultValue: DataTypes.NOW
+                },
+                isPrivate: {
+                    type:DataTypes.BOOLEAN,
+                    defaultValue:false,
+                    allowNull:false,
                 }
             }, {
                 freezeTableName:true,

@@ -1,4 +1,5 @@
 const { Place, Area, Drop } = require("../models");
+const { getUserWithAccess } = require("../utils/auth");
 
 exports.newPlace = async (body, areaPk) => {
   const { name, latitude, longitude, address } = body;
@@ -39,7 +40,10 @@ exports.getPlaces = async (areaPk) => {
   return { areaName: areaName, places: places };
 };
 
-exports.getAreaDrops = async (areaPk) => {
+exports.getAreaDrops = async (accessToken, areaPk) => {
+  const user = await getUserWithAccess(accessToken);
+  console.log(user);
+  console.log(user.pk);
   const area = await Area.findOne({
     where: {
       pk: areaPk,
@@ -52,23 +56,32 @@ exports.getAreaDrops = async (areaPk) => {
       areaPk,
     },
   });
-
-  let allDrops = [];
+  let allDrops = {'publicDrops':[], 'myDrops':[]};
   for (let place of AreaPlaces) {
     let placePk = place.dataValues.pk;
-    let drops = await Drop.findAll({
+    let publicDrops = await Drop.findAll({
       where: {
         placePk,
+        isPrivate:false,
       },
       include:["images", "emoji"]
     });
-    if (drops.length > 0) {
-      allDrops.push(...drops);
-    }
+    allDrops['publicDrops'].push(...publicDrops);
+
+    let myDrops = await Drop.findAll({
+      where: {
+        placePk,
+        isPrivate:true,
+        creatorPk:user.pk
+      }, 
+      include:["images", "emoji"]
+    });
+    allDrops['myDrops'].push(...myDrops)
   }
+  console.log(allDrops);
   return {
     areaName: areaName,
     areaPk: areaPk,
-    drops: allDrops,
+    drops:allDrops
   };
 };

@@ -4,8 +4,9 @@ const { getUserWithAccess } = require("../utils/auth");
 
 exports.newDrop = async (accessToken, body, files, placePk) => {
   const user = await getUserWithAccess(accessToken);
-  const {title, content, emojiSlug} = body;
-
+  let {title, content, emojiSlug, isPrivate} = body;
+  isPrivate = (isPrivate === 'true');
+  
   const emoji = await Emoji.findOne({
     where:{
       slug:emojiSlug
@@ -18,7 +19,8 @@ exports.newDrop = async (accessToken, body, files, placePk) => {
     createdAt: Date(),
     creatorPk: user.pk,
     placePk,
-    emojiPk:emoji.pk
+    emojiPk:emoji.pk,
+    isPrivate
     });
   if (files) {
     for (let image of files) {
@@ -33,14 +35,28 @@ exports.newDrop = async (accessToken, body, files, placePk) => {
 };
 
 
-exports.getDrops = async (placePk) => {
-  const drops = await Drop.findAll({
+exports.getDrops = async (accessToken, placePk) => {
+  const user = await getUserWithAccess(accessToken);
+
+  const publicDrops = await Drop.findAll({
     where:{
-      placePk
+      placePk,
+      isPrivate:false,
     },
     include:["images", "emoji"]
   });
-  return drops;
+  const myDrops = await Drop.findAll({
+    where: {
+      placePk,
+      isPrivate:true,
+      creatorPk:user.pk
+    },
+    include:["images", "emoji"],
+  })
+  return {
+          public:publicDrops,
+          my:myDrops
+          };
 };
 
 exports.updateDrop = async (body, files, dropPk) => {
