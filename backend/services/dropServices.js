@@ -47,9 +47,11 @@ exports.getDrops = async (accessToken, placePk) => {
   });
   const myDrops = await Drop.findAll({
     where: {
+      placePk,
       isPrivate:true,
       creatorPk:user.pk
-    }
+    },
+    include:["images", "emoji"],
   })
   return {
           public:publicDrops,

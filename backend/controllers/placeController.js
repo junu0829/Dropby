@@ -1,4 +1,5 @@
 const placeServices = require("../services/placeServices");
+const {getAccess} = require('../utils/auth.js');
 
 exports.newPlace = async (req, res, next) => {
   try {
@@ -45,14 +46,15 @@ exports.getPlaces = async (req, res, next) => {
 
 exports.getAreaDrops = async (req, res, next) => {
     try {
+        const accessToken = getAccess(req.headers);
         const areaPk = req.params.areaPk;
-        const dropsData = await placeServices.getAreaDrops(areaPk);
+        const dropsData = await placeServices.getAreaDrops(accessToken, areaPk);
 
         res.status(200).json({
             msg: `구역 내 드롭 정보 조회 성공`,
             areaName:dropsData.areaName,
             areaPk:areaPk,
-            drops:dropsData.drops
+            data:dropsData.drops
         })
     } catch(error) {
         next(error);
