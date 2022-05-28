@@ -11,7 +11,7 @@ export const Map = styled(MapView)`
 `;
 export const SearchContainer = styled.View`
   position: absolute;
-  z-index: 999;
+  z-index: 992;
   width: 100%;
 `;
 
@@ -42,12 +42,14 @@ export const PlaceSearchBoxContainer = styled.View`
 position: absolute
 
 flex-direction: column
-padding: ${(props) => props.theme.space[3]};
-  z-index: 998;
-  bottom: 60px
-height: 165px
-  width: 80%;
-  left: 10%
+padding: ${(props) => props.theme.space[1]};
+  z-index: 991;
+  bottom: 20px
+height: 230px
+  width: 100%;
+  justify-content:center;
+  align-items:center;
+
  
 `;
 export const PlaceContainer2 = styled.View`

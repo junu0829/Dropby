@@ -24,6 +24,7 @@ import { UpperBox } from "./component/upperBox";
 import { changedDrops, getMapDrops } from "../../../services/drops/GetDrops";
 import { GNB } from "../../../components/GlobalNavigationBar";
 import { MainContainerView } from "../../../infrastructure/style/styledComponent";
+import { WhiteSheet } from "../../../components/utility/whiteSheet";
 
 export const MapScreen = ({ navigation, route }) => {
   //////////////////////////지도 및 화면비율 정의///////////////////////////////////
@@ -148,7 +149,6 @@ export const MapScreen = ({ navigation, route }) => {
         <>
           <GNB
             navigation={navigation}
-            title={"Dropby"}
             subTitle={"현재 인촌기념관 구역에 있습니다."}
             goBack={null}
             secondButton={null}
@@ -158,7 +158,7 @@ export const MapScreen = ({ navigation, route }) => {
         <>
           <GNB
             navigation={navigation}
-            title={activePolygon.name + " 구역입니다"}
+            title={activePolygon.name + " 구역을 검색해보세요"}
             goBack={setActivePolygon}
             secondButton={null}
           ></GNB>
@@ -203,39 +203,41 @@ export const MapScreen = ({ navigation, route }) => {
                   setActivePolygon
                 )}
               </View>
-              {/*----------------------- 맨 하단 컴포넌트--------------------------- */}
-              {selectedPlace == null && activePolygon == null ? (
-                <>
-                  {PlaceBoxBlank(
-                    setWriteMode,
-                    setPressedLocation,
-                    location,
-                    map,
-                    LATITUDE_DELTA,
-                    LONGITUDE_DELTA
-                  )}
-                </>
-              ) : selectedPlace == null && activePolygon != null ? (
-                <>
-                  {/* 여기에 polygon 클릭 후 나타나는 컴포넌트 배치. */}
-                  <PlaceSearchBox
-                    placeList={placeList}
-                    setPlaceList={setPlaceList}
-                    setSelectedPlace={setSelectedPlace}
-                    activePolygon={activePolygon}
-                    navigation={navigation}
-                  ></PlaceSearchBox>
-                </>
-              ) : activePolygon && selectedPlace ? (
-                <>
-                  <PlaceBox
-                    selectedPlace={selectedPlace}
-                    activePolygon={activePolygon}
-                    navigation={navigation}
-                  />
-                </>
-              ) : null}
             </View>
+            {/*----------------------- 맨 하단 컴포넌트--------------------------- */}
+            {selectedPlace == null && activePolygon == null ? (
+              <>
+                {PlaceBoxBlank(
+                  setWriteMode,
+                  setPressedLocation,
+                  location,
+                  map,
+                  LATITUDE_DELTA,
+                  LONGITUDE_DELTA
+                )}
+              </>
+            ) : selectedPlace == null && activePolygon != null ? (
+              <>
+                {/* 여기에 polygon 클릭 후 나타나는 컴포넌트 배치. */}
+                <PlaceSearchBox
+                  placeList={placeList}
+                  setPlaceList={setPlaceList}
+                  setSelectedPlace={setSelectedPlace}
+                  activePolygon={activePolygon}
+                  navigation={navigation}
+                ></PlaceSearchBox>
+              </>
+            ) : activePolygon && selectedPlace ? (
+              <>
+                <PlaceBox
+                  selectedPlace={selectedPlace}
+                  activePolygon={activePolygon}
+                  navigation={navigation}
+                />
+              </>
+            ) : null}
+
+            <WhiteSheet />
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </MainContainerView>

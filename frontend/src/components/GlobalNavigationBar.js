@@ -6,11 +6,18 @@ import backButton from "../../assets/Buttons/backButton";
 
 import { SafeArea } from "./utility/safe-area.component";
 import EditButton from "../../assets/Buttons/EditButton";
-import { StyleSheet, TouchableOpacity, ViewPropTypes } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewPropTypes,
+} from "react-native";
 import { SvgXml } from "react-native-svg";
 import { Text } from "./typography/text.component";
 import { EditModal } from "../features/detail/component/EditModal";
 import { theme } from "../infrastructure/theme";
+import logo_main from "../../assets/Global/logo_main";
+import btn_my from "../../assets/Buttons/btn_my";
 
 export const GNB = ({
   navigation,
@@ -23,6 +30,8 @@ export const GNB = ({
 }) => {
   //GNB 우측 메뉴. 스크린에 따라서 메뉴, +, 전송 버튼으로 나뉜다.
 
+  const titleDefault = goBack ? title.substr(title.length - 10, 10) : null;
+  const titleFormer = goBack ? title.substring(0, title.length - 10) : null;
   return (
     <Container>
       <LinearGradient
@@ -36,18 +45,27 @@ export const GNB = ({
       >
         <SafeArea>
           <GNBButtonPart>
-            <TouchableOpacity
-              style={{ marginLeft: 20, marginTop: 8, flex: 1 }}
-              onPress={() => {
-                goBack();
-              }}
-            >
-              <SvgXml xml={backButton} width={26} height={26}></SvgXml>
-            </TouchableOpacity>
+            {goBack ? (
+              <TouchableOpacity
+                style={{ marginLeft: 20, marginTop: 15, flex: 1 }}
+                onPress={() => {
+                  goBack();
+                }}
+              >
+                <SvgXml xml={backButton} width={26} height={26}></SvgXml>
+              </TouchableOpacity>
+            ) : (
+              <SvgXml
+                xml={logo_main}
+                width={125}
+                height={34}
+                style={{ marginLeft: 20, marginTop: 20, flex: 1 }}
+              ></SvgXml>
+            )}
 
             {/* GNB 우측 메뉴 이 부분이 스크린에 따라 바뀌어야 함. */}
-            {secondButton != null ? (
-              <GNBButtonPart2>
+            <GNBButtonPart2>
+              {secondButton != null ? (
                 <TouchableOpacity
                   style={{ marginRight: 20, marginTop: 8 }}
                   onPress={() => {
@@ -56,13 +74,25 @@ export const GNB = ({
                 >
                   <SvgXml xml={EditButton} width={26} height={26}></SvgXml>
                 </TouchableOpacity>
-              </GNBButtonPart2>
-            ) : null}
+              ) : !goBack ? (
+                <TouchableOpacity
+                  style={{ marginRight: 20, marginTop: 22 }}
+                  onPress={() => {}}
+                >
+                  <SvgXml xml={btn_my} width={30} height={30}></SvgXml>
+                </TouchableOpacity>
+              ) : null}
+            </GNBButtonPart2>
           </GNBButtonPart>
           {/* 여기 띄워야 하는 내용도 스크린에 따라서 많이 바뀐다. props로 넘겨야 할 듯. */}
 
           <GNBPlaceName>
-            <Text style={styles.title}>{title}</Text>
+            {goBack ? (
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.titleYellow}>{titleFormer}</Text>
+                <Text style={styles.title}>{titleDefault}</Text>
+              </View>
+            ) : null}
             <Text style={styles.subTitle}>{subTitle}</Text>
           </GNBPlaceName>
         </SafeArea>
@@ -83,6 +113,7 @@ const GNBButtonPart = styled.View`
 const GNBButtonPart2 = styled.View`
   flex: 1;
   flex-direction: row;
+
   justify-content: flex-end;
 `;
 
@@ -92,8 +123,14 @@ const GNBPlaceName = styled.View`
 `;
 const styles = StyleSheet.create({
   title: {
-    fontSize: theme.fontSizes.title,
+    fontSize: 17,
     color: "white",
+    marginTop: 14,
+  },
+  titleYellow: {
+    fontSize: 17,
+    color: "#ffc34a",
+    marginTop: 14,
   },
   subTitle: {
     fontSize: theme.fontSizes.caption,

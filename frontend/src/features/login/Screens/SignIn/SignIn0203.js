@@ -17,7 +17,7 @@ import whiteBackButton from "../../../../../assets/whiteBackButton";
 
 import { LoginBg } from "../../Component/LoginBg";
 import { LoginButton } from "../../Component/LoginButton";
-import { CloudBg } from "../../Component/CloudBg";
+
 
 export const SignIn0203 = ({ navigation, route }) => {
   const inputRef = React.createRef();
@@ -78,7 +78,7 @@ export const SignIn0203 = ({ navigation, route }) => {
           />
         </View>
         <View style={styles.container4}>
-          <CloudBg />
+          {/* <CloudBg /> */}
         </View>
       </LoginBg>
     </>
