@@ -18,7 +18,6 @@ import whiteBackButton from "../../../../../assets/whiteBackButton";
 
 import { LoginBg } from "../../Component/LoginBg";
 import { LoginButton } from "../../Component/LoginButton";
-import { CloudBg } from "../../Component/CloudBg";
 
 export const SignIn0204 = ({ navigation, route }) => {
   // 화면 오갈때마다 키보드 띄우기
@@ -101,7 +100,7 @@ export const SignIn0204 = ({ navigation, route }) => {
           })}
         </View>
         <View style={styles.container4}>
-          <CloudBg />
+          {/* <CloudBg /> */}
           <LoginButton
             style={{ zIndex: 999, bottom: 100 }}
             value={IDSelected}

@@ -1,23 +1,22 @@
 import React, { useRef, useEffect } from "react";
 import { Animated } from "react-native";
 
-export const FadeInView = ({ duration = 2500, ...props }) => {
+export const FadeInView = ({ isLogIn, duration, ...props }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
-      toValue: 1,
+      toValue: !isLogIn ? 1 : 0,
       duration: duration,
       useNativeDriver: true,
     }).start();
-  }, [fadeAnim, duration]);
+  }, [isLogIn, fadeAnim, duration]);
 
   return (
     <Animated.View // Special animatable View
       style={{
         ...props.style,
         opacity: fadeAnim, // Bind opacity to animated value
-        flex: 1,
       }}
     >
       {props.children}
