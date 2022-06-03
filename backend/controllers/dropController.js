@@ -21,11 +21,14 @@ exports.newDrop = async (req, res, next) => {
 exports.getDrops = async (req, res, next) => {
   try {
     const { placePk } = req.params;
-    const drops = await dropServices.getDrops(placePk);
+    const accessToken = getAccess(req.headers);
+    const {public, my} = await dropServices.getDrops(accessToken, placePk);
 
     res.status(200).json({
       msg: "드롭 조회 완료",
-      data: drops,
+      data: {
+        publicDrops:public,
+        myDrops:my},
     });
   } catch (error) {
     next(error);
