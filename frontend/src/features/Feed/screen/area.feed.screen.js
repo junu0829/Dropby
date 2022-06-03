@@ -11,6 +11,8 @@ import backButton2 from "../../../../assets/Buttons/backButton2";
 import { theme } from "../../../infrastructure/theme";
 import { getAreaDrops } from "../../../services/drops/GetDrops";
 import { FeedDropComponent } from "../component/FeedDropComponent";
+import { GNB } from "../../../components/GlobalNavigationBar";
+import { MainContainerView } from "../../../infrastructure/style/styledComponent";
 
 export const AreaFeedScreen = ({ navigation, route }) => {
   const area = route.params;
@@ -26,38 +28,38 @@ export const AreaFeedScreen = ({ navigation, route }) => {
 
   // Place 정보 받아서 해당 장소의 drop들 호출하기
   useEffect(async () => {
-    await getAreaDrops(area.pk, area.pk, setDrops);
+    await getAreaDrops(area.pk, setDrops);
   }, []);
 
   return (
     <>
-      <View style={styles.container1}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <SvgXml xml={backButton2} width={60} height={60} />
-        </TouchableOpacity>
-      </View>
-      {/* 장소 정보 container */}
-      <View style={styles.container2}>
-        <Text style={styles.placeTitle}>{area.name}</Text>
-        <Text style={styles.placeInfo}>
-          서울특별시 성북구 안암로 145, South Korea
-        </Text>
-      </View>
-      {/* 공지사항 container */}
-      <View style={styles.container3}>
-        <Text style={styles.placeTitle}>공지사항</Text>
-        <Text style={styles.placeInfo}>
-          시설예약은 9:00 ~ 15:00 까지 아래 링크에서 가능합니다.
-        </Text>
-      </View>
-      {/* drops */}
-      <View style={styles.container4}>
-        <ScrollView style={styles.dropsContainer}>
-          {drops.map((feedDrop) => (
-            <FeedDropComponent navigation={navigation} feedDrop={feedDrop} />
-          ))}
-        </ScrollView>
-      </View>
+      <GNB
+        navigation={navigation}
+        title={area.name}
+        goBack={navigation.goBack}
+      ></GNB>
+      <MainContainerView>
+        {/* 공지사항 container */}
+        <View style={styles.container3}>
+          <Text style={styles.placeTitle}>공지사항</Text>
+          <Text style={styles.placeInfo}>
+            시설예약은 9:00 ~ 15:00 까지 아래 링크에서 가능합니다.
+          </Text>
+        </View>
+        {/* drops */}
+        <View style={styles.container4}>
+          <ScrollView style={styles.dropsContainer}>
+            {drops.map((feedDrop) => (
+              <FeedDropComponent
+                navigation={navigation}
+                feedDrop={feedDrop}
+                place={area}
+              />
+              //여기서는 place에 area를 넣어서 드롭을 눌렀을 때 "구역" 이름이 뜨게 된다. "장소" 이름이 뜨도록 수정해야할듯
+            ))}
+          </ScrollView>
+        </View>
+      </MainContainerView>
     </>
   );
 };
@@ -80,7 +82,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-start",
     paddingLeft: 12,
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
     borderBottomWidth: 1,
     borderBottomColor: "rgba(0,0,0,0.6)",
   },

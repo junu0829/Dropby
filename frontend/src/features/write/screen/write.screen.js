@@ -20,16 +20,20 @@ import Constants from "expo-constants";
 import addIcon from "../../../../assets/Buttons/addIcon";
 import backButton2 from "../../../../assets/Buttons/backButton2";
 import sendingButton from "../../../../assets/Buttons/sendingButton";
-import bar from "../../../../assets/Background/bar";
+//
 import addPicture from "../../../../assets/Buttons/addPicture";
 import LockButtonUnlocked from "../../../../assets/Buttons/LockButton(Unlocked)";
 
 import { container, styles } from "./writescreen.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { postDrop } from "../../../services/drops/postDrop";
+import { UpdateDrop } from "../../../services/drops/UpdateDrop";
 
 export const WriteScreen = ({ navigation, route }) => {
-  const place = route.params.selectedPlace;
+  const place = route.params.selectedPlace
+    ? route.params.selectedPlace
+    : route.params.place;
+
   // const getToken = async () => AsyncStorage.getItem("accessToken");
   //accessToken 아래에 붙여넣기
   const accessToken =
@@ -38,15 +42,22 @@ export const WriteScreen = ({ navigation, route }) => {
   const [placeAddress, setPlaceAddress] = useState("새로운 장소-주소");
 
   const [selectedEmoji, setSelectedEmoji] = useState("😀");
+  const [name, setName] = useState("test");
   const [area, setArea] = useState(null);
 
   /////////////////////로컬 이미지 여기에 담김
   const [image, setImage] = useState(null);
   //////////////////////
-  let user_idx = Constants.installationId;
 
   useEffect(() => {
-    setArea(route.params.activePolygon);
+    if (route.params.activePolygon) {
+      setArea(route.params.activePolygon);
+    } else {
+      setArea(route.params.place.areaPk);
+      setContent(route.params.drop.content);
+    }
+    // console.log(route.params);
+
     // setPlaceAddress(route.params[0].pressedAddress);
     // setPlaceName(route.params[1].pressedAddressName);
     // if (route.params[3].calibratedLocation) {
@@ -71,6 +82,7 @@ export const WriteScreen = ({ navigation, route }) => {
   const [content, setContent] = useState("");
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
+  const [isPrivate, setIsPrivate] = useState(false);
 
   const drop = {
     pk,
@@ -98,10 +110,27 @@ export const WriteScreen = ({ navigation, route }) => {
   };
 
   const PostWrite = async () => {
-    console.log("Postwrite request sent");
+    // console.log("Postwrite request sent");
     // const accessToken = await AsyncStorage.getItem("accessToken");
 
-    await postDrop(area, place.pk, accessToken, content);
+    route.params.drop
+      ? await UpdateDrop(
+          area,
+          place.pk,
+          route.params.drop.pk,
+          accessToken,
+          content,
+          selectedEmoji,
+          name
+        )
+      : await postDrop(
+          area,
+          place.pk,
+          accessToken,
+          content,
+          selectedEmoji,
+          name
+        );
   };
 
   return (
@@ -161,13 +190,22 @@ export const WriteScreen = ({ navigation, route }) => {
           <View style={styles.textContainer}>
             <Text style={styles.place}>{place.name}</Text>
             <Text style={styles.address}>{placeAddress}</Text>
-            <SvgXml xml={bar} width={280} height={2} style={styles.bar} />
-            <TextInput
-              style={styles.enter}
-              placeholder="텍스트를 입력하세요"
-              onChangeText={(content) => handleContent(content)}
-              value={content}
-            />
+
+            {route.params.drop ? (
+              <TextInput
+                style={styles.enter}
+                placeholder={route.params.drop.content}
+                onChangeText={(content) => handleContent(content)}
+                value={content}
+              />
+            ) : (
+              <TextInput
+                style={styles.enter}
+                placeholder="텍스트를 입력하세요"
+                onChangeText={(content) => handleContent(content)}
+                value={content}
+              />
+            )}
           </View>
         </TouchableWithoutFeedback>
       </View>
