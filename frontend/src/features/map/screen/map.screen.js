@@ -234,7 +234,7 @@ export const MapScreen = ({ navigation, route }) => {
               </>
             ) : null}
 
-            <WhiteSheet />
+            {/* <WhiteSheet /> */}
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </MainContainerView>

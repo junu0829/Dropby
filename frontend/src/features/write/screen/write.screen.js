@@ -28,7 +28,6 @@ import { container, styles } from "./writescreen.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { postDrop } from "../../../services/drops/postDrop";
 import { UpdateDrop } from "../../../services/drops/UpdateDrop";
-import Formdata from "form-data";
 
 export const WriteScreen = ({ navigation, route }) => {
   const place = route.params.selectedPlace
@@ -58,7 +57,7 @@ export const WriteScreen = ({ navigation, route }) => {
   frm.append("isPrivate", isPrivate);
   frm.append("emojiSlug", "neutral_face");
 
-  //////////////////////
+  /////////////
 
   useEffect(() => {
     if (route.params.activePolygon) {

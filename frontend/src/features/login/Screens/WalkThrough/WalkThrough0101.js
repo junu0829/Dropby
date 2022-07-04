@@ -18,7 +18,7 @@ import { signIn } from "../../../../services/login/login";
 import arrow_btn from "../../../../../assets/Buttons/arrow_btn";
 
 export const WalkThrough0101 = ({ navigation }) => {
-  const [isStarted, setIsStarted] = useState(false);
+  const [isStarted, setIsStarted] = useState(true);
   const [isLogIn, setIsLogIn] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");

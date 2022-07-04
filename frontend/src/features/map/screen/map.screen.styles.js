@@ -40,7 +40,6 @@ height: 165px
 
 export const PlaceSearchBoxContainer = styled.View`
 position: absolute
-
 flex-direction: column
 padding: ${(props) => props.theme.space[1]};
   z-index: 991;
