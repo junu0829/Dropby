@@ -22,6 +22,17 @@ export const getAreaDrops = async (areaPk, setDrops) => {
     .catch((e) => console.log(e));
 };
 
+export const getPlacePreview = async (areaPk, placePk, setDATA) => {
+  await axios(`http://${LOCAL_HOST}:3000/${areaPk}/${placePk}/drops`, {
+    method: "GET",
+  })
+    .then((res) => {
+      setDATA(res.data.data);
+      console.log(res.data.data);
+    })
+    .catch((e) => console.log(e));
+};
+
 export const getMapDrops = [
   {
     emoji: "😀",

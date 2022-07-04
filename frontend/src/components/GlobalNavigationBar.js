@@ -18,6 +18,7 @@ import { EditModal } from "../features/detail/component/EditModal";
 import { theme } from "../infrastructure/theme";
 import logo_main from "../../assets/Global/logo_main";
 import btn_my from "../../assets/Buttons/btn_my";
+import btn_add_locate from "../../assets/Buttons/btn_add_locate";
 
 export const GNB = ({
   navigation,
@@ -26,6 +27,8 @@ export const GNB = ({
   subTitle,
   secondButton,
   showModal,
+  selectedPlace,
+  activePolygon,
   modalVisible,
 }) => {
   //GNB 우측 메뉴. 스크린에 따라서 메뉴, +, 전송 버튼으로 나뉜다.
@@ -81,16 +84,32 @@ export const GNB = ({
                 >
                   <SvgXml xml={btn_my} width={30} height={30}></SvgXml>
                 </TouchableOpacity>
+              ) : activePolygon && selectedPlace ? (
+                <TouchableOpacity
+                  style={{ marginRight: 30, top: 30 }}
+                  onPress={() => {
+                    navigation.navigate("WriteScreen", {
+                      selectedPlace,
+                      activePolygon,
+                    });
+                  }}
+                >
+                  <SvgXml xml={btn_add_locate} width={36} height={36}></SvgXml>
+                </TouchableOpacity>
               ) : null}
             </GNBButtonPart2>
           </GNBButtonPart>
           {/* 여기 띄워야 하는 내용도 스크린에 따라서 많이 바뀐다. props로 넘겨야 할 듯. */}
 
           <GNBPlaceName>
-            {goBack ? (
+            {selectedPlace == null && activePolygon != null ? (
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.titleYellow}>{titleFormer}</Text>
                 <Text style={styles.title}>{titleDefault}</Text>
+              </View>
+            ) : activePolygon && selectedPlace ? (
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.title}>{title}</Text>
               </View>
             ) : null}
             <Text style={styles.subTitle}>{subTitle}</Text>

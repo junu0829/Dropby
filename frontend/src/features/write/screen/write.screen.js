@@ -28,6 +28,7 @@ import { container, styles } from "./writescreen.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { postDrop } from "../../../services/drops/postDrop";
 import { UpdateDrop } from "../../../services/drops/UpdateDrop";
+import Formdata from "form-data";
 
 export const WriteScreen = ({ navigation, route }) => {
   const place = route.params.selectedPlace
@@ -41,12 +42,22 @@ export const WriteScreen = ({ navigation, route }) => {
 
   const [placeAddress, setPlaceAddress] = useState("새로운 장소-주소");
 
-  const [selectedEmoji, setSelectedEmoji] = useState("😀");
+  const [selectedEmoji, setSelectedEmoji] = useState("😐");
   const [name, setName] = useState("test");
   const [area, setArea] = useState(null);
+  const [content, setContent] = useState("");
+  const [isPrivate, setIsPrivate] = useState(false);
 
   /////////////////////로컬 이미지 여기에 담김
   const [image, setImage] = useState(null);
+
+  const frm = new FormData();
+  frm.append("image", "false");
+  frm.append("title", name);
+  frm.append("content", content);
+  frm.append("isPrivate", isPrivate);
+  frm.append("emojiSlug", "neutral_face");
+
   //////////////////////
 
   useEffect(() => {
@@ -73,40 +84,13 @@ export const WriteScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     setImage(route.params.source);
-    setSelectedEmoji(route.params.selectedEmoji);
-  }, [route, image, selectedEmoji]);
+    // setSelectedEmoji(route.params.selectedEmoji);
+  }, [route, image]);
 
   ////////////////////
 
-  const [pk, setPk] = useState("");
-  const [content, setContent] = useState("");
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
-  const [isPrivate, setIsPrivate] = useState(false);
-
-  const drop = {
-    pk,
-    content,
-    latitude,
-    longitude,
-  };
-
-  const handlePk = (e) => {
-    setPk(e);
-  };
-
-  const axios = require("axios");
-
   const handleContent = (e) => {
     setContent(e);
-  };
-
-  const handleLatitude = (e) => {
-    setLatitude(e);
-  };
-
-  const handleLongitude = (e) => {
-    setLongitude(e);
   };
 
   const PostWrite = async () => {
@@ -123,14 +107,7 @@ export const WriteScreen = ({ navigation, route }) => {
           selectedEmoji,
           name
         )
-      : await postDrop(
-          area,
-          place.pk,
-          accessToken,
-          content,
-          selectedEmoji,
-          name
-        );
+      : await postDrop(area.pk, place.pk, frm);
   };
 
   return (

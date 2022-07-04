@@ -12,19 +12,19 @@ import {
 import { LocationContext } from "../../../services/location/location.context";
 import { getAddress, getPlaceDetail } from "../../../services/maps/address";
 //Components
-import { dropsList } from "./component/DropsList";
+
 import { Loading } from "../../../components/Loading";
-import { Text } from "../../../components/typography/text.component";
-import { SearchContainer, TextContainer } from "./map.screen.styles";
+
 import { PlaceSearchBox } from "./component/PlaceSearchBox";
 //assets
 import { PlaceBox } from "./component/placeBox";
 import { PlaceBoxBlank } from "./component/placeBoxBlank";
-import { UpperBox } from "./component/upperBox";
+
 import { changedDrops, getMapDrops } from "../../../services/drops/GetDrops";
 import { GNB } from "../../../components/GlobalNavigationBar";
 import { MainContainerView } from "../../../infrastructure/style/styledComponent";
 import { WhiteSheet } from "../../../components/utility/whiteSheet";
+import { ClusteredMap } from "./component/ClusteredMap";
 
 export const MapScreen = ({ navigation, route }) => {
   //////////////////////////지도 및 화면비율 정의///////////////////////////////////
@@ -133,11 +133,6 @@ export const MapScreen = ({ navigation, route }) => {
   }, [route.params]);
 
   //////////정해진 장소정보 가져오는 함수
-  const allCoords = drops.map((i) => ({
-    geometry: {
-      coordinates: [i.latitude, i.longitude],
-    },
-  }));
 
   /////////맵그리는 것 여기서부터 시작///////
 
@@ -160,6 +155,8 @@ export const MapScreen = ({ navigation, route }) => {
             navigation={navigation}
             title={activePolygon.name + " 구역을 검색해보세요"}
             goBack={setActivePolygon}
+            activePolygon={activePolygon}
+            selectedPlace={selectedPlace}
             secondButton={null}
           ></GNB>
         </>
@@ -169,6 +166,8 @@ export const MapScreen = ({ navigation, route }) => {
             navigation={navigation}
             title={selectedPlace.name}
             goBack={setSelectedPlace}
+            activePolygon={activePolygon}
+            selectedPlace={selectedPlace}
             secondButton={null}
           ></GNB>
         </>
@@ -180,28 +179,26 @@ export const MapScreen = ({ navigation, route }) => {
             <View>
               {/*----------------------- 지도 컴포넌트--------------------------- */}
               <View onPress={Keyboard.dismiss}>
-                {dropsList(
-                  drops,
-                  setPressedLocation,
-                  setMarkers,
-                  setPressedAddress,
-                  setPressedAddressName,
-                  location,
-                  map,
-                  LATITUDE_DELTA,
-                  LONGITUDE_DELTA,
-                  writeMode,
-                  Markers,
-                  allCoords,
-                  currentRegion,
-                  updateRegion,
-                  setWriteMode,
-                  setDropContent,
-                  setDrop,
-                  setDropTime,
-                  activePolygon,
-                  setActivePolygon
-                )}
+                <ClusteredMap
+                  onPress={Keyboard.dismiss}
+                  onLongPress={(event) => {
+                    setPressedLocation(event.nativeEvent.coordinate);
+                    setMarkers([]);
+                  }}
+                  ref={map}
+                  setMarkers={setMarkers}
+                  setPressedAddress={setPressedAddress}
+                  setPressedAddressName={setPressedAddressName}
+                  location={location}
+                  LATITUDE_DELTA={LATITUDE_DELTA}
+                  LONGITUDE_DELTA={LONGITUDE_DELTA}
+                  writeMode={writeMode}
+                  Markers={Markers}
+                  region={currentRegion}
+                  updateRegion={updateRegion}
+                  activePolygon={activePolygon}
+                  setActivePolygon={setActivePolygon}
+                ></ClusteredMap>
               </View>
             </View>
             {/*----------------------- 맨 하단 컴포넌트--------------------------- */}

@@ -159,11 +159,6 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
       return res;
     };
     /////////////////////////
-
-    const KOREA_BOUNDS = {
-      NW: [127.04561244696379, 37.619047563271586],
-      SE: [127.0126025006175, 37.562442566816166],
-    };
     ///////////////
 
     useEffect(() => {});
