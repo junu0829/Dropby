@@ -62,7 +62,9 @@ export const WalkThrough0101 = ({ navigation }) => {
           </View>
 
           {/* ----------------------isLogIn 시 뜨는 흰색 정보 입력 박스----------------------- */}
-          <View style={styles.MiddelSpace}>
+          <View
+            style={[styles.MiddelSpace, isStarted & !isLogIn && { flex: 5 }]}
+          >
             {isLogIn ? (
               <View style={styles.LogInContainer}>
                 {/* 이메일 비밀번호 입력란 */}
@@ -126,12 +128,15 @@ export const WalkThrough0101 = ({ navigation }) => {
 
           {/* ----------------------처음에 뜨는 웰컴 메시지, 렛츠드롭, 로그인 회원가입 있는 바닥부분----------------------- */}
 
-          <View style={styles.BottomContainer}>
+          <View
+            style={[
+              styles.BottomContainer,
+              isStarted & !isLogIn && { flex: 4 },
+            ]}
+          >
             {isStarted && !isLogIn ? (
               <View
                 style={{
-                  position: "absolute",
-                  top: -50,
                   justifyContent: "flex-start",
                   alignItems: "center",
                   zIndex: 990,

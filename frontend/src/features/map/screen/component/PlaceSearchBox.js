@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { styles, PlaceSearchBoxContainer } from "../map.screen.styles";
+import { PlaceSearchBoxContainer } from "../map.screen.styles";
 
 import {
   View,
@@ -10,6 +10,8 @@ import {
   StyleSheet,
   ImageBackground,
   Image,
+  SafeAreaView,
+  TouchableHighlight,
 } from "react-native";
 
 import { SvgXml } from "react-native-svg";
@@ -74,27 +76,26 @@ export const PlaceSearchBox = ({
           setSelectedpk(item.pk);
           setSelectedPlace(item);
         }}
+        style={styles.placeBox}
       >
-        <View style={styless.placeBox}>
-          <View style={styless.SymbolContainer}>
-            <Image source={building_01} style={styless.symbol}></Image>
+        <View style={styles.SymbolContainer}>
+          <Image source={building_01} style={styles.symbol}></Image>
+        </View>
+        <View style={styles.PlaceInfoContainer}>
+          <View style={styles.PlaceNameContainer}>
+            <View style={styles.PlaceNameContainer2}>
+              <Text style={styles.PlaceName}>{item.name}</Text>
+            </View>
+            <View style={styles.PlaceDropNumContainer}>
+              <ImageBackground source={dropLine} style={styles.PlaceDropNum}>
+                <Text style={styles.PlaceDropNumber}>99</Text>
+              </ImageBackground>
+            </View>
           </View>
-          <View style={styless.PlaceInfoContainer}>
-            <View style={styless.PlaceNameContainer}>
-              <View style={styless.PlaceNameContainer2}>
-                <Text style={styless.PlaceName}>{item.name}</Text>
-              </View>
-              <View style={styless.PlaceDropNumContainer}>
-                <ImageBackground source={dropLine} style={styless.PlaceDropNum}>
-                  <Text style={styless.PlaceDropNumber}>99</Text>
-                </ImageBackground>
-              </View>
-            </View>
-            <View style={styless.PlaceAddressContainer}>
-              <Text style={styless.PlaceAddress}>
-                서울 성북구 개운사길 60-42(개운사길 5가)
-              </Text>
-            </View>
+          <View style={styles.PlaceAddressContainer}>
+            <Text style={styles.PlaceAddress}>
+              서울 성북구 개운사길 60-42(개운사길 5가)
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -116,30 +117,29 @@ export const PlaceSearchBox = ({
             setSearchfield(text);
           }}
           backgroundColor={theme.colors.bg.secondary}
-          style={styless.searchBox}
+          style={styles.searchBox}
         ></TextInput>
-        <View style={styless.searchIcon}>
+        <View style={styles.searchIcon}>
           <SvgXml xml={icon_search} width={17.5} height={18.5}></SvgXml>
         </View>
       </View>
-
       <FlatList
-        style={styless.placeListBox}
+        contentContainerStyle={styles.FlatListContainer}
+        style={styles.placeListBox}
         horizontal={true}
         data={DATA}
         renderItem={renderPlace}
         keyExtractor={(item) => item.pk}
       ></FlatList>
-
-      <View style={styless.FeedButtonContainer}>
+      <View style={styles.FeedButtonContainer}>
         <TouchableOpacity
           onPress={(item) => {
             setSelectedpk(item.pk);
             navigation.navigate("AreaFeedScreen", activePolygon);
           }}
-          style={styless.FeedButton}
+          style={styles.FeedButton}
         >
-          <Text style={styless.buttonText}>게시판 더 보기 </Text>
+          <Text style={styles.buttonText}>게시판 더 보기 </Text>
           <SvgXml
             xml={btn_arrow}
             width={15}
@@ -152,7 +152,15 @@ export const PlaceSearchBox = ({
   );
 };
 
-const styless = StyleSheet.create({
+const styles = StyleSheet.create({
+  placeBoxTO: {
+    ...Platform.select({
+      android: {
+        elevation: 3,
+        backgroundColor: "black",
+      },
+    }),
+  },
   placeBox: {
     width: 200,
     height: 90,
@@ -160,6 +168,7 @@ const styless = StyleSheet.create({
     borderRadius: 30,
     padding: 5,
     marginRight: 5,
+    marginLeft: 5,
     flexDirection: "row",
     alignItems: "center",
     ...Platform.select({
@@ -181,7 +190,6 @@ const styless = StyleSheet.create({
   SymbolContainer: {
     flex: 3,
     height: "50%",
-    backgroundColor: "#ffffff",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -272,11 +280,13 @@ const styless = StyleSheet.create({
     }),
   },
 
+  FlatListContainer: {
+    paddingLeft: 20,
+  },
   placeListBox: {
     width: "100%",
     marginTop: 10,
     height: 90,
-    marginLeft: "20%",
   },
 
   FeedButtonContainer: {
