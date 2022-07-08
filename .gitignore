@@ -4,5 +4,5 @@ config/
 dropby_db.db
 APIKeys.js
 memo
-frontend/src/features/local.js
 legacy.txt
+frontend/src/services/local.js
