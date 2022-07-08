@@ -42,7 +42,7 @@ export const WalkThrough0101 = ({ navigation }) => {
       <LoginBg>
         <CloudBg>
           {/* ------상단 로고와 소개문구 컨테이너 부분(is Login 눌렸을 시 애니메이션으로 전환되도록 하였음)----- */}
-          <View style={styles.IconContainer}>
+          <View style={[styles.IconContainer, isLogIn && { flex: 6 }]}>
             <FadeInView duration={2000}>
               <SlideView
                 isLogIn={isLogIn}
@@ -53,31 +53,12 @@ export const WalkThrough0101 = ({ navigation }) => {
                 <SvgXml xml={logo} width={124.7} height={133.1} />
               </SlideView>
             </FadeInView>
-            <FadeInView isLogIn={isLogIn} duration={!isLogIn ? 4000 : 2000}>
-              <Text
-                style={{
-                  width: 130,
-                  marginTop: 25,
-                  color: "#ffffff",
-                  fontFamily: theme.fonts.body,
-                  fontSize: 14,
-                }}
-              >
-                지금 서있는 그곳에서
-              </Text>
-
-              <Text
-                style={{
-                  width: 130,
-                  marginTop: 11,
-                  color: "#ffffff",
-                  fontFamily: theme.fonts.body,
-                  fontSize: 14,
-                }}
-              >
-                읽고 느끼고 새기세요
-              </Text>
-            </FadeInView>
+            {!isLogIn ? (
+              <FadeInView isLogIn={isLogIn} duration={!isLogIn ? 4000 : 2000}>
+                <Text style={styles.introText}>지금 서있는 그곳에서</Text>
+                <Text style={styles.introText}>읽고 느끼고 새기세요</Text>
+              </FadeInView>
+            ) : null}
           </View>
 
           {/* ----------------------isLogIn 시 뜨는 흰색 정보 입력 박스----------------------- */}
@@ -297,6 +278,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     zIndex: 800,
   },
+
   MiddelSpace: {
     flex: 6,
     justifyContent: "flex-start",
@@ -350,9 +332,14 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   // ------------로그인하는 화면 디자인 프롭-------
+  introText: {
+    width: 130,
+    marginTop: 11,
+    color: "#ffffff",
+    fontFamily: theme.fonts.body,
+    fontSize: 14,
+  },
   LogInContainer: {
-    position: "absolute",
-    bottom: 80,
     width: 320,
     height: 240,
     justifyContent: "center",
