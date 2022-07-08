@@ -66,6 +66,7 @@ export const PlaceSearchBox = ({
   }, [placeList, searchfield]);
 
   const [selectedpk, setSelectedpk] = useState(null);
+
   const renderPlace = ({ item }) => {
     const Place = ({ item, textColor }) => (
       <TouchableOpacity
@@ -253,7 +254,7 @@ const styless = StyleSheet.create({
     backgroundColor: "#ffffff",
     height: 43,
     borderRadius: 50,
-    padding: 17,
+    paddingLeft: 12,
 
     ...Platform.select({
       ios: {
@@ -277,9 +278,14 @@ const styless = StyleSheet.create({
     height: 90,
     marginLeft: "20%",
   },
+
+  FeedButtonContainer: {
+    width: "80%",
+    bottom: 40,
+  },
   FeedButton: {
     width: 120,
-    height: 28,
+    height: 30,
     backgroundColor: "rgba(153,	106,252, 0.8)",
     borderRadius: 50,
     padding: 8,
@@ -287,10 +293,7 @@ const styless = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  FeedButtonContainer: {
-    width: "80%",
-    bottom: 40,
-  },
+
   buttonText: {
     fontSize: 11,
     fontFamily: theme.fonts.bold,

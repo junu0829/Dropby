@@ -215,7 +215,7 @@ export const MapScreen = ({ navigation, route }) => {
               </>
             ) : selectedPlace == null && activePolygon != null ? (
               <>
-                {/* 여기에 polygon 클릭 후 나타나는 컴포넌트 배치. */}
+                {/* 여기에 구역(polygon) 클릭 후 나타나는 컴포넌트 배치. */}
                 <PlaceSearchBox
                   placeList={placeList}
                   setPlaceList={setPlaceList}
@@ -226,6 +226,7 @@ export const MapScreen = ({ navigation, route }) => {
               </>
             ) : activePolygon && selectedPlace ? (
               <>
+                {/* 여기에 장소(place) 클릭 후 나타나는 컴포넌트 배치. */}
                 <PlaceBox
                   selectedPlace={selectedPlace}
                   activePolygon={activePolygon}

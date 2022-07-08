@@ -39,7 +39,7 @@ export const PlaceBox = ({
   const [searchfield, setSearchfield] = useState("");
   const [DATA, setDATA] = useState([]);
 
-  //searchField 구현을 위해 DATA를 나눔.
+  // searchField 구현을 위해 DATA를 나눔.
   // useEffect(async () => {
   //   await getPlaceData(activePolygon.pk, setPlaceList);
   // }, [activePolygon]);
@@ -237,7 +237,7 @@ const styless = StyleSheet.create({
     backgroundColor: "#ffffff",
     height: 43,
     borderRadius: 50,
-    padding: 17,
+    paddingLeft: 12,
 
     ...Platform.select({
       ios: {
@@ -263,7 +263,7 @@ const styless = StyleSheet.create({
   },
   FeedButton: {
     width: 120,
-    height: 28,
+    height: 30,
     backgroundColor: "rgba(153,	106,252, 0.8)",
     borderRadius: 50,
     padding: 8,

@@ -18,7 +18,7 @@ import { signIn } from "../../../../services/login/login";
 import arrow_btn from "../../../../../assets/Buttons/arrow_btn";
 
 export const WalkThrough0101 = ({ navigation }) => {
-  const [isStarted, setIsStarted] = useState(true);
+  const [isStarted, setIsStarted] = useState(false);
   const [isLogIn, setIsLogIn] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -41,7 +41,7 @@ export const WalkThrough0101 = ({ navigation }) => {
     <>
       <LoginBg>
         <CloudBg>
-          {/* ----------------------상단 로고와 소개문구 컨테이너 부분(is Login 눌렸을 시 애니메이션으로 전환되도록 하였음)----------------------- */}
+          {/* ------상단 로고와 소개문구 컨테이너 부분(is Login 눌렸을 시 애니메이션으로 전환되도록 하였음)----- */}
           <View style={styles.IconContainer}>
             <FadeInView duration={2000}>
               <SlideView
@@ -57,9 +57,7 @@ export const WalkThrough0101 = ({ navigation }) => {
               <Text
                 style={{
                   width: 130,
-
                   marginTop: 25,
-
                   color: "#ffffff",
                   fontFamily: theme.fonts.body,
                   fontSize: 14,
@@ -71,9 +69,7 @@ export const WalkThrough0101 = ({ navigation }) => {
               <Text
                 style={{
                   width: 130,
-
                   marginTop: 11,
-
                   color: "#ffffff",
                   fontFamily: theme.fonts.body,
                   fontSize: 14,
@@ -194,20 +190,20 @@ export const WalkThrough0101 = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
             ) : !isStarted ? (
-              <FadeInView
+              <View
                 style={{
-                  flex: 1,
+                  position: "absolute",
+                  justifyContent: "flex-end",
                   alignItems: "center",
+                  zIndex: 999,
                 }}
-                duration={4000}
               >
-                <View
+                <FadeInView
                   style={{
-                    position: "absolute",
-                    justifyContent: "flex-end",
+                    flex: 1,
                     alignItems: "center",
-                    zIndex: 999,
                   }}
+                  duration={4000}
                 >
                   <Text
                     style={{
@@ -234,8 +230,8 @@ export const WalkThrough0101 = ({ navigation }) => {
                       렛츠 드롭!
                     </Text>
                   </TouchableOpacity>
-                </View>
-              </FadeInView>
+                </FadeInView>
+              </View>
             ) : (
               <FadeInView
                 style={{
@@ -312,7 +308,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     alignItems: "flex-start",
-    zIndex: 800,
   },
   // ---------------------------------------------------------처음에 뜨는 버튼들------------------------------------------------------------
   LetsDropButton: {
@@ -354,17 +349,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     zIndex: 999,
   },
-  // ---------------------------------------------------------로그인하는 화면 디자인 프롭------------------------------------------------------------
+  // ------------로그인하는 화면 디자인 프롭-------
   LogInContainer: {
-    zIndex: 880,
     position: "absolute",
-    bottom: 100,
+    bottom: 80,
     width: 320,
     height: 240,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ffffff",
     borderRadius: 50,
+    zIndex: 999,
     ...Platform.select({
       ios: {
         shadowColor: "rgba(50, 50, 50,0.5)",
