@@ -30,25 +30,42 @@ import dropLine from "../../../../../assets/Global/dropPath.png";
 import building_01 from "../../../../../assets/images/symbols_xxhdpi/building_01.png";
 import icon_search from "../../../../../assets/Global/icon_search";
 import btn_arrow from "../../../../../assets/Buttons/btn_arrow";
-
+import dropBg from "../../../../../assets/images/dropPng/drawable-xxhdpi/pin.png";
+import HeartIcon from "../../../../../assets/HeartIcon";
 export const PlaceBox = ({
   navigation,
   selectedPlace = {},
   activePolygon = {},
 }) => {
   const [searchfield, setSearchfield] = useState("");
-  const [DATA, setDATA] = useState([]);
-
-  // searchField 구현을 위해 DATA를 나눔.
-  // useEffect(async () => {
-  //   await getPlaceData(activePolygon.pk, setPlaceList);
-  // }, [activePolygon]);
+  const [DATA, setDATA] = useState([
+    {
+      content: "test content",
+      createdAt: "2022-06-03T10:54:33.000Z",
+      creatorPk: 2,
+      emoji: {
+        emoji_version: "0.7",
+        icon: "😀",
+        name: "중립적 인면",
+        pk: 1,
+        skinToneSupport: false,
+        slug: "neutral_face",
+        unicode_version: "0.7",
+      },
+      emojiPk: 1,
+      images: [],
+      isPrivate: false,
+      pk: 7,
+      placePk: 1,
+      title: "test title",
+    },
+  ]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await getPlaceDrops(activePolygon, selectedPlace, setDATA);
+    await getPlaceDrops(selectedPlace.areaPk, selectedPlace.pk, setDATA);
     console.log(DATA);
-  }, [DATA, activePolygon, selectedPlace]);
+  }, []);
 
   const [selectedpk, setSelectedpk] = useState(null);
   const renderPlace = ({ item }) => {
@@ -58,25 +75,27 @@ export const PlaceBox = ({
           setSelectedpk(item.pk);
         }}
       >
-        <View style={styless.placeBox}>
+        <View style={styless.dropBox}>
           <View style={styless.SymbolContainer}>
-            <Image source={building_01} style={styless.symbol}></Image>
+            <ImageBackground source={dropBg} style={styless.dropemoji}>
+              <Text style={styless.emoji}>{item.emoji.icon}</Text>
+            </ImageBackground>
           </View>
-          <View style={styless.PlaceInfoContainer}>
-            <View style={styless.PlaceNameContainer}>
-              <View style={styless.PlaceNameContainer2}>
-                <Text style={styless.PlaceName}>{item.name}</Text>
+          <View style={styless.dropContentContainer}>
+            <View style={styless.dropTitleContainer}>
+              <View style={styless.dropTitleContainer2}>
+                <Text style={styless.dropTitle}>{item.title}</Text>
               </View>
-              <View style={styless.PlaceDropNumContainer}>
-                <ImageBackground source={dropLine} style={styless.PlaceDropNum}>
-                  <Text style={styless.PlaceDropNumber}>99</Text>
-                </ImageBackground>
+              <View style={styless.DropTimeContainer}>
+                <Text style={styless.dropTime}>{item.createdAt}</Text>
               </View>
             </View>
-            <View style={styless.PlaceAddressContainer}>
-              <Text style={styless.PlaceAddress}>
-                서울 성북구 개운사길 60-42(개운사길 5가)
-              </Text>
+            <View style={styless.dropContentContainer}>
+              <Text style={styless.dropContent}>{item.content}</Text>
+              <View style={styless.dropLike}>
+                <SvgXml xml={HeartIcon} width={15} height={15}></SvgXml>
+                <Text style={styless.dropLikeNum}>12</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -88,24 +107,6 @@ export const PlaceBox = ({
 
   return (
     <PlaceSearchBoxContainer>
-      <View
-        style={{
-          flexDirection: "row",
-        }}
-      >
-        <TextInput
-          placeholder="장소를 입력해보세요"
-          onChangeText={(text) => {
-            setSearchfield(text);
-          }}
-          backgroundColor={theme.colors.bg.secondary}
-          style={styless.searchBox}
-        ></TextInput>
-        <View style={styless.searchIcon}>
-          <SvgXml xml={icon_search} width={17.5} height={18.5}></SvgXml>
-        </View>
-      </View>
-
       <FlatList
         style={styless.placeListBox}
         horizontal={true}
@@ -136,9 +137,9 @@ export const PlaceBox = ({
 };
 
 const styless = StyleSheet.create({
-  placeBox: {
-    width: 200,
-    height: 90,
+  dropBox: {
+    width: 280,
+    height: 130,
     backgroundColor: "#ffffff",
     borderRadius: 30,
     padding: 5,
@@ -162,61 +163,59 @@ const styless = StyleSheet.create({
     zIndex: 999,
   },
   SymbolContainer: {
-    flex: 3,
-    height: "50%",
+    flex: 2,
+    height: "60%",
     backgroundColor: "#ffffff",
-    justifyContent: "center",
+
     alignItems: "center",
   },
-  symbol: {
-    width: 40,
-    height: 40,
+  dropemoji: {
+    width: 26,
+    height: 36,
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
-  PlaceInfoContainer: {
-    flex: 8,
+  // emoji: {},
+  dropContentContainer: {
+    flex: 10,
   },
-  PlaceNameContainer: {
-    flex: 4,
+  dropTitleContainer: {
+    flex: 3,
     flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
   },
-  PlaceName: {
-    fontSize: 13,
+  dropTitle: {
+    fontSize: 14,
     fontFamily: theme.fonts.bold,
     marginTop: 10,
-    marginLeft: 2,
+
     color: "#2e2e2e",
     width: 100,
-    height: 30,
   },
 
-  PlaceNameContainer2: { flex: 7 },
-  PlaceAddressContainer: { flex: 6 },
-  PlaceAddress: {
-    fontSize: 10,
+  dropTitleContainer2: { flex: 7 },
+  // eslint-disable-next-line no-dupe-keys
+  dropContentContainer: { flex: 6 },
+  dropContent: {
+    fontSize: 12,
     fontFamily: theme.fonts.body,
-    marginTop: 10,
+    marginTop: 5,
     marginLeft: 2,
     color: "#2e2e2e",
-    width: 100,
-    height: 40,
+    width: 170,
   },
-  PlaceDropNumContainer: {
-    flex: 1,
+  DropTimeContainer: {
+    flex: 4.5,
     flexDirection: "row",
     justifyContent: "flex-end",
     marginRight: 15,
+    marginTop: 10,
     alignItems: "center",
   },
-  PlaceDropNum: {
-    width: 16,
-    height: 21.9,
-  },
-  PlaceDropNumber: {
+
+  dropTime: {
     fontSize: 9,
-    alignSelf: "center",
-    fontFamily: theme.fonts.bold,
-    marginTop: 9.5,
-    color: "#996afc",
   },
 
   searchIcon: {
@@ -279,5 +278,15 @@ const styless = StyleSheet.create({
     fontSize: 11,
     fontFamily: theme.fonts.bold,
     color: "#ffffff",
+  },
+  dropLike: {
+    flexDirection: "row",
+    marginTop: 10,
+  },
+  dropLikeNum: {
+    fontSize: 11,
+    fontFamily: theme.fonts.bold,
+
+    marginLeft: 2,
   },
 });

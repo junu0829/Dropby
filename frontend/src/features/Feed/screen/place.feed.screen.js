@@ -28,6 +28,7 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
   // Place 정보 받아서 해당 장소의 drop들 호출하기
   useEffect(async () => {
     await getPlaceDrops(place.areaPk, place.pk, setDrops);
+    console.log(place.areaPk, place.pk);
   }, []);
 
   return (
