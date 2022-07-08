@@ -42,12 +42,12 @@ export const PlaceSearchBoxContainer = styled.View`
 position: absolute
 flex-direction: column
 padding: ${(props) => props.theme.space[1]};
-  z-index: 991;
-  bottom: 20px
+z-index: 991;
+bottom: 20px
 height: 230px
-  width: 100%;
-  justify-content:center;
-  align-items:center;
+width: 100%;
+justify-content:center;
+align-items:center;
 
  
 `;
