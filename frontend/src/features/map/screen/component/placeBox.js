@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { styles, PlaceSearchBoxContainer } from "../map.screen.styles";
+import { PlaceSearchBoxContainer } from "../map.screen.styles";
 
 import {
   View,
@@ -32,6 +32,8 @@ import icon_search from "../../../../../assets/Global/icon_search";
 import btn_arrow from "../../../../../assets/Buttons/btn_arrow";
 import dropBg from "../../../../../assets/images/dropPng/drawable-xxhdpi/pin.png";
 import HeartIcon from "../../../../../assets/HeartIcon";
+import { elapsedTime } from "../../../../infrastructure/elapsedTime";
+
 export const PlaceBox = ({
   navigation,
   selectedPlace = {},
@@ -64,7 +66,6 @@ export const PlaceBox = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     await getPlaceDrops(selectedPlace.areaPk, selectedPlace.pk, setDATA);
-    console.log(DATA);
   }, []);
 
   const [selectedpk, setSelectedpk] = useState(null);
@@ -74,28 +75,27 @@ export const PlaceBox = ({
         onPress={() => {
           setSelectedpk(item.pk);
         }}
+        style={styles.dropBox}
       >
-        <View style={styless.dropBox}>
-          <View style={styless.SymbolContainer}>
-            <ImageBackground source={dropBg} style={styless.dropemoji}>
-              <Text style={styless.emoji}>{item.emoji.icon}</Text>
-            </ImageBackground>
-          </View>
-          <View style={styless.dropContentContainer}>
-            <View style={styless.dropTitleContainer}>
-              <View style={styless.dropTitleContainer2}>
-                <Text style={styless.dropTitle}>{item.title}</Text>
-              </View>
-              <View style={styless.DropTimeContainer}>
-                <Text style={styless.dropTime}>{item.createdAt}</Text>
-              </View>
+        <View style={styles.SymbolContainer}>
+          <ImageBackground source={dropBg} style={styles.dropemoji}>
+            <Text style={styles.emoji}>{item.emoji.icon}</Text>
+          </ImageBackground>
+        </View>
+        <View style={styles.dropContentContainer}>
+          <View style={styles.dropTitleContainer}>
+            <View style={styles.dropTitleContainer2}>
+              <Text style={styles.dropTitle}>{item.title}</Text>
             </View>
-            <View style={styless.dropContentContainer}>
-              <Text style={styless.dropContent}>{item.content}</Text>
-              <View style={styless.dropLike}>
-                <SvgXml xml={HeartIcon} width={15} height={15}></SvgXml>
-                <Text style={styless.dropLikeNum}>12</Text>
-              </View>
+            <View style={styles.DropTimeContainer}>
+              <Text style={styles.dropTime}>{elapsedTime(item.createdAt)}</Text>
+            </View>
+          </View>
+          <View style={styles.dropContentContainer}>
+            <Text style={styles.dropContent}>{item.content}</Text>
+            <View style={styles.dropLike}>
+              <SvgXml xml={HeartIcon} width={15} height={15}></SvgXml>
+              <Text style={styles.dropLikeNum}>12</Text>
             </View>
           </View>
         </View>
@@ -108,22 +108,23 @@ export const PlaceBox = ({
   return (
     <PlaceSearchBoxContainer>
       <FlatList
-        style={styless.placeListBox}
+        contentContainerStyle={styles.FlatListContainer}
+        style={styles.placeListBox}
         horizontal={true}
         data={DATA}
         renderItem={renderPlace}
         keyExtractor={(item) => item.pk}
       ></FlatList>
 
-      <View style={styless.FeedButtonContainer}>
+      <View style={styles.FeedButtonContainer}>
         <TouchableOpacity
           onPress={(item) => {
             setSelectedpk(item.pk);
             navigation.navigate("PlaceFeedScreen", selectedPlace);
           }}
-          style={styless.FeedButton}
+          style={styles.FeedButton}
         >
-          <Text style={styless.buttonText}>게시판 더 보기 </Text>
+          <Text style={styles.buttonText}>게시판 더 보기 </Text>
           <SvgXml
             xml={btn_arrow}
             width={15}
@@ -136,13 +137,13 @@ export const PlaceBox = ({
   );
 };
 
-const styless = StyleSheet.create({
+const styles = StyleSheet.create({
   dropBox: {
     width: 280,
-    height: 130,
+    height: 120,
     backgroundColor: "#ffffff",
     borderRadius: 30,
-    padding: 5,
+    padding: 8,
     marginRight: 5,
     flexDirection: "row",
     alignItems: "center",
@@ -165,8 +166,6 @@ const styless = StyleSheet.create({
   SymbolContainer: {
     flex: 2,
     height: "60%",
-    backgroundColor: "#ffffff",
-
     alignItems: "center",
   },
   dropemoji: {
@@ -175,7 +174,8 @@ const styless = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
   },
-  // emoji: {},
+  emoji: { marginBottom: 2 },
+
   dropContentContainer: {
     flex: 10,
   },
@@ -204,9 +204,12 @@ const styless = StyleSheet.create({
     marginLeft: 2,
     color: "#2e2e2e",
     width: 170,
+    height: 32,
+    fontWeight: "600",
   },
+
   DropTimeContainer: {
-    flex: 4.5,
+    flex: 5,
     flexDirection: "row",
     justifyContent: "flex-end",
     marginRight: 15,
@@ -216,6 +219,8 @@ const styless = StyleSheet.create({
 
   dropTime: {
     fontSize: 9,
+    fontWeight: "700",
+    color: "#808080",
   },
 
   searchIcon: {
@@ -253,12 +258,12 @@ const styless = StyleSheet.create({
       },
     }),
   },
-
+  FlatListContainer: {
+    paddingLeft: 20,
+  },
   placeListBox: {
     width: "100%",
     marginTop: 10,
-    height: 90,
-    marginLeft: "20%",
   },
   FeedButton: {
     width: 120,
