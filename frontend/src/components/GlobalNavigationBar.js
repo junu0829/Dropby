@@ -30,6 +30,8 @@ export const GNB = ({
   selectedPlace,
   activePolygon,
   modalVisible,
+  mode,
+  place,
 }) => {
   //GNB 우측 메뉴. 스크린에 따라서 메뉴, +, 전송 버튼으로 나뉜다.
 
@@ -111,7 +113,23 @@ export const GNB = ({
               <View style={{ flexDirection: "row" }}>
                 <Text style={styles.title}>{title}</Text>
               </View>
+            ) : mode == "areaFeed" ? (
+              <View style={{ flexDirection: "row", marginLeft: 10 }}>
+                <Text style={styles.title}>
+                  {title} 구역에 7개의 글이 있습니다
+                </Text>
+              </View>
+            ) : mode == "placeFeed" ? (
+              <>
+                <View style={{ flexDirection: "row", marginLeft: 10 }}>
+                  <Text style={styles.title}>{title}</Text>
+                </View>
+                <View style={{ flexDirection: "row", marginLeft: 10 }}>
+                  <Text style={styles.address}>주소입니다</Text>
+                </View>
+              </>
             ) : null}
+
             <Text style={styles.subTitle}>{subTitle}</Text>
           </GNBPlaceName>
         </SafeArea>
@@ -142,7 +160,7 @@ const GNBPlaceName = styled.View`
 `;
 const styles = StyleSheet.create({
   title: {
-    fontSize: 17,
+    fontSize: 18,
     color: "white",
     marginTop: 14,
   },
@@ -154,5 +172,10 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: theme.fontSizes.caption,
     color: "white",
+  },
+  address: {
+    fontSize: 13,
+    color: "white",
+    marginTop: 5,
   },
 });

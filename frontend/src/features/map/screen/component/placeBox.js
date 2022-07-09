@@ -119,7 +119,7 @@ export const PlaceBox = ({
         <TouchableOpacity
           onPress={(item) => {
             setSelectedpk(item.pk);
-            navigation.navigate("AreaFeedScreen", activePolygon);
+            navigation.navigate("PlaceFeedScreen", selectedPlace);
           }}
           style={styless.FeedButton}
         >
