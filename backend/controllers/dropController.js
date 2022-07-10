@@ -19,6 +19,26 @@ exports.newDrop = async (req, res, next) => {
   }
 };
 
+exports.getDrops = async (req, res, next) => {
+  try {
+    const { placePk } = req.params;
+    const accessToken = getAccess(req.headers);
+
+    const {writtenPlace, dropsCount, publicDrops, myDrops} = await dropServices.getDrops(accessToken, placePk);
+
+    res.status(200).json({
+      msg:'해당 장소 전체 드롭 조회 완료',
+      writtenPlace,
+      dropsCount,
+      data: {
+        publicDrops,
+        myDrops,
+      }
+    })
+  } catch (error) {
+    next(error);
+  }
+}
 exports.getPublicDrops = async (req, res, next) => {
   try {
     const { placePk } = req.params;
