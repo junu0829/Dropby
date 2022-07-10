@@ -35,6 +35,34 @@ exports.newDrop = async (accessToken, body, files, placePk) => {
   return drop;
 };
 
+exports.getDrops = async (accessToken, placePk) => {
+  const publicDrops = await Drop.findAll({
+    where: {
+      placePk,
+      isPrivate:false,
+    }
+  });
+
+  const user = await getUserWithAccess(accessToken);
+
+  const myDrops = await Drop.findAll({
+    where:{
+      placePk,
+      isPrivate:true,
+      creatorPk:user.pk
+    },
+    include:["images", "emoji"],
+  })
+  const writtenPlace = await getWrittenPlaceName(publicDrops[0]);
+  const dropsCount = publicDrops.length + myDrops.length;
+
+  return {
+    writtenPlace,
+    dropsCount,
+    publicDrops,
+    myDrops
+  }
+}
 exports.getPublicDrops = async (accessToken, placePk) => {
   const publicDrops = await Drop.findAll({
     where:{
