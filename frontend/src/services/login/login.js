@@ -1,7 +1,7 @@
 import LOCAL_HOST from "../local.js";
 
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { user } from "../user.js";
 
 export const signIn = async (email, password) => {
   const response = await axios(`http://${LOCAL_HOST}:3000/auth/login`, {
@@ -19,10 +19,11 @@ export const signIn = async (email, password) => {
       const accessToken = res.data.data.tokens.access;
       const refreshToken = res.data.data.tokens.refresh;
       const nickname = res.data.data.userData.nickname;
-      AsyncStorage.setItem("accessToken", accessToken);
-      AsyncStorage.setItem("refreshToken", refreshToken);
-      AsyncStorage.setItem("nickname", nickname);
+      user.setItemToAsync("accessToken", accessToken);
+      user.setItemToAsync("refreshToken", refreshToken);
+      user.setItemToAsync("nickname", nickname);
       console.log("tokens saved in asyncstorage");
+      console.log(res.data.msg);
     })
     .catch((error) => {
       console.log(error.message);
@@ -49,10 +50,9 @@ export const signUp = async (nickname, email, password) => {
       const accessToken = res.data.data.tokens.access;
       const refreshToken = res.data.data.tokens.refresh;
       const nickname = res.data.data.userData.nickname;
-      AsyncStorage.setItem("accessToken", accessToken);
-      AsyncStorage.setItem("refreshToken", refreshToken);
-      AsyncStorage.setItem("nickname", nickname);
-
+      user.setItemToAsync("accessToken", accessToken);
+      user.setItemToAsync("refreshToken", refreshToken);
+      user.setItemToAsync("nickname", nickname);
       console.log("tokens saved in asyncstorage");
     })
     .catch((error) => {

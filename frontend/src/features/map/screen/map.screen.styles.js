@@ -8,11 +8,10 @@ import { theme } from "../../../infrastructure/theme";
 export const Map = styled(MapView)`
   height: 100%;
   width: 100%;
-  z-index: 1;
 `;
 export const SearchContainer = styled.View`
   position: absolute;
-  z-index: 999;
+  z-index: 992;
   width: 100%;
 `;
 
@@ -41,14 +40,15 @@ height: 165px
 
 export const PlaceSearchBoxContainer = styled.View`
 position: absolute
-
 flex-direction: column
-padding: ${(props) => props.theme.space[3]};
-  z-index: 998;
-  bottom: 60px
-height: 165px
-  width: 80%;
-  left: 10%
+padding: ${(props) => props.theme.space[1]};
+z-index: 991;
+bottom: 20px
+height: 230px
+width: 100%;
+justify-content:center;
+align-items:center;
+
  
 `;
 export const PlaceContainer2 = styled.View`

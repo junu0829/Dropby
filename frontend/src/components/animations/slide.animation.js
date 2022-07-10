@@ -1,22 +1,24 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Animated } from "react-native";
-import { Dimensions } from "react-native";
 
-export const SlideView = ({ duration = 500, isDetail = {}, ...props }) => {
-  const SlideAnim = useRef(
-    new Animated.Value(isDetail == true ? 0 : 0)
-  ).current;
-  const height = Dimensions.get("window").height;
-  const endValue = Math.abs(height) * -1 + 165;
-  const endvalue2 = 0;
+export const SlideView = ({
+  isLogIn,
+  duration,
+  startValue,
+  endValue,
+  isDetail = {},
+  ...props
+}) => {
+  const SlideAnim = useRef(new Animated.Value(startValue)).current;
+  const endValue2 = -50;
 
   useEffect(() => {
     Animated.timing(SlideAnim, {
-      toValue: isDetail ? endValue : endvalue2,
+      toValue: !isLogIn ? endValue : endValue2,
       duration: duration,
       useNativeDriver: true,
     }).start();
-  }, [SlideAnim, duration, endValue, endvalue2, height, isDetail]);
+  }, [isLogIn, SlideAnim, duration, endValue, isDetail, endValue2]);
 
   return (
     <Animated.View // Special animatable View
@@ -24,8 +26,6 @@ export const SlideView = ({ duration = 500, isDetail = {}, ...props }) => {
         ...props.style,
 
         transform: [{ translateY: SlideAnim }],
-
-        flex: 1,
       }}
     >
       {props.children}

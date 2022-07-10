@@ -252,7 +252,8 @@ export const styles = StyleSheet.create({
 
 export const DetailView0 = styled.View`
   width: 100%;
-  border-radius: 36px;
+  border-top-right-radius: 36px;
+  border-top-left-radius: 36px;
   z-index: 999;
   position: absolute;
   height: 80%;

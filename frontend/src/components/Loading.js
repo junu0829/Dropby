@@ -8,7 +8,7 @@ import { SvgXml } from "react-native-svg";
 import styled from "styled-components";
 import { ActivityIndicator, Colors } from "react-native-paper";
 import LetsDrop from "../../assets/LetsDrop";
-
+import { LoginBg } from "../features/login/Component/LoginBg";
 
 const LoadingAnim = styled(ActivityIndicator)`
   margin-left: -13px;
@@ -22,18 +22,7 @@ const LoadingContainer = styled.View`
 export const Loading = () => {
   return (
     <>
-      <LinearGradient
-        style={styles.container}
-        colors={[
-          theme.colors.bg.a,
-          theme.colors.bg.b,
-          theme.colors.bg.c,
-          theme.colors.bg.d,
-        ]}
-        start={{ x: 0.99, y: 0.01 }}
-        end={{ x: 0.01, y: 0.99 }}
-        locations={[0.0, 0.5, 0.8, 1.0]}
-      >
+      <LoginBg>
         <View style={styles.container2}>
           <SvgXml xml={LoadIcon} width={72} height={123} />
         </View>
@@ -43,7 +32,7 @@ export const Loading = () => {
           </LoadingContainer>
         </View>
         <View style={styles.container4} />
-      </LinearGradient>
+      </LoginBg>
     </>
   );
 };

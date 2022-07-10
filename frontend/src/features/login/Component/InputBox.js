@@ -6,7 +6,7 @@ export const InputBox = ({ placeholderText, handleWhat }) => {
     <View style={styles.inputBox}>
       <TextInput
         style={styles.input}
-        placeholderTextColor="#02B5AA"
+        placeholderTextColor="#8b8b8b"
         placeholder={placeholderText}
         onChangeText={(What) => handleWhat(What)}
         value={null}
@@ -18,19 +18,21 @@ export const InputBox = ({ placeholderText, handleWhat }) => {
 const styles = StyleSheet.create({
   inputBox: {
     backgroundColor: theme.colors.bg.white,
-    width: 280,
-    height: 38,
+    width: 260,
+    height: 40,
     opacity: 0.9,
     marginTop: 10,
-    borderColor: theme.colors.bg.a,
+    borderColor: "#e4e4e4",
     borderWidth: 1,
     borderRadius: 20,
     padding: 5,
     justifyContent: "center",
+    zIndex: 991,
   },
   input: {
-    fontSize: 14,
-    left: 50,
+    fontSize: 13,
+    left: 18,
     fontFamily: theme.fonts.body,
+    zIndex: 992,
   },
 });
