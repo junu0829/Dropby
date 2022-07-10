@@ -1,5 +1,4 @@
 import React from "react";
-import LOCAL_HOST from "../../../../services/local";
 import axios from "axios";
 
 import { SvgXml } from "react-native-svg";
