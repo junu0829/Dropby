@@ -45,8 +45,11 @@ exports.getPublicDrops = async (accessToken, placePk) => {
   });
 
   const writtenPlace = await getWrittenPlaceName(publicDrops[0]);
+  const dropsCount = publicDrops.length;
+
   return {
           writtenPlace,
+          dropsCount,
           publicDrops,
           };
 };
@@ -64,9 +67,10 @@ exports.getMyDrops = async (accessToken, placePk) => {
   });
 
   const writtenPlace = await getWrittenPlaceName(myDrops[0]);
-
+  const dropsCount = myDrops.length;
   return {
     writtenPlace,
+    dropsCount, 
     myDrops
   }
 }
