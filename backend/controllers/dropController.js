@@ -74,3 +74,16 @@ exports.deleteDrop = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getDrop = async (req, res, next) => {
+  try {
+    const dropPk = req.params.dropPk;
+    const drop = await dropServices.getDrop(dropPk);
+    res.status(200).json({
+      msg:'단일 드롭 조회 완료',
+      data:drop
+    })
+  } catch (error) {
+    nextd(error);
+  }
+}

@@ -105,5 +105,14 @@ exports.deleteDrop = async (dropPk) => {
 
   await drop.destroy();
   return true;
+}
 
+exports.getDrop = async (dropPk) => {
+  const drop = await Drop.findOne({
+    where:{
+      pk:dropPk
+    }
+  });
+
+  return drop;
 }
