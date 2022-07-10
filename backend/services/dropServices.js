@@ -34,10 +34,8 @@ exports.newDrop = async (accessToken, body, files, placePk) => {
   return drop;
 };
 
-
-exports.getDrops = async (accessToken, placePk) => {
-  const user = await getUserWithAccess(accessToken);
-
+exports.getPublicDrops = async (accessToken, placePk) => {
+  console.log('placePk', placePk);
   const publicDrops = await Drop.findAll({
     where:{
       placePk,
@@ -45,6 +43,15 @@ exports.getDrops = async (accessToken, placePk) => {
     },
     include:["images", "emoji"]
   });
+
+  return {
+          publicDrops,
+          };
+};
+
+exports.getMyDrops = async (accessToken, placePk) => {
+  const user = await getUserWithAccess(accessToken);
+
   const myDrops = await Drop.findAll({
     where: {
       placePk,
@@ -52,13 +59,12 @@ exports.getDrops = async (accessToken, placePk) => {
       creatorPk:user.pk
     },
     include:["images", "emoji"],
-  })
-  return {
-          public:publicDrops,
-          my:myDrops
-          };
-};
+  });
 
+  return {
+    myDrops
+  }
+}
 exports.updateDrop = async (body, files, dropPk) => {
   const {title, content} = body;
   const drop = await Drop.findOne({
