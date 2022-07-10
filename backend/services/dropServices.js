@@ -1,5 +1,6 @@
 const { Drop, Image, Emoji } = require("../models");
 const { getUserWithAccess } = require("../utils/auth");
+const { getWrittenPlaceName } = require("../utils/place");
 
 
 exports.newDrop = async (accessToken, body, files, placePk) => {
@@ -34,10 +35,7 @@ exports.newDrop = async (accessToken, body, files, placePk) => {
   return drop;
 };
 
-
-exports.getDrops = async (accessToken, placePk) => {
-  const user = await getUserWithAccess(accessToken);
-
+exports.getPublicDrops = async (accessToken, placePk) => {
   const publicDrops = await Drop.findAll({
     where:{
       placePk,
@@ -45,6 +43,20 @@ exports.getDrops = async (accessToken, placePk) => {
     },
     include:["images", "emoji"]
   });
+
+  const writtenPlace = await getWrittenPlaceName(publicDrops[0]);
+  const dropsCount = publicDrops.length;
+
+  return {
+          writtenPlace,
+          dropsCount,
+          publicDrops,
+          };
+};
+
+exports.getMyDrops = async (accessToken, placePk) => {
+  const user = await getUserWithAccess(accessToken);
+
   const myDrops = await Drop.findAll({
     where: {
       placePk,
@@ -52,13 +64,16 @@ exports.getDrops = async (accessToken, placePk) => {
       creatorPk:user.pk
     },
     include:["images", "emoji"],
-  })
-  return {
-          public:publicDrops,
-          my:myDrops
-          };
-};
+  });
 
+  const writtenPlace = await getWrittenPlaceName(myDrops[0]);
+  const dropsCount = myDrops.length;
+  return {
+    writtenPlace,
+    dropsCount, 
+    myDrops
+  }
+}
 exports.updateDrop = async (body, files, dropPk) => {
   const {title, content} = body;
   const drop = await Drop.findOne({
@@ -99,5 +114,19 @@ exports.deleteDrop = async (dropPk) => {
 
   await drop.destroy();
   return true;
+}
 
+exports.getDrop = async (dropPk) => {
+  const drop = await Drop.findOne({
+    where:{
+      pk:dropPk
+    }
+  });
+
+  const writtenPlace = await getWrittenPlaceName(drop);
+
+  return {
+    writtenPlace,
+    drop
+  };
 }
