@@ -1,5 +1,6 @@
 const { Drop, Image, Emoji } = require("../models");
 const { getUserWithAccess } = require("../utils/auth");
+const { getWrittenPlaceName } = require("../utils/place");
 
 
 exports.newDrop = async (accessToken, body, files, placePk) => {
@@ -35,7 +36,6 @@ exports.newDrop = async (accessToken, body, files, placePk) => {
 };
 
 exports.getPublicDrops = async (accessToken, placePk) => {
-  console.log('placePk', placePk);
   const publicDrops = await Drop.findAll({
     where:{
       placePk,
@@ -44,7 +44,9 @@ exports.getPublicDrops = async (accessToken, placePk) => {
     include:["images", "emoji"]
   });
 
+  const writtenPlace = await getWrittenPlaceName(publicDrops[0]);
   return {
+          writtenPlace,
           publicDrops,
           };
 };
@@ -61,7 +63,10 @@ exports.getMyDrops = async (accessToken, placePk) => {
     include:["images", "emoji"],
   });
 
+  const writtenPlace = await getWrittenPlaceName(myDrops[0]);
+
   return {
+    writtenPlace,
     myDrops
   }
 }
@@ -114,5 +119,10 @@ exports.getDrop = async (dropPk) => {
     }
   });
 
-  return drop;
+  const writtenPlace = await getWrittenPlaceName(drop);
+
+  return {
+    writtenPlace,
+    drop
+  };
 }

@@ -23,10 +23,11 @@ exports.getPublicDrops = async (req, res, next) => {
   try {
     const { placePk } = req.params;
     const accessToken = getAccess(req.headers);
-    const { publicDrops } = await dropServices.getPublicDrops(accessToken, placePk);
-
+    const { writtenPlace, publicDrops } = await dropServices.getPublicDrops(accessToken, placePk);
+    console.log('written place called get controller', writtenPlace);
     res.status(200).json({
       msg: "드롭 조회 완료",
+      writtenPlace,
       data: publicDrops
     });
   } catch (error) {
@@ -39,10 +40,11 @@ exports.getMyDrops = async (req, res, next) => {
   try {
     const { placePk } = req.params;
     const accessToken = getAccess(req.headers);
-    const { myDrops } = await dropServices.getMyDrops(accessToken, placePk);
+    const { writtenPlace, myDrops } = await dropServices.getMyDrops(accessToken, placePk);
 
     res.status(200).json({
       msg: "드롭 조회 완료",
+      writtenPlace,
       data: myDrops
     });
   } catch (error) {
@@ -78,9 +80,10 @@ exports.deleteDrop = async (req, res, next) => {
 exports.getDrop = async (req, res, next) => {
   try {
     const dropPk = req.params.dropPk;
-    const drop = await dropServices.getDrop(dropPk);
+    const {writtenPlace, drop} = await dropServices.getDrop(dropPk);
     res.status(200).json({
       msg:'단일 드롭 조회 완료',
+      writtenPlace,
       data:drop
     })
   } catch (error) {
