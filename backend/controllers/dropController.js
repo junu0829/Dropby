@@ -3,6 +3,7 @@ const { getAccess } = require("../utils/auth");
 
 exports.newDrop = async (req, res, next) => {
   try {
+    console.log(req.body);
     const { placePk } = req.params;
     const accessToken = getAccess(req.headers);
     const drop = await dropServices.newDrop(accessToken, req.body, req.files, placePk);
@@ -18,23 +19,36 @@ exports.newDrop = async (req, res, next) => {
   }
 };
 
-exports.getDrops = async (req, res, next) => {
+exports.getPublicDrops = async (req, res, next) => {
   try {
     const { placePk } = req.params;
     const accessToken = getAccess(req.headers);
-    const {public, my} = await dropServices.getDrops(accessToken, placePk);
+    const { publicDrops } = await dropServices.getPublicDrops(accessToken, placePk);
 
     res.status(200).json({
       msg: "드롭 조회 완료",
-      data: {
-        publicDrops:public,
-        myDrops:my},
+      data: publicDrops
     });
   } catch (error) {
     next(error);
   }
 };
 
+exports.getMyDrops = async (req, res, next) => {
+
+  try {
+    const { placePk } = req.params;
+    const accessToken = getAccess(req.headers);
+    const { myDrops } = await dropServices.getMyDrops(accessToken, placePk);
+
+    res.status(200).json({
+      msg: "드롭 조회 완료",
+      data: myDrops
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 exports.updateDrop = async (req, res, next) => {
   try {
     const dropPk = req.params.dropPk;
