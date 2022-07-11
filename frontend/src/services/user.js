@@ -19,9 +19,9 @@ const UserClass = class {
   };
 
   read() {
-    console.log(this.accessToken);
-    console.log(this.refreshToken);
-    console.log(this.nickname);
+    // console.log(this.accessToken);
+    // console.log(this.refreshToken);
+    // console.log(this.nickname);
   }
 };
 export const user = new UserClass();
