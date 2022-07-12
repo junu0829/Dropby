@@ -64,7 +64,7 @@ exports.getAreaDrops = async (accessToken, areaPk) => {
         placePk,
         isPrivate:false,
       },
-      include:["images", "emoji"]
+      include:["images", "emoji", {model:Place, attributes:['name']}]
     });
     allDrops['publicDrops'].push(...publicDrops);
 
@@ -74,7 +74,7 @@ exports.getAreaDrops = async (accessToken, areaPk) => {
         isPrivate:true,
         creatorPk:user.pk
       }, 
-      include:["images", "emoji"]
+      include:["images", "emoji", {model:Place, attributes:['name']}]
     });
     allDrops['myDrops'].push(...myDrops)
   }

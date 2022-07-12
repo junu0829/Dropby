@@ -40,7 +40,8 @@ exports.getDrops = async (accessToken, placePk) => {
     where: {
       placePk,
       isPrivate:false,
-    }
+    },
+    include:["images", "emoji"],
   });
 
   const user = await getUserWithAccess(accessToken);
