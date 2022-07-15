@@ -42,8 +42,6 @@ exports.getPlaces = async (areaPk) => {
 
 exports.getAreaDrops = async (accessToken, areaPk) => {
   const user = await getUserWithAccess(accessToken);
-  console.log(user);
-  console.log(user.pk);
   const area = await Area.findOne({
     where: {
       pk: areaPk,
@@ -78,10 +76,10 @@ exports.getAreaDrops = async (accessToken, areaPk) => {
     });
     allDrops['myDrops'].push(...myDrops)
   }
-  console.log(allDrops);
   return {
     areaName: areaName,
     areaPk: areaPk,
-    drops:allDrops
+    drops:allDrops,
+    dropsCount:(allDrops.myDrops.length + allDrops.publicDrops.length),
   };
 };
