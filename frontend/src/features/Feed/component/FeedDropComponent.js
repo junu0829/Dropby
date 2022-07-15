@@ -36,7 +36,7 @@ export const FeedDropComponent = ({ navigation, feedDrop, place = {} }) => {
       <View style={styles.dropBox}>
         <View style={styles.SymbolContainer}>
           <ImageBackground source={dropBg} style={styles.dropemoji}>
-            <Text style={styles.emoji}>{feedDrop.emoji.icon}</Text>
+            {/* <Text style={styles.emoji}>{feedDrop.emoji.icon}</Text> */}
           </ImageBackground>
         </View>
         <View style={styles.dropContentContainer}>

@@ -7,8 +7,8 @@ import {
   Pressable,
   View,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { DeleteDrop } from "../../../services/drops/DeleteDrop";
 
@@ -19,9 +19,9 @@ export const EditModal = ({
   place,
   navigation,
 }) => {
-  useEffect(() => {
-    console.log(areapk, placePk, dropPk);
-  });
+  // useEffect(() => {
+  //   console.log(areapk, placePk, dropPk);
+  // });
 
   const accessToken =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNjUyNTI2NTUxLCJleHAiOjE2NTUxMTg1NTF9.eCGutzk0Zl7eJLCRvqY5yO6xcctIe9O7_Jvv5BxNuVA";
@@ -31,6 +31,7 @@ export const EditModal = ({
   const areapk = place.areaPk;
   const placePk = drop.placePk;
   const dropPk = drop.pk;
+
   return (
     <View>
       <Modal
@@ -51,17 +52,7 @@ export const EditModal = ({
         <View style={styles.modalContent}>
           <View style={styles.modalView}>
             <TouchableOpacity
-              style={{
-                width: 100,
-                height: 30,
-
-                padding: 2,
-                borderBottomWidth: 2,
-                borderBottomColor: "rgba(0,0,0,0.2)",
-                borderStyle: "solid",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              style={styles.modalBtn}
               onPress={() => {
                 navigation.navigate("WriteScreen", { place, drop });
                 dismiss();
@@ -71,17 +62,7 @@ export const EditModal = ({
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={{
-                width: 100,
-                height: 30,
-
-                padding: 2,
-
-                borderBottomColor: "rgba(0,0,0,0.2)",
-                borderStyle: "solid",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              style={[styles.modalBtn, { borderBottomWidth: 0 }]}
               onPress={() => {
                 setModalVisible(true);
               }}
@@ -114,7 +95,7 @@ export const EditModal = ({
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
-                  DeleteDrop(areapk, placePk, dropPk, accessToken);
+                  DeleteDrop(areapk, placePk, dropPk);
                   setModalVisible(!modalVisible);
                   navigation.goBack();
                 }}
@@ -169,6 +150,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 998,
+  },
+  modalBtn: {
+    width: 100,
+    height: 30,
+
+    padding: 2,
+    borderBottomWidth: 2,
+    borderBottomColor: "rgba(0,0,0,0.2)",
+    borderStyle: "solid",
+    alignItems: "center",
+    justifyContent: "center",
   },
   modalOverlay: {
     position: "absolute",
