@@ -311,7 +311,7 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
           longitudeDelta: LONGITUDE_DELTA,
         }}
         minZoomLevel={17}
-        customMapStyle={customMapStyle}
+        // customMapStyle={customMapStyle}
       >
         {markers.map((marker) =>
           marker.properties.point_count === 0 ? (
@@ -430,63 +430,63 @@ ClusteredMap.defaultProps = {
   mapRef: () => {},
 };
 
-const customMapStyle = [
-  {
-    featureType: "administrative",
-    elementType: "geometry",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "poi.business",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "poi.medical",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
+// const customMapStyle = [
+//   {
+//     featureType: "administrative",
+//     elementType: "geometry",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "poi.business",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "poi.medical",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
 
-  {
-    featureType: "poi.sports_complex",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "poi.school",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "poi.government",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "poi.place_of_worship",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-];
+//   {
+//     featureType: "poi.sports_complex",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "poi.school",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "poi.government",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "poi.place_of_worship",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+// ];

@@ -13,11 +13,18 @@ import { getAreaDrops } from "../../../services/drops/GetDrops";
 import { FeedDropComponent } from "../component/FeedDropComponent";
 import { GNB } from "../../../components/GlobalNavigationBar";
 import { MainContainerView } from "../../../infrastructure/style/styledComponent";
+import { SlideView } from "../../../components/animations/slide.animation";
+
+import styled from "styled-components/native";
+import backButton from "../../../../assets/Buttons/backButton";
 
 export const AreaFeedScreen = ({ navigation, route }) => {
   const area = route.params;
   const [drops, setDrops] = useState([
     {
+      Place: {
+        name: "맛닭꼬 안암고대점",
+      },
       content: "test content",
       createdAt: "2022-06-03T10:54:33.000Z",
       creatorPk: 2,
@@ -47,31 +54,56 @@ export const AreaFeedScreen = ({ navigation, route }) => {
 
   return (
     <>
-      <GNB
-        navigation={navigation}
-        title={area.name}
-        goBack={navigation.goBack}
-        mode={"areaFeed"}
-      ></GNB>
-      <MainContainerView>
-        {/* drops */}
-        <View style={styles.container4}>
-          <View style={{ height: 60 }}></View>
-          <ScrollView style={styles.dropsContainer}>
-            {drops.map((feedDrop) => (
-              <FeedDropComponent
-                navigation={navigation}
-                feedDrop={feedDrop}
-                place={area}
-              />
-              //여기서는 place에 area를 넣어서 드롭을 눌렀을 때 "구역" 이름이 뜨게 된다. "장소" 이름이 뜨도록 수정해야할듯
-            ))}
-          </ScrollView>
-        </View>
-      </MainContainerView>
+      <GNBButtonPart>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <SvgXml xml={backButton} width={26} height={26}></SvgXml>
+        </TouchableOpacity>
+      </GNBButtonPart>
+      <SlideView duration={2000} startValue={0} endValue={30}>
+        <GNB
+          navigation={navigation}
+          title={area.name}
+          goBack={navigation.goBack}
+          mode={"areaFeed"}
+        ></GNB>
+
+        <MainContainerView>
+          {/* drops */}
+          <View style={styles.container4}>
+            <View style={{ height: 20 }}></View>
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1, paddingBottom: 300 }}
+              style={styles.dropsContainer}
+            >
+              {drops.map((feedDrop) => (
+                <FeedDropComponent
+                  navigation={navigation}
+                  feedDrop={feedDrop}
+                  place={area}
+                />
+                //여기서는 place에 area를 넣어서 드롭을 눌렀을 때 "구역" 이름이 뜨게 된다. "장소" 이름이 뜨도록 수정해야할듯
+              ))}
+            </ScrollView>
+          </View>
+        </MainContainerView>
+      </SlideView>
     </>
   );
 };
+
+const GNBButtonPart = styled.View`
+  width: 100%;
+  flex-direction: row;
+  left: 25;
+  top: 50;
+  z-index: 999;
+  padding: 10px;
+  position: absolute;
+`;
 
 const styles = StyleSheet.create({
   container1: {
@@ -102,6 +134,7 @@ const styles = StyleSheet.create({
   dropsContainer: {
     width: "100%",
   },
+
   placeTitle: {
     color: "black",
     fontFamily: theme.fonts.bold,

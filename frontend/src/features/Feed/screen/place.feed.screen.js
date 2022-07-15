@@ -14,8 +14,13 @@ import { theme } from "../../../infrastructure/theme";
 import { getPlaceDrops } from "../../../services/drops/GetDrops";
 import { FeedDropComponent } from "../component/FeedDropComponent";
 
+import { SlideView } from "../../../components/animations/slide.animation";
+import styled from "styled-components/native";
+import backButton from "../../../../assets/Buttons/backButton";
+
 export const PlaceFeedScreen = ({ navigation, route }) => {
   const place = route.params;
+  console.log(place);
   const [drops, setDrops] = useState([
     {
       content: "test content",
@@ -46,30 +51,51 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
 
   return (
     <>
-      <GNB
-        navigation={navigation}
-        title={place.name}
-        place={place}
-        mode={"placeFeed"}
-        goBack={navigation.goBack}
-      ></GNB>
-      <MainContainerView>
-        {/* drops */}
-        <View style={styles.container4}>
-          <ScrollView style={styles.dropsContainer}>
-            {drops.map((feedDrop) => (
-              <FeedDropComponent
-                navigation={navigation}
-                feedDrop={feedDrop}
-                place={place}
-              />
-            ))}
-          </ScrollView>
-        </View>
-      </MainContainerView>
+      <GNBButtonPart>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <SvgXml xml={backButton} width={26} height={26}></SvgXml>
+        </TouchableOpacity>
+      </GNBButtonPart>
+      <SlideView duration={2000} startValue={0} endValue={30}>
+        <GNB
+          navigation={navigation}
+          title={place.name}
+          place={place}
+          mode={"placeFeed"}
+          goBack={navigation.goBack}
+        ></GNB>
+        <MainContainerView style={{ marginTop: 10 }}>
+          {/* drops */}
+          <View style={styles.container4}>
+            <ScrollView style={styles.dropsContainer}>
+              {drops.map((feedDrop) => (
+                <FeedDropComponent
+                  navigation={navigation}
+                  feedDrop={feedDrop}
+                  place={place}
+                />
+              ))}
+            </ScrollView>
+          </View>
+        </MainContainerView>
+      </SlideView>
     </>
   );
 };
+
+const GNBButtonPart = styled.View`
+  width: 100%;
+  flex-direction: row;
+  left: 25;
+  top: 50;
+  z-index: 999;
+  padding: 10px;
+  position: absolute;
+`;
 
 const styles = StyleSheet.create({
   container1: {

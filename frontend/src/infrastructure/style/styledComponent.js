@@ -10,8 +10,8 @@ export const MainContainerView = styled.View`
   border-top-left-radius: 36px;
   z-index: 999;
   position: absolute;
-  height: 80%;
-  top: 20%;
+
+  top: 15%;
   background-color: white;
   overflow: hidden;
 `;
