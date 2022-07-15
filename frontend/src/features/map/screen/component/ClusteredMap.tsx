@@ -14,6 +14,7 @@ import ClusterMarker from "./ClusteredMarker";
 import PlaceIcons from "../../../../../assets/PlaceIcons";
 import { TouchableOpacity } from "react-native";
 import { Polygons } from "./Polygons";
+import { UserLocationIcon } from "./userLocationIcon";
 
 export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
   (
@@ -291,7 +292,7 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
         onPress={(event) => {
           console.log(event.nativeEvent.coordinate);
         }}
-        showsUserLocation={true}
+        showsUserLocation={false}
         showsCompass={true}
         showsMyLocationButton={false}
         provider={PROVIDER_GOOGLE}
@@ -399,6 +400,7 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
           activePolygon={activePolygon}
           setActivePolygon={setActivePolygon}
         />
+        <UserLocationIcon location={location} />
       </Map>
     );
   }
