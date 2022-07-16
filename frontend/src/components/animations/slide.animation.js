@@ -7,6 +7,7 @@ export const SlideView = ({
   startValue,
   endValue,
   isDetail = {},
+  isGNBExpanded = {},
   ...props
 }) => {
   const SlideAnim = useRef(new Animated.Value(startValue)).current;

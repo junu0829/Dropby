@@ -19,6 +19,7 @@ import dropBg from "../../../../assets/images/dropPng/drawable-xxxhdpi/pin.png";
 import ico_heart from "../../../../assets/images/dropPng/ico_heart";
 import ico_speech from "../../../../assets/images/dropPng/ico_speech";
 import ico_photo from "../../../../assets/images/dropPng/ico_photo";
+import { elapsedTime } from "../../../infrastructure/elapsedTime";
 
 export const FeedDropComponent = ({ navigation, feedDrop, place = {} }) => {
   //touchable 되게 만들고 눌렀을 때 드롭 디테일 페이지로 넘기기.
@@ -36,17 +37,19 @@ export const FeedDropComponent = ({ navigation, feedDrop, place = {} }) => {
       <View style={styles.dropBox}>
         <View style={styles.SymbolContainer}>
           <ImageBackground source={dropBg} style={styles.dropemoji}>
-            <Text style={styles.emoji}>{feedDrop.emoji.icon}</Text>
+            {/* <Text style={styles.emoji}>{feedDrop.emoji.icon}</Text> */}
           </ImageBackground>
         </View>
         <View style={styles.dropContentContainer}>
           <View style={styles.dropTitleContainer}>
             <View style={styles.dropTitleContainer2}>
-              <Text style={styles.placeTitle}>삼익맨션빌라</Text>
+              <Text style={styles.placeTitle}>{feedDrop.Place.name}</Text>
               <Text style={styles.dropTitle}>{feedDrop.title}</Text>
             </View>
             <View style={styles.DropTimeContainer}>
-              <Text style={styles.dropTime}>{feedDrop.createdAt}</Text>
+              <Text style={styles.dropTime}>
+                {elapsedTime(feedDrop.createdAt)}
+              </Text>
             </View>
           </View>
           <View style={styles.dropContentContainer}>
@@ -130,7 +133,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
 
     color: "#2e2e2e",
-    width: 100,
+    width: 200,
   },
 
   dropTitleContainer2: { flex: 7 },
@@ -142,20 +145,20 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 2,
     color: "#6b6b6b",
-    width: 170,
+    width: 200,
   },
   DropTimeContainer: {
     flex: 4.5,
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginRight: 15,
+    marginRight: 30,
     marginTop: 10,
 
     alignItems: "center",
   },
 
   dropTime: {
-    fontSize: 9,
+    fontSize: 11,
     color: "#6b6b6b",
   },
 
