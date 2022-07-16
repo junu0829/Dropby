@@ -15,32 +15,35 @@ export const LocationContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  // // 현재 위치 추적하는 Task
-  // const LOCATION_TRACKING = "background-location-task";
-  // TaskManager.defineTask(LOCATION_TRACKING, async ({ data, error }) => {
-  //   if (error) {
-  //     console.log("LOCATION_TRACKING task ERROR:", error);
-  //     return;
-  //   }
-  //   if (data) {
-  //     const { locations } = data;
-  //     let lat = locations[0].coords.latitude;
-  //     let long = locations[0].coords.longitude;
+  // 현재 위치 추적하는 Task
+  const LOCATION_TRACKING = "background-location-task";
 
-  //     console.log(`${new Date(Date.now()).toLocaleString()}: ${lat},${long}`);
-  //   }
-  // });
-  // const startLocationTracking = async () => {
-  //   await Location.startLocationUpdatesAsync(LOCATION_TRACKING, {
-  //     accuracy: Location.Accuracy.Highest,
-  //     timeInterval: 5000,
-  //     distanceInterval: 0,
-  //   });
-  //   const hasStarted = await Location.hasStartedLocationUpdatesAsync(
-  //     LOCATION_TRACKING
-  //   );
-  //   console.log("tracking started?", hasStarted);
-  // };
+  TaskManager.defineTask(LOCATION_TRACKING, async ({ data, error }) => {
+    if (error) {
+      console.log("LOCATION_TRACKING task ERROR:", error);
+      return;
+    }
+    if (data) {
+      const { locations } = data;
+      let lat = locations[0].coords.latitude;
+      let long = locations[0].coords.longitude;
+      setLocation([lat, long]);
+      console.log(`${new Date(Date.now()).toLocaleString()}: ${lat},${long}`);
+    }
+  });
+
+  const startLocationTracking = async () => {
+    await Location.startLocationUpdatesAsync(LOCATION_TRACKING, {
+      accuracy: Location.Accuracy.BestForNavigation,
+      timeInterval: 5000,
+      distanceInterval: 10,
+    });
+    const hasStarted = await Location.hasStartedLocationUpdatesAsync(
+      LOCATION_TRACKING
+    );
+    console.log("tracking started?", hasStarted);
+    setIsLoading(false);
+  };
 
   // // pointInPolygon 사용
   // useEffect(() => {
@@ -63,15 +66,17 @@ export const LocationContextProvider = ({ children }) => {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-
-      let location2 = await Location.getCurrentPositionAsync();
-
-      await setLocation([
-        location2.coords.latitude,
-        location2.coords.longitude,
-      ]);
-      await setIsLoading(false);
+      startLocationTracking();
     })();
+
+    //   let location2 = await Location.getCurrentPositionAsync();
+
+    //   await setLocation([
+    //     location2.coords.latitude,
+    //     location2.coords.longitude,
+    //   ]);
+    //
+    // })();
   }, []);
 
   return (

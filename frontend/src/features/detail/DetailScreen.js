@@ -36,28 +36,27 @@ export const DetailScreen = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const hideModal = () => setModalVisible(false);
   const showModal = () => setModalVisible(true);
-
+  console.log(drop);
   return (
     <>
-      <StatusBar style="black" />
-
       <GNB
+        mode={"detailView"}
         navigation={navigation}
-        title={place.name}
+        title={drop.Place.name}
         goBack={navigation.goBack}
         showModal={showModal}
         modalVisible={modalVisible}
         secondButton={"true"}
       ></GNB>
-      <EditModal
+      {/* <EditModal
         visible={modalVisible}
         dismiss={hideModal}
         drop={drop}
         place={place}
         navigation={navigation}
-      ></EditModal>
+      ></EditModal> */}
 
-      <DetailView0>
+      <DetailView0 style={{ marginTop: 30 }}>
         <DetailView contentContainerStyle={DetailViewStyle.center}>
           <Text>{drop.title}</Text>
           <View style={styles.dropContainer}>

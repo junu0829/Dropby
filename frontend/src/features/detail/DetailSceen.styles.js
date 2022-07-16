@@ -256,8 +256,8 @@ export const DetailView0 = styled.View`
   border-top-left-radius: 36px;
   z-index: 999;
   position: absolute;
-  height: 80%;
-  top: 20%;
+  height: 85%;
+  top: 15%;
   background-color: white;
 `;
 

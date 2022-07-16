@@ -97,15 +97,7 @@ export const WriteScreen = ({ navigation, route }) => {
     // const accessToken = await AsyncStorage.getItem("accessToken");
 
     route.params.drop
-      ? await UpdateDrop(
-          area,
-          place.pk,
-          route.params.drop.pk,
-          accessToken,
-          content,
-          selectedEmoji,
-          name
-        )
+      ? await UpdateDrop(area, place.pk, route.params.drop.pk, frm)
       : await postDrop(area.pk, place.pk, frm);
   };
 

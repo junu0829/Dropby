@@ -14,6 +14,7 @@ import ClusterMarker from "./ClusteredMarker";
 import PlaceIcons from "../../../../../assets/PlaceIcons";
 import { TouchableOpacity } from "react-native";
 import { Polygons } from "./Polygons";
+import { UserLocationIcon } from "./userLocationIcon";
 
 export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
   (
@@ -291,7 +292,7 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
         onPress={(event) => {
           console.log(event.nativeEvent.coordinate);
         }}
-        showsUserLocation={true}
+        showsUserLocation={false}
         showsCompass={true}
         showsMyLocationButton={false}
         provider={PROVIDER_GOOGLE}
@@ -311,7 +312,7 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
           longitudeDelta: LONGITUDE_DELTA,
         }}
         minZoomLevel={17}
-        customMapStyle={customMapStyle}
+        // customMapStyle={customMapStyle}
       >
         {markers.map((marker) =>
           marker.properties.point_count === 0 ? (
@@ -399,6 +400,7 @@ export const ClusteredMap = forwardRef<MapClusteringProps & MapViewProps, any>(
           activePolygon={activePolygon}
           setActivePolygon={setActivePolygon}
         />
+        <UserLocationIcon location={location} />
       </Map>
     );
   }
@@ -430,63 +432,63 @@ ClusteredMap.defaultProps = {
   mapRef: () => {},
 };
 
-const customMapStyle = [
-  {
-    featureType: "administrative",
-    elementType: "geometry",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "poi.business",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "poi.medical",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
+// const customMapStyle = [
+//   {
+//     featureType: "administrative",
+//     elementType: "geometry",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "poi.business",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "poi.medical",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
 
-  {
-    featureType: "poi.sports_complex",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "poi.school",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "poi.government",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-  {
-    featureType: "poi.place_of_worship",
-    stylers: [
-      {
-        visibility: "off",
-      },
-    ],
-  },
-];
+//   {
+//     featureType: "poi.sports_complex",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "poi.school",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "poi.government",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+//   {
+//     featureType: "poi.place_of_worship",
+//     stylers: [
+//       {
+//         visibility: "off",
+//       },
+//     ],
+//   },
+// ];
