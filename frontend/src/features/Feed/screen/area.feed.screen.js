@@ -20,6 +20,7 @@ import backButton from "../../../../assets/Buttons/backButton";
 
 export const AreaFeedScreen = ({ navigation, route }) => {
   const area = route.params;
+  const [dropCount, setDropCount] = useState(0);
   const [drops, setDrops] = useState([
     {
       Place: {
@@ -48,8 +49,7 @@ export const AreaFeedScreen = ({ navigation, route }) => {
 
   // Place 정보 받아서 해당 장소의 drop들 호출하기
   useEffect(async () => {
-    await getAreaDrops(area.pk, setDrops);
-    // console.log(drops);
+    await getAreaDrops(area.pk, setDrops, setDropCount);
   }, []);
 
   return (
@@ -69,6 +69,7 @@ export const AreaFeedScreen = ({ navigation, route }) => {
           title={area.name}
           goBack={navigation.goBack}
           mode={"areaFeed"}
+          dropCount={dropCount}
         ></GNB>
 
         <MainContainerView>

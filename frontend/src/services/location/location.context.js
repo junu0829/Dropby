@@ -32,15 +32,16 @@ export const LocationContextProvider = ({ children }) => {
     }
   });
 
-  const startLocationTracking = async () => {
-    await Location.startLocationUpdatesAsync(LOCATION_TRACKING, {
+  //
+
+  const startLocationTracking = () => {
+    Location.startLocationUpdatesAsync(LOCATION_TRACKING, {
       accuracy: Location.Accuracy.BestForNavigation,
       timeInterval: 5000,
       distanceInterval: 10,
     });
-    const hasStarted = await Location.hasStartedLocationUpdatesAsync(
-      LOCATION_TRACKING
-    );
+    const hasStarted =
+      Location.hasStartedLocationUpdatesAsync(LOCATION_TRACKING);
     console.log("tracking started?", hasStarted);
     setIsLoading(false);
   };

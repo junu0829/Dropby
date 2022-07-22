@@ -32,29 +32,30 @@ import { AreaFeedScreen } from "../Feed/screen/area.feed.screen";
 export const DetailScreen = ({ navigation, route }) => {
   const place = route.params.place;
   const drop = route.params.feedDrop;
+  const isPlaceDrop = route.params.isPlaceDrop;
 
   const [modalVisible, setModalVisible] = useState(false);
   const hideModal = () => setModalVisible(false);
   const showModal = () => setModalVisible(true);
-  console.log(drop);
+  console.log(place);
   return (
     <>
       <GNB
         mode={"detailView"}
         navigation={navigation}
-        title={drop.Place.name}
+        title={isPlaceDrop == "true" ? place.name : drop.Place.name}
         goBack={navigation.goBack}
         showModal={showModal}
         modalVisible={modalVisible}
         secondButton={"true"}
       ></GNB>
-      {/* <EditModal
+      <EditModal
         visible={modalVisible}
         dismiss={hideModal}
         drop={drop}
         place={place}
         navigation={navigation}
-      ></EditModal> */}
+      ></EditModal>
 
       <DetailView0 style={{ marginTop: 30 }}>
         <DetailView contentContainerStyle={DetailViewStyle.center}>

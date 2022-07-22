@@ -8,6 +8,10 @@ import {
   TouchableWithoutFeedback,
   Image,
   Video,
+  StyleSheet,
+  ScrollView,
+  ImageBackground,
+  Switch,
 } from "react-native";
 import { useEffect, useState, useContext } from "react";
 
@@ -24,10 +28,18 @@ import sendingButton from "../../../../assets/Buttons/sendingButton";
 import addPicture from "../../../../assets/Buttons/addPicture";
 import LockButtonUnlocked from "../../../../assets/Buttons/LockButton(Unlocked)";
 
-import { container, styles } from "./writescreen.styles";
+import { styles } from "./writescreen.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { postDrop } from "../../../services/drops/postDrop";
 import { UpdateDrop } from "../../../services/drops/UpdateDrop";
+import { GNB } from "../../../components/GlobalNavigationBar";
+import { SlideView } from "../../../components/animations/slide.animation";
+import styled from "styled-components/native";
+import backButton from "../../../../assets/Buttons/backButton";
+import { MainContainerView } from "../../../infrastructure/style/styledComponent";
+import DropBackground from "../../../../assets/images/writeDropPng/drawable-xxxhdpi/pin_edit.png";
+import ico_non from "../../../../assets/images/ico_non";
+import btn_photoadd from "../../../../assets/Buttons/btn_photoadd";
 
 export const WriteScreen = ({ navigation, route }) => {
   const place = route.params.selectedPlace
@@ -41,11 +53,14 @@ export const WriteScreen = ({ navigation, route }) => {
 
   const [placeAddress, setPlaceAddress] = useState("새로운 장소-주소");
 
-  const [selectedEmoji, setSelectedEmoji] = useState("😐");
+  const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [name, setName] = useState("test");
   const [area, setArea] = useState(null);
   const [content, setContent] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
+
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   /////////////////////로컬 이미지 여기에 담김
   const [image, setImage] = useState(null);
@@ -66,24 +81,10 @@ export const WriteScreen = ({ navigation, route }) => {
       setArea(route.params.place.areaPk);
       setContent(route.params.drop.content);
     }
-    // console.log(route.params);
-
-    // setPlaceAddress(route.params[0].pressedAddress);
-    // setPlaceName(route.params[1].pressedAddressName);
-    // if (route.params[3].calibratedLocation) {
-    //   setPlaceLatlng(route.params[3].calibratedLocation);
-    //   handleLatitude(placeLatlng.lat);
-    //   handleLongitude(placeLatlng.lng);
-    // } else {
-    //   setPlaceLatlng(route.params[2].pressedLocation);
-    //   handleLatitude(placeLatlng.latitude);
-    //   handleLongitude(placeLatlng.longitude);
-    // }
   }, []);
 
   useEffect(() => {
     setImage(route.params.source);
-    // setSelectedEmoji(route.params.selectedEmoji);
   }, [route, image]);
 
   ////////////////////
@@ -93,133 +94,297 @@ export const WriteScreen = ({ navigation, route }) => {
   };
 
   const PostWrite = async () => {
-    // console.log("Postwrite request sent");
-    // const accessToken = await AsyncStorage.getItem("accessToken");
-
     route.params.drop
       ? await UpdateDrop(area, place.pk, route.params.drop.pk, frm)
       : await postDrop(area.pk, place.pk, frm);
   };
 
   return (
-    <SafeArea style={styles.container}>
-      <View style={styles.container}>
-        <View style={styles.containerTop}>
+    <>
+      <GNBButtonPart>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <SvgXml xml={backButton} width={26} height={26}></SvgXml>
+        </TouchableOpacity>
+        <GNBButtonPart2>
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("MapScreen");
-            }}
+            style={{ marginRight: 30, marginTop: 8 }}
+            onPress={() => {}}
           >
-            <SvgXml
-              xml={backButton2}
-              width={50}
-              height={50}
-              style={styles.backButton}
+            <Text style={style.title}>전송</Text>
+          </TouchableOpacity>
+        </GNBButtonPart2>
+      </GNBButtonPart>
+      <SlideView duration={2000} startValue={0} endValue={30}>
+        <GNB
+          navigation={navigation}
+          title={place.name}
+          goBack={navigation.goBack}
+          mode={"placeFeed"}
+        ></GNB>
+        <MainContainerView style={{ marginTop: 13 }}>
+          <View style={style.container1}>
+            <View style={{ height: 20 }}></View>
+            <View style={style.container2}>
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.containerTop}>
+                  <ImageBackground
+                    source={DropBackground}
+                    style={{
+                      width: 73,
+                      height: 100,
+
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    {selectedEmoji != null ? (
+                      <Text style={style.DropEmoji}>{selectedEmoji}</Text>
+                    ) : (
+                      <SvgXml
+                        xml={ico_non}
+                        style={style.DropEmojiNull}
+                        width={40}
+                        height={40}
+                      ></SvgXml>
+                    )}
+                  </ImageBackground>
+
+                  <TouchableOpacity
+                    style={style.dropEditButton}
+                    onPress={() => {
+                      navigation.navigate("Emoji");
+                    }}
+                  >
+                    <Text style={style.DropEmojiEdit}>아이콘 변경하기</Text>
+                  </TouchableOpacity>
+
+                  <View style={styles.textContainer}>
+                    {route.params.drop ? (
+                      <TextInput
+                        style={styles.enter}
+                        placeholder={route.params.drop.content}
+                        onChangeText={(content) => handleContent(content)}
+                        value={content}
+                      />
+                    ) : (
+                      <TextInput
+                        multiline={true}
+                        style={styles.enter}
+                        placeholder="텍스트를 입력하세요"
+                        onChangeText={(content) => handleContent(content)}
+                        value={content}
+                      />
+                    )}
+                  </View>
+
+                  <View style={style.lowerButtons}>
+                    <TouchableOpacity onPress={() => {}}>
+                      <SvgXml
+                        xml={btn_photoadd}
+                        width={50}
+                        height={50}
+                      ></SvgXml>
+                    </TouchableOpacity>
+                    <View style={style.lowerButtons2}>
+                      <TouchableOpacity
+                        style={{ alignItems: "center" }}
+                        onPress={() => {}}
+                      >
+                        <Switch
+                          trackColor={{
+                            false: "#9596B",
+                            true: "#996afc",
+                          }}
+                          thumbColor="#f4f3f4"
+                          ios_backgroundColor="#3e3e3e"
+                          onValueChange={toggleSwitch}
+                          value={isEnabled}
+                        />
+                        <Text style={style.title2}>
+                          {isEnabled ? "퍼블릭" : "비공개"}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          </View>
+        </MainContainerView>
+      </SlideView>
+    </>
+  );
+};
+
+const GNBButtonPart = styled.View`
+  width: 100%;
+  flex-direction: row;
+  left: 25;
+  top: 50;
+  z-index: 999;
+  padding: 10px;
+  position: absolute;
+`;
+
+const GNBButtonPart2 = styled.View`
+  flex: 1;
+  flex-direction: row;
+  top: -5;
+  right: 10;
+  justify-content: flex-end;
+`;
+
+const style = StyleSheet.create({
+  title: {
+    fontSize: 18,
+    color: "white",
+  },
+  title2: {
+    fontSize: 12,
+    color: "#6b6b6b",
+    marginTop: 4,
+  },
+  container1: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+  },
+  container2: {
+    alignItems: "center",
+    height: 1000,
+    //개선방안고민
+  },
+  DropEmoji: {
+    height: 70,
+    fontSize: 50,
+    marginLeft: 2,
+    marginTop: 20,
+  },
+  DropEmojiNull: {
+    marginLeft: 1,
+    marginTop: 10,
+  },
+  DropEmojiEdit: {
+    fontSize: 12,
+    color: "#996afc",
+  },
+  dropEditButton: {
+    width: 120,
+    height: 30,
+    backgroundColor: "#ffffff",
+    borderColor: "#996afc",
+
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    marginTop: 5,
+    borderWidth: 1,
+    zIndex: 999,
+  },
+  lowerButtons: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    width: 320,
+    marginTop: 30,
+  },
+  lowerButtons2: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    flex: 1,
+  },
+});
+{
+  /* <View style={styles.containerTop}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Emoji");
+              }}
+            >
+              {selectedEmoji != null ? (
+                <Text
+                  style={{
+                    height: 70,
+                    fontSize: 60,
+                  }}
+                >
+                  {selectedEmoji}
+                </Text>
+              ) : (
+                <SvgXml
+                  xml={addIcon}
+                  width={65}
+                  height={50}
+                  style={styles.addIcon}
+                />
+              )}
+            </TouchableOpacity>
+
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View style={styles.textContainer}>
+                {route.params.drop ? (
+                  <TextInput
+                    style={styles.enter}
+                    placeholder={route.params.drop.content}
+                    onChangeText={(content) => handleContent(content)}
+                    value={content}
+                  />
+                ) : (
+                  <TextInput
+                    style={styles.enter}
+                    placeholder="텍스트를 입력하세요"
+                    onChangeText={(content) => handleContent(content)}
+                    value={content}
+                  />
+                )}
+              </View>
+            </TouchableWithoutFeedback>
+
+            {/* -----------------------------------------------이미지 불러와서 미리보기---------------------------------------------------
+        {route.params.type === 1 ? (
+          <View>
+            <Image
+              style={container.image}
+              source={{ uri: route.params.source }}
+              // eslint-disable-next-line react/jsx-no-duplicate-props
             />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Emoji");
-            }}
-          >
-            {selectedEmoji != null ? (
-              <Text
-                style={{
-                  height: 70,
-                  fontSize: 60,
-                }}
-              >
-                {selectedEmoji}
-              </Text>
-            ) : (
-              <SvgXml
-                xml={addIcon}
-                width={65}
-                height={50}
-                style={styles.addIcon}
-              />
-            )}
-          </TouchableOpacity>
+          </View>
+        ) : route.params.type === 0 ? (
+          <View>
+            <Video
+              source={{ uri: route.params.source }}
+              shouldPlay={true}
+              isLooping={true}
+              resizeMode="cover"
+              style={{ aspectRatio: 1 / 1, backgroundColor: "black" }}
+            />
+          </View>
+        ) : null} 
+            <View style={styles.containerLow}>
           <TouchableOpacity
             onPress={() => {
               PostWrite();
-              navigation.navigate("MapScreen");
+              navigation.navigate("CameraScreen", route);
             }}
           >
             <SvgXml
-              xml={sendingButton}
-              width={67}
-              height={40}
-              style={styles.sendingButton}
+              xml={addPicture}
+              width={90}
+              height={90}
+              style={styles.addPicture}
             />
           </TouchableOpacity>
-        </View>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.textContainer}>
-            <Text style={styles.place}>{place.name}</Text>
-            <Text style={styles.address}>{placeAddress}</Text>
-
-            {route.params.drop ? (
-              <TextInput
-                style={styles.enter}
-                placeholder={route.params.drop.content}
-                onChangeText={(content) => handleContent(content)}
-                value={content}
-              />
-            ) : (
-              <TextInput
-                style={styles.enter}
-                placeholder="텍스트를 입력하세요"
-                onChangeText={(content) => handleContent(content)}
-                value={content}
-              />
-            )}
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-      {/* -----------------------------------------------이미지 불러와서 미리보기--------------------------------------------------- */}
-      {route.params.type === 1 ? (
-        <View>
-          <Image
-            style={container.image}
-            source={{ uri: route.params.source }}
-            // eslint-disable-next-line react/jsx-no-duplicate-props
-          />
-        </View>
-      ) : route.params.type === 0 ? (
-        <View>
-          <Video
-            source={{ uri: route.params.source }}
-            shouldPlay={true}
-            isLooping={true}
-            resizeMode="cover"
-            style={{ aspectRatio: 1 / 1, backgroundColor: "black" }}
-          />
-        </View>
-      ) : null}
-      <View style={styles.containerLow}>
-        <TouchableOpacity
-          onPress={() => {
-            PostWrite();
-            navigation.navigate("CameraScreen", route);
-          }}
-        >
-          <SvgXml
-            xml={addPicture}
-            width={90}
-            height={90}
-            style={styles.addPicture}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <SvgXml
-            xml={LockButtonUnlocked}
-            width={41}
-            height={55}
-            style={styles.LockButtonUnlocked}
-          />
-        </TouchableOpacity>
-      </View>
-    </SafeArea>
-  );
-};
+          <TouchableOpacity>
+            <SvgXml
+              xml={LockButtonUnlocked}
+              width={41}
+              height={55}
+              style={styles.LockButtonUnlocked}
+            />
+          </TouchableOpacity>
+        </View> 
+          </View> */
+}

@@ -21,11 +21,22 @@ import ico_speech from "../../../../assets/images/dropPng/ico_speech";
 import ico_photo from "../../../../assets/images/dropPng/ico_photo";
 import { elapsedTime } from "../../../infrastructure/elapsedTime";
 
-export const FeedDropComponent = ({ navigation, feedDrop, place = {} }) => {
+export const FeedDropComponent = ({
+  mode = {},
+  navigation,
+  feedDrop,
+  place = {},
+}) => {
   //touchable 되게 만들고 눌렀을 때 드롭 디테일 페이지로 넘기기.
   const onPress = () => {
-    navigation.navigate("DetailScreen", { place, feedDrop });
+    navigation.navigate("DetailScreen", {
+      place,
+      feedDrop,
+      isPlaceDrop: "true",
+    });
   };
+
+  // console.log(feedDrop);
 
   const Drop = ({ feedDrop, textColor }) => (
     <TouchableOpacity
@@ -37,13 +48,15 @@ export const FeedDropComponent = ({ navigation, feedDrop, place = {} }) => {
       <View style={styles.dropBox}>
         <View style={styles.SymbolContainer}>
           <ImageBackground source={dropBg} style={styles.dropemoji}>
-            {/* <Text style={styles.emoji}>{feedDrop.emoji.icon}</Text> */}
+            <Text style={styles.emoji}>{feedDrop.emoji.icon}</Text>
           </ImageBackground>
         </View>
         <View style={styles.dropContentContainer}>
           <View style={styles.dropTitleContainer}>
             <View style={styles.dropTitleContainer2}>
-              <Text style={styles.placeTitle}>{feedDrop.Place.name}</Text>
+              {mode != "placeFeed" ? (
+                <Text style={styles.placeTitle}>{feedDrop.Place.name}</Text>
+              ) : null}
               <Text style={styles.dropTitle}>{feedDrop.title}</Text>
             </View>
             <View style={styles.DropTimeContainer}>
