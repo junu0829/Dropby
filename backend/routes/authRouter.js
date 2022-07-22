@@ -8,6 +8,7 @@ router.post('/signup', controller.signUp, LocalPassportAuth, controller.logIn); 
 router.post('/login', LocalPassportAuth, controller.logIn); //로그인_accessToken, refreshToken 발급
 router.post('/token/refresh', controller.tokenRefresh) //AccessToken이 만료되면, refreshToken보내서 AccessToken 재발급
 router.post('/logout', controller.logOut) //로그아웃
+router.post('/email/:type', controller.sendEmail); // 이메일 전송
 module.exports = router;
 
 // 추후 할 것?
