@@ -8,6 +8,7 @@ db.Place = require('./place');
 db.Area = require('./area');
 db.Emoji = require('./emoji');
 db.Image = require('./image');
+db.Comment = require('./comment');
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
