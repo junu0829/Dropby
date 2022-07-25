@@ -1,7 +1,9 @@
 const bcrypt = require('bcrypt');
 const {User} = require('../models');
 require('dotenv').config();
+const nodemailer = require('nodemailer');
 const {signAccess, signRefresh, verifyAccess, verifyRefresh, getUserWithRefresh} = require('../utils/auth');
+const SMTPTransport = require('nodemailer/lib/smtp-transport');
 
 exports.signUp = async ({nickname, email, password}) => {
     let context = {'user':null, 'msg':''};
@@ -121,7 +123,36 @@ exports.logOut = async({authorization, refresh}) => {
             userData:null,
             message:error.message
         }
-
     }
-
 }
+
+exports.sendEmail = (mailType, email) => {
+    let transporter = nodemailer.createTransport({
+        service:'gmail',
+        host: 'smtp.gmail.com',
+        secure:false,
+        requireTLS:true,
+        auth: {
+            user:process.env.EMAIL_ACCOUNT,
+            pass:process.env.EMAIL_PASSWORD
+        }
+    });
+    const randomNumber = Math.floor(Math.random() * (999999-100000)) + 100000;
+    
+    let mailOptions = {
+            from : process.env.EMAIL_ACCOUNT,
+            to:'toto9602@naver.com',
+            subject:"[Dropby] : 인증번호를 보내드립니다.",
+            text:`인증번호 ${randomNumber}를 정확히 입력해 주세요!`
+        };
+    
+    transporter.sendMail(mailOptions, (error, res) => {
+        if (error) {
+            console.log(error);
+            throw error;
+        };
+
+        return randomNumber;
+    })
+    };
+
