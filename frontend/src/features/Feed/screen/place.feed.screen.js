@@ -23,6 +23,9 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
   console.log(place);
   const [drops, setDrops] = useState([
     {
+      Place: {
+        name: "맛닭꼬 안암고대점",
+      },
       content: "test content",
       createdAt: "2022-06-03T10:54:33.000Z",
       creatorPk: 2,
@@ -74,6 +77,7 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
             <ScrollView style={styles.dropsContainer}>
               {drops.map((feedDrop) => (
                 <FeedDropComponent
+                  mode={"placeFeed"}
                   navigation={navigation}
                   feedDrop={feedDrop}
                   place={place}

@@ -54,8 +54,8 @@ export const Polygons = ({ map, activePolygon = {}, setActivePolygon }) => {
 };
 
 const styles = {
-  activeFillColor: "rgba(159, 25, 255, 0.5)",
-  fillColor: "transparent",
-  strokeColor: "rgba(174, 60, 255, 0.6)",
+  activeFillColor: "rgba(153, 106, 252,0.3)",
+  fillColor: "rgba(153, 106, 252,0)",
+  strokeColor: "rgba(153, 106, 252,0.4)",
   strokeWidth: 2,
 };

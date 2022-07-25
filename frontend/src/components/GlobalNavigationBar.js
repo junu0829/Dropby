@@ -34,6 +34,7 @@ export const GNB = ({
   modalVisible,
   mode,
   place,
+  dropCount,
 }) => {
   //GNB 우측 메뉴. 스크린에 따라서 메뉴, +, 전송 버튼으로 나뉜다.
 
@@ -123,7 +124,7 @@ export const GNB = ({
               <FadeInView duration={2000}>
                 <View style={{ flexDirection: "row" }}>
                   <Text style={styles.title}>
-                    {title} 구역에 7개의 글이 있습니다
+                    {title} 구역에 {dropCount}개의 글이 있습니다
                   </Text>
                 </View>
               </FadeInView>
