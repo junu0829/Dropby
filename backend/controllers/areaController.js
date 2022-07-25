@@ -1,4 +1,5 @@
 const areaServices = require('../services/areaServices');
+const { getAccess } = require("../utils/auth");
 
 exports.newArea = async (req, res, next) => {
     try {
@@ -37,6 +38,24 @@ exports.getPlaces = async (req, res, next) => {
         res.status(200).json({
             msg: '장소 정보 조회 성공',
             data:places
+        })
+    } catch(error) {
+        next(error);
+    }
+}
+
+exports.getAreaDrops = async (req, res, next) => {
+    try {
+        const accessToken = getAccess(req.headers);
+        const areaPk = req.params.areaPk;
+        const {areaName, dropsCount, drops} = await areaServices.getAreaDrops(accessToken, areaPk);
+
+        res.status(200).json({
+            msg: `구역 내 드롭 정보 조회 성공`,
+            areaName,
+            areaPk:areaPk,
+            dropsCount,
+            data:drops,
         })
     } catch(error) {
         next(error);

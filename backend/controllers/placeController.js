@@ -43,21 +43,3 @@ exports.getPlaces = async (req, res, next) => {
         next(error);
     }
 }
-
-exports.getAreaDrops = async (req, res, next) => {
-    try {
-        const accessToken = getAccess(req.headers);
-        const areaPk = req.params.areaPk;
-        const {areaName, dropsCount, drops} = await placeServices.getAreaDrops(accessToken, areaPk);
-
-        res.status(200).json({
-            msg: `구역 내 드롭 정보 조회 성공`,
-            areaName,
-            areaPk:areaPk,
-            dropsCount,
-            data:drops,
-        })
-    } catch(error) {
-        next(error);
-    }
-}
