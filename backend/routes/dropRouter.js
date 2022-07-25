@@ -13,6 +13,6 @@ router.put("/:dropPk", jwtpassportAuth, upload.array('image', 5), controller.upd
 router.delete("/:dropPk", jwtpassportAuth, controller.deleteDrop);
 router.get('/:dropPk', jwtpassportAuth, controller.getDrop);
 
-router.use('/:dropPk', jwtpassportAuth, comment);
+router.use('/:dropPk/comments', jwtpassportAuth, comment);
 
 module.exports = router;

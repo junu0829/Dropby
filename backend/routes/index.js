@@ -5,6 +5,6 @@ const area = require("./areaRouter");
 const { newEmoji } = require("../controllers/emojiController");
 
 router.use("/auth", auth);
-router.use("/", area);
+router.use("/areas", area);
 router.use("/emoji/add", newEmoji)
 module.exports = router;

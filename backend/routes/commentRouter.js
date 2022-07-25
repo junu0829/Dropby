@@ -4,7 +4,7 @@ const controller = require("../controllers/commentController");
 const jwtpassportAuth = passport.authenticate("jwtAccess", { session: false });
 
 router.post("/", jwtpassportAuth, controller.newComment);
-router.get('/comments', jwtpassportAuth, controller.getComments);
+router.get('/', jwtpassportAuth, controller.getComments);
 router.put("/:commentPk", jwtpassportAuth, controller.updateComment);
 router.delete("/:commentPk", jwtpassportAuth, controller.deleteComment);
 
