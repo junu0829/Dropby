@@ -10,9 +10,9 @@ dotenv.config();
 // passport
 const passport = require("passport");
 const PassportConfig = require("./passport/passport");
-const multer = require('multer');
+
 const bodyParser = require("body-parser");
-// const form_data = multer();
+
 const ConnectDB = async () => {
   try {
     await sequelize
@@ -31,7 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
-// app.use(multer().array())
+
 //passport middleware 사용
 app.use(passport.initialize());
 PassportConfig();

@@ -1,13 +1,13 @@
 const router = require('express').Router({mergeParams:true});
-const passport = require('passport');
-const controller = require('../controllers/areaController');
+const passport = require("passport");
 const place = require('./placeRouter');
-const drop = require('../controllers/dropController');
-const jwtpassportAuth = passport.authenticate('jwtAccess', {session:false});
+const controller = require('../controllers/areaController');
+const jwtpassportAuth = passport.authenticate("jwtAccess", { session: false });
 
-// router.use("/:placePk/drops", drop);
 router.post('/', controller.newArea);
 router.get('/', controller.getAreas);
-router.use('/:areaPk', place);
+router.get('/:areaPk/drops', jwtpassportAuth, controller.getAreaDrops);
+
+router.use('/:areaPk/places', place);
 
 module.exports = router;
