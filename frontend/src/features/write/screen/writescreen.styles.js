@@ -25,69 +25,38 @@ const utils = StyleSheet.create({
 });
 
 const container = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-
-  containerImage: {
-    flex: 1 / 3,
-  },
-  image: {
-    aspectRatio: 1 / 1,
-  },
+  // containerImage: {
+  //   flex: 1 / 3,
+  // },
+  // image: {
+  //   aspectRatio: 1 / 1,
+  // },
 });
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.colors.bg.secondary,
-    flexDirection: "column",
-    flex: 1,
-  },
   containerTop: {
-    flexDirection: "row",
-    marginTop: 10,
-    backgroundColor: theme.colors.bg.secondary,
-    justifyContent: "center",
     alignItems: "center",
-  },
-  backButton: {
-    marginRight: 80,
-  },
-  addIcon: {
-    justifyContent: "center",
-  },
-  sendingButton: {
-    marginLeft: 65,
+    marginTop: 20,
   },
 
   textContainer: {
-    backgroundColor: theme.colors.bg.secondary,
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 50,
-  },
-
-  place: {
-    marginTop: 20,
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#000",
-    textAlign: "center",
-  },
-  address: {
-    fontSize: 12,
-    fontWeight: "500",
-    color: "#000",
-  },
-  bar: {
     padding: 15,
+    alignItems: "center",
+    width: 320,
+    height: "48%",
+    marginTop: 20,
+    borderWidth: 1,
+    borderColor: "#e4e4e4",
+    borderRadius: 20,
   },
 
   enter: {
+    width: 300,
     fontSize: 20,
     fontWeight: "500",
     color: "#9A9A9A",
     textAlign: "center",
+    flexShrink: 1,
   },
 
   containerLow: {

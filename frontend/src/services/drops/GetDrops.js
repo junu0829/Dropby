@@ -17,7 +17,7 @@ export const getPlaceDrops = async (areaPk, placePk, setDrops) => {
 };
 
 // area에서 드롭 가져오는 api 테스트 성공 하면 바꿔주자., placePk 부분 지워주면 됨.
-export const getAreaDrops = async (areaPk, setDrops) => {
+export const getAreaDrops = async (areaPk, setDrops, setDropCount) => {
   await axios(`http://${LOCAL_HOST}:3000/${areaPk}/drops`, {
     method: "GET",
     headers: {
@@ -28,6 +28,7 @@ export const getAreaDrops = async (areaPk, setDrops) => {
   })
     .then((res) => {
       setDrops(res.data.data.publicDrops);
+      setDropCount(res.data.dropsCount);
     })
     .catch((e) => console.log(e));
 };
