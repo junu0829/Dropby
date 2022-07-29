@@ -5,7 +5,7 @@ import { user } from "../user.js";
 
 export const DeleteDrop = async (areapk, placePk, dropPk) => {
   await axios(
-    `http://${LOCAL_HOST}:3000/${areapk}/${placePk}/drops/${dropPk}`,
+    `http://${LOCAL_HOST}:3000/areas/${areapk}/places/${placePk}/drops/${dropPk}`,
     {
       method: "DELETE",
       headers: {

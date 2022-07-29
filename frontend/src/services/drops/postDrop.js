@@ -17,7 +17,7 @@ export const postDrop = async (area, placePk, frm) => {
   //     console.log(`${res.data.data.content} 내용으로 ${res.data.msg}!`);
   //   })
   //   .catch((e) => console.log(e));
-  fetch(`http://${LOCAL_HOST}:3000/${area}/${placePk}/drops`, {
+  fetch(`http://${LOCAL_HOST}:3000/areas/${area}/places/${placePk}/drops`, {
     method: "POST",
     headers: {
       Authorization:

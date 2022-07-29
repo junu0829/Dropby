@@ -30,7 +30,6 @@ export const Polygons = ({ map, activePolygon = {}, setActivePolygon }) => {
     });
     setActivePolygon(polygon);
   };
-
   //비동기를 사용해보자. async await.
   return isLoading ? (
     <></>

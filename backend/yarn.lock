@@ -114,7 +114,7 @@
     "picomatch" "^2.0.4"
 
 "append-field@^1.0.0":
-  "integrity" "sha1-HjRA6RXwsSA9I3SOeO3XubW0PlY="
+  "integrity" "sha512-klpgFSWLW1ZEs8svjfb7g4qWY0YS5imI82dTg+QahUvJ8YqAY0P10Uk8tTyh9ZGuYEZEMaeJYCF5BFuX552hsw=="
   "resolved" "https://registry.npmjs.org/append-field/-/append-field-1.0.0.tgz"
   "version" "1.0.0"
 
@@ -166,10 +166,10 @@
   "resolved" "https://registry.npmjs.org/asynckit/-/asynckit-0.4.0.tgz"
   "version" "0.4.0"
 
-"aws-sdk@^2.1134.0":
-  "integrity" "sha512-CvIcPSDzKFn4LRmk6GcQZYWtCxD/FwbbC1yaslvmpOYP8CndCmdz1MHMOPy/QyUyrH2WnUrVTAP2WdWqq6oCjQ=="
-  "resolved" "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1134.0.tgz"
-  "version" "2.1134.0"
+"aws-sdk@^2.1140.0":
+  "integrity" "sha512-cNdq56UQrUzXmCgwo0/J5GGLmfHn+Vp38qgcK/Xd86Sch8P9v2o8tNv7J82mYU98YY2vO007BMxRylA4Sd8PkQ=="
+  "resolved" "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1140.0.tgz"
+  "version" "2.1140.0"
   dependencies:
     "buffer" "4.9.2"
     "events" "1.1.1"
@@ -241,7 +241,7 @@
   optionalDependencies:
     "redis" "~2.6.0"
 
-"body-parser@^1.19.1":
+"body-parser@^1.20.0":
   "integrity" "sha512-DfJ+q6EPcGKZD1QWUjSpqp+Q7bDQTsQIF4zfUAtZ6qk+H/3/QRhg9CEp39ss+/T2vw0+HaidC0ecJj/DRLIaKg=="
   "resolved" "https://registry.npmjs.org/body-parser/-/body-parser-1.20.0.tgz"
   "version" "1.20.0"
@@ -324,7 +324,7 @@
     "isarray" "^1.0.0"
 
 "busboy@^0.2.11":
-  "integrity" "sha1-bCpiLvz0fFe7vh4qnDetNseSVFM="
+  "integrity" "sha512-InWFDomvlkEj+xWLBfU3AvnbVYqeTWmQopiW0tWWEy5yehYm2YkGEc59sUmw/4ty5Zj/b0WHGs1LgecuBSBGrg=="
   "resolved" "https://registry.npmjs.org/busboy/-/busboy-0.2.14.tgz"
   "version" "0.2.14"
   dependencies:
@@ -1679,6 +1679,11 @@
     "rimraf" "^2.6.1"
     "semver" "^5.3.0"
     "tar" "^4"
+
+"nodemailer@^6.7.7":
+  "integrity" "sha512-pOLC/s+2I1EXuSqO5Wa34i3kXZG3gugDssH+ZNCevHad65tc8vQlCQpOLaUjopvkRQKm2Cki2aME7fEOPRy3bA=="
+  "resolved" "https://registry.npmjs.org/nodemailer/-/nodemailer-6.7.7.tgz"
+  "version" "6.7.7"
 
 "nodemon@^2.0.15":
   "integrity" "sha512-gdHMNx47Gw7b3kWxJV64NI+Q5nfl0y5DgDbiVtShiwa7Z0IZ07Ll4RLFo6AjrhzMtoEZn5PDE3/c2AbVsiCkpA=="

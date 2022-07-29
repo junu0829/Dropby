@@ -7,7 +7,7 @@ import axios from "axios";
 // 받아진 api 예시.
 
 export const getPolygonData = async (setAreaData) => {
-  await axios(`http://${LOCAL_HOST}:3000/`, {
+  await axios(`http://${LOCAL_HOST}:3000/areas/`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -18,10 +18,17 @@ export const getPolygonData = async (setAreaData) => {
       const polygonNum = res.data.data.length;
       for (i = 0; i < polygonNum; i++) {
         const polygonCoord = [];
+        // if (i == polygonNum - 1 || i == polygonNum - 2) {
+        //   res.data.data[i].polygon.coordinates[0].map((coord) => {
+        //     polygonCoord.push({ latitude: coord[1], longitude: coord[0] });
+        //   });
+        //   res.data.data[i].polygon.coordinates = polygonCoord;
+        // } else {
         res.data.data[i].polygon.coordinates[0].map((coord) => {
           polygonCoord.push({ latitude: coord[0], longitude: coord[1] });
         });
         res.data.data[i].polygon.coordinates = polygonCoord;
+        // }
       }
       setAreaData(res.data);
     })
