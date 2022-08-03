@@ -1,4 +1,4 @@
-const { Drop, Image, Emoji } = require("../models");
+const { Drop, Image, Emoji, LikeDrop } = require("../models");
 const { getUserWithAccess } = require("../utils/auth");
 const { getWrittenPlaceName } = require("../utils/place");
 
@@ -158,4 +158,27 @@ exports.getDrop = async (dropPk) => {
     writtenPlace,
     drop
   };
+}
+
+exports.toggleDropLike = async (accessToken, dropPk) => {
+  const user = await getUserWithAccess(accessToken);
+
+  const likeDrop = await LikeDrop.findOne({
+    where:{
+      dropPk:dropPk,
+      userPk:user.pk
+    },
+  });
+
+  if (likeDrop) {
+    await likeDrop.destroy();
+    return 'OFF';
+  }
+  if (!likeDrop) {
+    const dropLiked = await LikeDrop.create({
+      DropPk:dropPk,
+      UserPk:user.pk
+    })
+    return 'ON';
+  }
 }
