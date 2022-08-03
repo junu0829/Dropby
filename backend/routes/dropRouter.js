@@ -12,7 +12,7 @@ router.get('/my', jwtpassportAuth, controller.getMyDrops);
 router.put("/:dropPk", jwtpassportAuth, upload.array('image', 5), controller.updateDrop);
 router.delete("/:dropPk", jwtpassportAuth, controller.deleteDrop);
 router.get('/:dropPk', jwtpassportAuth, controller.getDrop);
-router.post('/:dropPk', jwtpassportAuth, controller.likeDrop);
+router.post('/:dropPk/like', jwtpassportAuth, controller.toggleDropLike);
 
 router.use('/:dropPk/comments', jwtpassportAuth, comment);
 
