@@ -111,3 +111,27 @@ exports.getDrop = async (req, res, next) => {
     next(error);
   }
 }
+
+exports.toggleDropLike = async (req, res, next) => {
+  try {
+    const dropPk = req.params.dropPk;
+    const accessToken = getAccess(req.headers);
+    const status = await dropServices.toggleDropLike(accessToken, dropPk);
+
+    if (status === 'ON') {
+      res.status(200).json({
+        msg:'좋아요 등록',
+        status:"ON"
+      })
+    }
+    if (status === 'OFF') {
+      res.status(200).json({
+        msg:'좋아요 해제',
+        status:"OFF"
+      });
+    }
+  throw new Error();
+  } catch(error) {
+    console.log(error);
+  }
+}

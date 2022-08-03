@@ -9,6 +9,7 @@ db.Area = require('./area');
 db.Emoji = require('./emoji');
 db.Image = require('./image');
 db.Comment = require('./comment');
+db.LikeDrop = require('./likeDrop');
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
@@ -21,6 +22,7 @@ db.User.hasMany(db.Drop, {
 });
 
 db.Drop.belongsTo(db.User, {
+    as:'creator',
     foreignKey:{
         name:'creatorPk',
         allowNull:false
@@ -122,4 +124,18 @@ db.Comment.belongsTo(db.Drop, {
     onDelete:'CASCADE'
 });
 
+// 드롭 좋아요 관계 설정
+db.User.belongsToMany(db.Drop, {
+    through:'likedDrop',
+});
+
+db.Drop.belongsToMany(db.User, {
+    through:'LikeDrop'
+})
+
+db.User.hasMany(db.LikeDrop);
+db.LikeDrop.belongsTo(db.User);
+
+db.Drop.hasMany(db.LikeDrop);
+db.LikeDrop.belongsTo(db.Drop);
 module.exports = db;
