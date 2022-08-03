@@ -8,4 +8,6 @@ router.get('/', jwtpassportAuth, controller.getComments);
 router.put("/:commentPk", jwtpassportAuth, controller.updateComment);
 router.delete("/:commentPk", jwtpassportAuth, controller.deleteComment);
 
+router.post('/:commentPk/like', jwtpassportAuth, controller.toggleCommentLike);
+
 module.exports = router;
