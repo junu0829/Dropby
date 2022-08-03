@@ -18,7 +18,7 @@ const ConnectDB = async () => {
     await sequelize
       .authenticate()
       .then(() => console.log("데이터베이스 연결 성공!"));
-    await sequelize.sync().then(() => console.log("동기화 완료!"));
+    await sequelize.sync({alter:true}).then(() => console.log("동기화 완료!"));
   } catch (error) {
     console.error("DB 연결 및 동기화 실패", error);
   }
