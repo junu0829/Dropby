@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   ScrollView,
   TouchableWithoutFeedback,
+  ImageBackground,
 } from "react-native";
 
 import { Text } from "../../components/typography/text.component";
 
 import { SvgXml } from "react-native-svg";
+import dropBg from "../../../assets/images/dropPng/drawable-xxxhdpi/pin.png";
 
 import pictureIcon from "../../../assets/pictureIcon";
 import CommentIcon from "../../../assets/CommentIcon";
@@ -24,6 +26,8 @@ import { EditModal } from "./component/EditModal";
 import { AreaFeedScreen } from "../Feed/screen/area.feed.screen";
 import { FeedDropComment } from "./component/FeedDropComment";
 import { MainContainerView } from "../../infrastructure/style/styledComponent";
+import { theme } from "../../infrastructure/theme";
+import { elapsedTime } from "../../infrastructure/elapsedTime";
 
 export const DetailScreen = ({ navigation, route }) => {
   const place = route.params.place;
@@ -55,13 +59,27 @@ export const DetailScreen = ({ navigation, route }) => {
       <MainContainerView>
         <View style={styles.mainContainer}>
           <View style={styles.dropContainer}>
-            <Text>{drop.title}</Text>
-            <ScrollView horizontal={true} style={styles.imageContainer}>
-              <View style={styles.pictureInput}></View>
-              <View style={styles.pictureInput}></View>
-              <View style={styles.pictureInput}></View>
-              <View style={styles.pictureInput}></View>
-            </ScrollView>
+            <View style={styles.titleContainer}>
+              <View style={styles.SymbolContainer}>
+                <ImageBackground source={dropBg} style={styles.dropemoji}>
+                  <Text style={styles.emoji}>{drop.emoji.icon}</Text>
+                </ImageBackground>
+              </View>
+              <View>
+                <Text style={styles.dropTitle}>{drop.title}</Text>
+                <Text style={styles.dropTime}>
+                  {elapsedTime(drop.createdAt)}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.pictureContainer}>
+              <ScrollView horizontal={true}>
+                <View style={styles.pictureInput}></View>
+                <View style={styles.pictureInput}></View>
+                <View style={styles.pictureInput}></View>
+                <View style={styles.pictureInput}></View>
+              </ScrollView>
+            </View>
             <Text>{drop.content}</Text>
             <View style={styles.restContainer}>
               <View style={styles.iconContainer}>
@@ -110,6 +128,9 @@ export const DetailScreen = ({ navigation, route }) => {
               <FeedDropComment />
               <FeedDropComment />
             </ScrollView>
+            <View style={styles.commentInputContainer}>
+              <Text>댓글 입력창</Text>
+            </View>
           </View>
         </View>
       </MainContainerView>
@@ -125,14 +146,51 @@ export const styles = StyleSheet.create({
     marginRight: 10,
   },
   dropContainer: {
-    height: "50%",
+    height: "60%",
     backgroundColor: "#EDEDED",
+    alignItems: "center",
+  },
+  titleContainer: {
+    flexDirection: "row",
+  },
+  dropTitle: {
+    fontSize: theme.fontSizes.h5,
+  },
+
+  dropemoji: {
+    width: 32,
+    height: 44,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  emoji: {
+    fontSize: theme.fontSizes.h5,
+  },
+  dropTime: {
+    fontSize: 11,
+    color: "#6b6b6b",
   },
   commentsContainer: {
     backgroundColor: "pink",
-    height: "40%",
+    height: "35%",
+  },
+  commentInputContainer: {
+    height: 100,
   },
   scrollView: {},
+
+  pictureContainer: {
+    height: "60%",
+  },
+
+  pictureInput: {
+    width: 200,
+    height: "90%",
+    marginLeft: 10,
+    marginTop: 10,
+    borderRadius: 5,
+    backgroundColor: "skyblue",
+  },
 
   textContainer: {
     flexDirection: "column",
@@ -180,15 +238,6 @@ export const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#817B7B",
     marginLeft: 20,
-  },
-
-  pictureInput: {
-    width: 100,
-    height: 100,
-    marginLeft: 10,
-    marginTop: 12,
-    borderRadius: 5,
-    backgroundColor: "skyblue",
   },
 
   restContainer: {
