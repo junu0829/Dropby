@@ -1,4 +1,4 @@
-const { Comment } = require("../models");
+const { Comment, LikeComment } = require("../models");
 const { getUserWithAccess } = require("../utils/auth");
 
 
@@ -62,4 +62,27 @@ exports.deleteComment = async (commentPk) => {
 
     await comment.destroy();
     return true;
+}
+
+exports.toggleCommentLike = async (accessToken, commentPk) => {
+    const user = await getUserWithAccess(accessToken);
+
+    const likeComment = await LikeComment.findOne({
+        where: {
+            CommentPk: commentPk,
+            UserPk: user.pk
+        },
+    });
+
+    if (likeComment) {
+        await likeComment.destroy();
+        return 'OFF';
+    }
+    if (!likeComment) {
+        const commentLiked = await LikeComment.create({
+            CommentPk: commentPk,
+            UserPk: user.pk
+        })
+        return 'ON';
+    }
 }
