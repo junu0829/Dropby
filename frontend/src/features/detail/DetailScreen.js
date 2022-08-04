@@ -21,23 +21,18 @@ import sendingAirplane from "../../../assets/sendingAirplane";
 import { GNB } from "../../components/GlobalNavigationBar";
 import { EditModal } from "./component/EditModal";
 
-import {
-  styles,
-  DetailView,
-  DetailView0,
-  DetailViewStyle,
-} from "./DetailSceen.styles";
 import { AreaFeedScreen } from "../Feed/screen/area.feed.screen";
+import { FeedDropComment } from "./component/FeedDropComment";
+import { MainContainerView } from "../../infrastructure/style/styledComponent";
 
 export const DetailScreen = ({ navigation, route }) => {
   const place = route.params.place;
   const drop = route.params.feedDrop;
   const isPlaceDrop = route.params.isPlaceDrop;
-
+  console.log("drop:", drop);
   const [modalVisible, setModalVisible] = useState(false);
   const hideModal = () => setModalVisible(false);
   const showModal = () => setModalVisible(true);
-  console.log(place);
   return (
     <>
       <GNB
@@ -57,10 +52,10 @@ export const DetailScreen = ({ navigation, route }) => {
         navigation={navigation}
       ></EditModal>
 
-      <DetailView0 style={{ marginTop: 30 }}>
-        <DetailView contentContainerStyle={DetailViewStyle.center}>
-          <Text>{drop.title}</Text>
+      <MainContainerView>
+        <View style={styles.mainContainer}>
           <View style={styles.dropContainer}>
+            <Text>{drop.title}</Text>
             <ScrollView horizontal={true} style={styles.imageContainer}>
               <View style={styles.pictureInput}></View>
               <View style={styles.pictureInput}></View>
@@ -71,12 +66,12 @@ export const DetailScreen = ({ navigation, route }) => {
             <View style={styles.restContainer}>
               <View style={styles.iconContainer}>
                 <SvgXml
-                  xml={pictureIcon}
+                  xml={HeartIcon}
                   width={19}
                   height={21}
-                  style={styles.pictureIcon}
+                  style={styles.HeartIcon}
                 ></SvgXml>
-                <Text style={styles.pictureNumber}>5</Text>
+                <Text style={styles.heartNumber}>2</Text>
                 <SvgXml
                   xml={CommentIcon}
                   width={19}
@@ -85,12 +80,12 @@ export const DetailScreen = ({ navigation, route }) => {
                 ></SvgXml>
                 <Text style={styles.commentNumber}>3</Text>
                 <SvgXml
-                  xml={HeartIcon}
+                  xml={pictureIcon}
                   width={19}
                   height={21}
-                  style={styles.HeartIcon}
+                  style={styles.pictureIcon}
                 ></SvgXml>
-                <Text style={styles.heartNumber}>2</Text>
+                <Text style={styles.pictureNumber}>5</Text>
               </View>
               <TouchableOpacity>
                 <SvgXml
@@ -102,104 +97,155 @@ export const DetailScreen = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
           </View>
-
-          <View style={styles.commentContainer}>
-            <View style={styles.comment1Container}>
-              <Text style={styles.user1}>드로퍼1</Text>
-
-              <View style={styles.inner1}>
-                <Text style={styles.commet1}>
-                  오늘 저도 인촌기념관 갔는데...!
-                </Text>
-                <View style={styles.bottom1}>
-                  <Text style={styles.time1}>57분</Text>
-                  <TouchableOpacity>
-                    <Text style={styles.reply}>답글달기</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <TouchableOpacity>
-                <SvgXml
-                  xml={emptyHeart}
-                  width={19}
-                  height={21}
-                  style={styles.emptyHeart}
-                ></SvgXml>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.comment2Container}>
-              <Text style={styles.user2}>드로퍼2</Text>
-
-              <View style={styles.inner2}>
-                <Text style={styles.commet2}>
-                  요즘 진짜 캠퍼스 투어하기 딱인 날씨ㄹㅇ...
-                </Text>
-                <View style={styles.bottom2}>
-                  <Text style={styles.time2}>30분</Text>
-                  <Text style={styles.like2}>좋아요 1개</Text>
-                  <TouchableOpacity>
-                    <Text style={styles.reply}>답글달기</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <TouchableOpacity>
-                <SvgXml
-                  xml={emptyHeart}
-                  width={19}
-                  height={21}
-                  style={styles.emptyHeart}
-                ></SvgXml>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.comment3Container}>
-              <Text style={styles.user3}>드로퍼3</Text>
-
-              <View style={styles.inner3}>
-                <Text style={styles.commet3}>인촌기념관은 야경이 죽이죠,,</Text>
-                <View style={styles.bottom3}>
-                  <Text style={styles.time3}>16분</Text>
-                  <TouchableOpacity>
-                    <Text style={styles.reply}>답글달기</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.replyContainer}>
-                  <View style={styles.replyBar}></View>
-                  <TouchableOpacity>
-                    <Text style={styles.showReply}>답글 1개 보기</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <TouchableOpacity>
-                <SvgXml
-                  xml={emptyHeart}
-                  width={19}
-                  height={21}
-                  style={styles.emptyHeart}
-                ></SvgXml>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.commentButton}>
-              <TouchableOpacity>
-                <Text style={styles.enterComment}>댓글 입력하기...</Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <SvgXml
-                  xml={sendingAirplane}
-                  width={35}
-                  height={35}
-                  style={styles.sendingAirplane}
-                ></SvgXml>
-              </TouchableOpacity>
-            </View>
+          <View style={styles.commentsContainer}>
+            <ScrollView style={styles.scrollView}>
+              {/* 아래 컴포넌트에 prop으로 댓글들을 넘겨주면 됨. */}
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+            </ScrollView>
           </View>
-        </DetailView>
-      </DetailView0>
+        </View>
+      </MainContainerView>
     </>
   );
 };
+
+export const styles = StyleSheet.create({
+  mainContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  dropContainer: {
+    height: "50%",
+    backgroundColor: "#EDEDED",
+  },
+  commentsContainer: {
+    backgroundColor: "pink",
+    height: "40%",
+  },
+  scrollView: {},
+
+  textContainer: {
+    flexDirection: "column",
+    width: 330,
+  },
+  editContainer: {
+    marginTop: 10,
+  },
+  place: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#000",
+    marginLeft: 25,
+  },
+  address: {
+    fontSize: 11,
+    fontWeight: "500",
+    color: "#B4B1B1",
+    marginLeft: 25,
+  },
+
+  contentContainer: {
+    flexDirection: "row",
+  },
+  dropIcon: {
+    marginLeft: 20,
+    marginTop: 10,
+  },
+
+  writingContainer: {
+    flexDirection: "column",
+    width: 260,
+  },
+
+  content: {
+    marginTop: 10,
+    fontSize: 17,
+    fontWeight: "500",
+    marginTop: 5,
+    marginLeft: 20,
+    color: "black",
+  },
+  hashtag: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#817B7B",
+    marginLeft: 20,
+  },
+
+  pictureInput: {
+    width: 100,
+    height: 100,
+    marginLeft: 10,
+    marginTop: 12,
+    borderRadius: 5,
+    backgroundColor: "skyblue",
+  },
+
+  restContainer: {
+    flexDirection: "column",
+    marginTop: 25,
+    alignItems: "flex-start",
+  },
+
+  iconContainer: {
+    flexDirection: "row",
+    marginTop: 3,
+  },
+  pictureIcon: {
+    marginLeft: 15,
+  },
+  pictureNumber: {
+    marginRight: 12,
+    color: "#9C4A97",
+  },
+
+  heartNumber: {
+    color: "#FB1919",
+  },
+  LikeButton: {
+    margin: 10,
+  },
+
+  replyContainer: {
+    flexDirection: "row",
+    marginTop: 2,
+  },
+  replyBar: {
+    width: 35,
+    height: 2,
+    backgroundColor: "#C4C4C4",
+    alignSelf: "center",
+  },
+  showReply: {
+    color: "#C4C4C4",
+    fontSize: 12,
+    fontWeight: "700",
+    marginLeft: 10,
+  },
+
+  commentButton: {
+    backgroundColor: "white",
+    width: 340,
+    margin: 20,
+    borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  enterComment: {
+    color: "#C4C4C4",
+    fontSize: 17,
+    fontWeight: "500",
+    paddingLeft: 20,
+    width: 295,
+  },
+});
