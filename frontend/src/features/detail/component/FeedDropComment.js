@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
   commentContainer: {
     flexDirection: "row",
     marginTop: 20,
+    paddingBottom: 12,
+    borderBottomColor: "#eeeeee",
+    borderBottomWidth: 1,
   },
   emptyHeart: {
     justifyContent: "flex-end",
