@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     flex: 1.5,
     height: "60%",
     backgroundColor: "#ffffff",
-
     alignItems: "center",
   },
   dropemoji: {

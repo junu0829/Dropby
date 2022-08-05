@@ -10,15 +10,15 @@ dotenv.config();
 // passport
 const passport = require("passport");
 const PassportConfig = require("./passport/passport");
-const multer = require('multer');
+
 const bodyParser = require("body-parser");
-// const form_data = multer();
+
 const ConnectDB = async () => {
   try {
     await sequelize
       .authenticate()
       .then(() => console.log("데이터베이스 연결 성공!"));
-    await sequelize.sync().then(() => console.log("동기화 완료!"));
+    await sequelize.sync({alter:true}).then(() => console.log("동기화 완료!"));
   } catch (error) {
     console.error("DB 연결 및 동기화 실패", error);
   }
@@ -31,7 +31,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
-// app.use(multer().array())
+
 //passport middleware 사용
 app.use(passport.initialize());
 PassportConfig();

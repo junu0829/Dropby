@@ -1,43 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   ScrollView,
-  TouchableWithoutFeedback,
+  ImageBackground,
 } from "react-native";
 
 import { Text } from "../../components/typography/text.component";
 
 import { SvgXml } from "react-native-svg";
+import dropBg from "../../../assets/images/dropPng/drawable-xxxhdpi/pin.png";
 
-import pictureIcon from "../../../assets/pictureIcon";
-import CommentIcon from "../../../assets/CommentIcon";
-import HeartIcon from "../../../assets/HeartIcon";
-import emptyHeart from "../../../assets/emptyHeart";
-import LikeButton from "../../../assets/LikeButton";
-import sendingAirplane from "../../../assets/sendingAirplane";
 import { GNB } from "../../components/GlobalNavigationBar";
 import { EditModal } from "./component/EditModal";
 
-import {
-  styles,
-  DetailView,
-  DetailView0,
-  DetailViewStyle,
-} from "./DetailSceen.styles";
-import { AreaFeedScreen } from "../Feed/screen/area.feed.screen";
+import { FeedDropComment } from "./component/FeedDropComment";
+import { MainContainerView } from "../../infrastructure/style/styledComponent";
+import { theme } from "../../infrastructure/theme";
+import { elapsedTime } from "../../infrastructure/elapsedTime";
+import ico_heart from "../../../assets/images/dropPng/ico_heart";
+import ico_speech from "../../../assets/images/dropPng/ico_speech";
+import ico_photo from "../../../assets/images/dropPng/ico_photo";
+import btn_like from "../../../assets/Buttons/btn_like";
 
 export const DetailScreen = ({ navigation, route }) => {
   const place = route.params.place;
   const drop = route.params.feedDrop;
   const isPlaceDrop = route.params.isPlaceDrop;
-
+  console.log("drop:", drop);
   const [modalVisible, setModalVisible] = useState(false);
   const hideModal = () => setModalVisible(false);
   const showModal = () => setModalVisible(true);
-  console.log(place);
   return (
     <>
       <GNB
@@ -57,44 +51,46 @@ export const DetailScreen = ({ navigation, route }) => {
         navigation={navigation}
       ></EditModal>
 
-      <DetailView0 style={{ marginTop: 30 }}>
-        <DetailView contentContainerStyle={DetailViewStyle.center}>
-          <Text>{drop.title}</Text>
+      <MainContainerView>
+        <View style={styles.mainContainer}>
           <View style={styles.dropContainer}>
-            <ScrollView horizontal={true} style={styles.imageContainer}>
-              <View style={styles.pictureInput}></View>
-              <View style={styles.pictureInput}></View>
-              <View style={styles.pictureInput}></View>
-              <View style={styles.pictureInput}></View>
-            </ScrollView>
-            <Text>{drop.content}</Text>
-            <View style={styles.restContainer}>
-              <View style={styles.iconContainer}>
-                <SvgXml
-                  xml={pictureIcon}
-                  width={19}
-                  height={21}
-                  style={styles.pictureIcon}
-                ></SvgXml>
-                <Text style={styles.pictureNumber}>5</Text>
-                <SvgXml
-                  xml={CommentIcon}
-                  width={19}
-                  height={21}
-                  style={styles.CommentIcon}
-                ></SvgXml>
-                <Text style={styles.commentNumber}>3</Text>
-                <SvgXml
-                  xml={HeartIcon}
-                  width={19}
-                  height={21}
-                  style={styles.HeartIcon}
-                ></SvgXml>
-                <Text style={styles.heartNumber}>2</Text>
+            <View style={styles.titleContainer}>
+              <View style={styles.SymbolContainer}>
+                <ImageBackground source={dropBg} style={styles.dropemoji}>
+                  <Text style={styles.emoji}>{drop.emoji.icon}</Text>
+                </ImageBackground>
               </View>
+              <View style={styles.titleTime}>
+                <Text style={styles.dropTitle}>{drop.title}</Text>
+                <Text style={styles.dropTime}>
+                  {elapsedTime(drop.createdAt)}
+                </Text>
+              </View>
+            </View>
+            {/* 이 부분은 이미지가 있을 때만 필요 */}
+            <View style={styles.pictureContainer}>
+              <ScrollView horizontal={true}>
+                <View style={styles.pictureInput}></View>
+                <View style={styles.pictureInput}></View>
+                <View style={styles.pictureInput}></View>
+                <View style={styles.pictureInput}></View>
+              </ScrollView>
+            </View>
+
+            <Text style={styles.content}>{drop.content}</Text>
+            <View style={styles.restContainer}>
+              <View style={styles.dropLike}>
+                <SvgXml xml={ico_heart} width={16} height={16}></SvgXml>
+                <Text style={styles.dropLikeNum}>12</Text>
+                <SvgXml xml={ico_speech} width={16} height={16}></SvgXml>
+                <Text style={styles.dropLikeNum}>5</Text>
+                <SvgXml xml={ico_photo} width={16} height={16}></SvgXml>
+                <Text style={styles.dropLikeNum}>1</Text>
+              </View>
+              {/* 좋아요 누르는 기능 구현 필요, 종아요 눌린 상태 구현 필요 */}
               <TouchableOpacity>
                 <SvgXml
-                  xml={LikeButton}
+                  xml={btn_like}
                   width={85}
                   height={29}
                   style={styles.LikeButton}
@@ -102,104 +98,152 @@ export const DetailScreen = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
           </View>
-
-          <View style={styles.commentContainer}>
-            <View style={styles.comment1Container}>
-              <Text style={styles.user1}>드로퍼1</Text>
-
-              <View style={styles.inner1}>
-                <Text style={styles.commet1}>
-                  오늘 저도 인촌기념관 갔는데...!
-                </Text>
-                <View style={styles.bottom1}>
-                  <Text style={styles.time1}>57분</Text>
-                  <TouchableOpacity>
-                    <Text style={styles.reply}>답글달기</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <TouchableOpacity>
-                <SvgXml
-                  xml={emptyHeart}
-                  width={19}
-                  height={21}
-                  style={styles.emptyHeart}
-                ></SvgXml>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.comment2Container}>
-              <Text style={styles.user2}>드로퍼2</Text>
-
-              <View style={styles.inner2}>
-                <Text style={styles.commet2}>
-                  요즘 진짜 캠퍼스 투어하기 딱인 날씨ㄹㅇ...
-                </Text>
-                <View style={styles.bottom2}>
-                  <Text style={styles.time2}>30분</Text>
-                  <Text style={styles.like2}>좋아요 1개</Text>
-                  <TouchableOpacity>
-                    <Text style={styles.reply}>답글달기</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <TouchableOpacity>
-                <SvgXml
-                  xml={emptyHeart}
-                  width={19}
-                  height={21}
-                  style={styles.emptyHeart}
-                ></SvgXml>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.comment3Container}>
-              <Text style={styles.user3}>드로퍼3</Text>
-
-              <View style={styles.inner3}>
-                <Text style={styles.commet3}>인촌기념관은 야경이 죽이죠,,</Text>
-                <View style={styles.bottom3}>
-                  <Text style={styles.time3}>16분</Text>
-                  <TouchableOpacity>
-                    <Text style={styles.reply}>답글달기</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.replyContainer}>
-                  <View style={styles.replyBar}></View>
-                  <TouchableOpacity>
-                    <Text style={styles.showReply}>답글 1개 보기</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <TouchableOpacity>
-                <SvgXml
-                  xml={emptyHeart}
-                  width={19}
-                  height={21}
-                  style={styles.emptyHeart}
-                ></SvgXml>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.commentButton}>
-              <TouchableOpacity>
-                <Text style={styles.enterComment}>댓글 입력하기...</Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <SvgXml
-                  xml={sendingAirplane}
-                  width={35}
-                  height={35}
-                  style={styles.sendingAirplane}
-                ></SvgXml>
-              </TouchableOpacity>
+          <View style={styles.commentsContainer}>
+            <ScrollView style={styles.scrollView}>
+              {/* 아래 컴포넌트에 prop으로 댓글들을 넘겨주면 됨. */}
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+              <FeedDropComment />
+            </ScrollView>
+            <View style={styles.commentInputContainer}>
+              <Text>댓글 입력창</Text>
             </View>
           </View>
-        </DetailView>
-      </DetailView0>
+        </View>
+      </MainContainerView>
     </>
   );
 };
+
+export const styles = StyleSheet.create({
+  mainContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dropContainer: {
+    alignSelf: "stretch",
+    height: "55%",
+    alignItems: "center",
+    marginLeft: 12,
+    marginRight: 12,
+  },
+  titleContainer: {
+    flex: 1,
+    alignSelf: "stretch",
+    flexDirection: "row",
+  },
+  dropTitle: {
+    fontSize: theme.fontSizes.h5,
+  },
+
+  dropemoji: {
+    width: 32,
+    height: 44,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  emoji: {
+    fontSize: theme.fontSizes.h5,
+  },
+  SymbolContainer: {
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  titleTime: {},
+
+  dropTime: {
+    fontSize: 11,
+    color: "#6b6b6b",
+  },
+
+  pictureContainer: {
+    flex: 8,
+  },
+
+  pictureInput: {
+    width: 250,
+    height: "90%",
+    marginLeft: 10,
+    marginTop: 10,
+    borderRadius: 5,
+    backgroundColor: "skyblue",
+  },
+
+  content: {
+    flex: 2,
+    alignSelf: "stretch",
+    marginLeft: 12,
+    fontSize: theme.fontSizes.title,
+    fontWeight: "500",
+    color: "black",
+  },
+
+  restContainer: {
+    flexDirection: "row",
+    alignSelf: "stretch",
+    padding: 12,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  dropLike: {
+    flexDirection: "row",
+  },
+  dropLikeNum: {
+    fontSize: theme.fontSizes.body,
+    fontFamily: theme.fonts.regular,
+    marginTop: -4,
+    color: "#2E2E2E",
+    marginLeft: 5,
+    marginRight: 20,
+  },
+
+  commentsContainer: {
+    height: "35%",
+    borderTopWidth: 5,
+    borderColor: "#eeeeee",
+    width: "100%",
+  },
+  commentInputContainer: {
+    height: 100,
+  },
+  scrollView: {},
+
+  replyContainer: {
+    flexDirection: "row",
+    marginTop: 2,
+  },
+  replyBar: {
+    width: 35,
+    height: 2,
+    backgroundColor: "#C4C4C4",
+    alignSelf: "center",
+  },
+  showReply: {
+    color: "#C4C4C4",
+    fontSize: 12,
+    fontWeight: "700",
+    marginLeft: 10,
+  },
+
+  commentButton: {
+    backgroundColor: "white",
+    width: 340,
+    margin: 20,
+    borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  enterComment: {
+    color: "#C4C4C4",
+    fontSize: 17,
+    fontWeight: "500",
+    paddingLeft: 20,
+    width: 295,
+  },
+});

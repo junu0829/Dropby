@@ -8,6 +8,9 @@ db.Place = require('./place');
 db.Area = require('./area');
 db.Emoji = require('./emoji');
 db.Image = require('./image');
+db.Comment = require('./comment');
+db.LikeDrop = require('./likeDrop');
+db.LikeComment = require('./likeComment');
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
@@ -17,15 +20,14 @@ db.User.hasMany(db.Drop, {
         name:'creatorPk',
         allowNull:false
     },
-    onDelete:'CASCADE'
 });
 
 db.Drop.belongsTo(db.User, {
+    as:'creator',
     foreignKey:{
         name:'creatorPk',
         allowNull:false
     },
-    onDelete:'CASCADE'
 });
 
 //한 장소에는 여러 개의 드롭이 존재할 수 있음
@@ -34,7 +36,6 @@ db.Place.hasMany(db.Drop, {
         name:'placePk',
         allowNull:false
     },
-    onDelete:'CASCADE'
 });
 
 db.Drop.belongsTo(db.Place, {
@@ -51,7 +52,6 @@ db.Area.hasMany(db.Place, {
         name:'areaPk',
         allowNull:false
     },
-    onDelete:'CASCADE'
 });
 
 db.Place.belongsTo(db.Area, {
@@ -68,7 +68,6 @@ db.Drop.hasMany(db.Image, {
         name:'dropPk',
         allowNull:true
     },
-    onDelete:'CASCADE'
 });
 
 db.Image.belongsTo(db.Drop, {
@@ -92,5 +91,68 @@ db.Drop.belongsTo(db.Emoji, {
         allowNull:true
     },
 })
+
+// 한 사용자는 여러 개의 댓글을 작성할 수 있음.
+db.User.hasMany(db.Comment, {
+    foreignKey:{
+        name:'creatorPk',
+        allowNull:false
+    },
+});
+
+db.Comment.belongsTo(db.User, {
+    foreignKey:{
+        name:'creatorPk',
+        allowNull:false
+    },
+    onDelete:'CASCADE'
+});
+
+// 한 드롭에는 여러 개의 댓글이 존재할 수 있음.
+// onDelete 속성 수정해야 함.
+db.Drop.hasMany(db.Comment, {
+    foreignKey:{
+        name:'dropPk',
+        allowNull:false
+    },
+});
+
+db.Comment.belongsTo(db.Drop, {
+    foreignKey:{
+        name:'dropPk',
+        allowNull:false
+    },
+    onDelete:'CASCADE'
+});
+
+// 드롭 좋아요 관계 설정
+db.User.belongsToMany(db.Drop, {
+    through:'likeDrop',
+});
+
+db.Drop.belongsToMany(db.User, {
+    through:'LikeDrop'
+})
+
+db.User.hasMany(db.LikeDrop);
+db.LikeDrop.belongsTo(db.User);
+
+db.Drop.hasMany(db.LikeDrop);
+db.LikeDrop.belongsTo(db.Drop);
+
+//댓글 좋아요 관계 설정
+db.User.belongsToMany(db.Comment, {
+    through:'LikeComment'
+});
+
+db.Comment.belongsToMany(db.User, {
+    through:'LikeComment'
+});
+
+db.User.hasMany(db.LikeComment);
+db.LikeComment.belongsTo(db.User);
+
+db.Comment.hasMany(db.LikeComment);
+db.LikeComment.belongsTo(db.Comment);
 
 module.exports = db;
