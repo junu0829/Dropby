@@ -112,7 +112,10 @@ export const WriteScreen = ({ navigation, route }) => {
         <GNBButtonPart2>
           <TouchableOpacity
             style={{ marginRight: 30, marginTop: 8 }}
-            onPress={() => {}}
+            onPress={() => {
+              PostWrite();
+              navigation.navigate("MapScreen");
+            }}
           >
             <Text style={style.title}>전송</Text>
           </TouchableOpacity>
@@ -182,7 +185,11 @@ export const WriteScreen = ({ navigation, route }) => {
                   </View>
 
                   <View style={style.lowerButtons}>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("CameraScreen", route);
+                      }}
+                    >
                       <SvgXml
                         xml={btn_photoadd}
                         width={50}
@@ -297,94 +304,3 @@ const style = StyleSheet.create({
     flex: 1,
   },
 });
-{
-  /* <View style={styles.containerTop}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Emoji");
-              }}
-            >
-              {selectedEmoji != null ? (
-                <Text
-                  style={{
-                    height: 70,
-                    fontSize: 60,
-                  }}
-                >
-                  {selectedEmoji}
-                </Text>
-              ) : (
-                <SvgXml
-                  xml={addIcon}
-                  width={65}
-                  height={50}
-                  style={styles.addIcon}
-                />
-              )}
-            </TouchableOpacity>
-
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-              <View style={styles.textContainer}>
-                {route.params.drop ? (
-                  <TextInput
-                    style={styles.enter}
-                    placeholder={route.params.drop.content}
-                    onChangeText={(content) => handleContent(content)}
-                    value={content}
-                  />
-                ) : (
-                  <TextInput
-                    style={styles.enter}
-                    placeholder="텍스트를 입력하세요"
-                    onChangeText={(content) => handleContent(content)}
-                    value={content}
-                  />
-                )}
-              </View>
-            </TouchableWithoutFeedback>
-
-            {/* -----------------------------------------------이미지 불러와서 미리보기---------------------------------------------------
-        {route.params.type === 1 ? (
-          <View>
-            <Image
-              style={container.image}
-              source={{ uri: route.params.source }}
-              // eslint-disable-next-line react/jsx-no-duplicate-props
-            />
-          </View>
-        ) : route.params.type === 0 ? (
-          <View>
-            <Video
-              source={{ uri: route.params.source }}
-              shouldPlay={true}
-              isLooping={true}
-              resizeMode="cover"
-              style={{ aspectRatio: 1 / 1, backgroundColor: "black" }}
-            />
-          </View>
-        ) : null} 
-            <View style={styles.containerLow}>
-          <TouchableOpacity
-            onPress={() => {
-              PostWrite();
-              navigation.navigate("CameraScreen", route);
-            }}
-          >
-            <SvgXml
-              xml={addPicture}
-              width={90}
-              height={90}
-              style={styles.addPicture}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <SvgXml
-              xml={LockButtonUnlocked}
-              width={41}
-              height={55}
-              style={styles.LockButtonUnlocked}
-            />
-          </TouchableOpacity>
-        </View> 
-          </View> */
-}
