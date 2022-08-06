@@ -234,6 +234,7 @@
     "inherits" "~2.0.0"
 
 "bloomxx@git+https://github.com/daginx/xx-bloom.git":
+  "integrity" "sha512-FHjeDlhIvGAI2VNsf6+v7Jeixj0G2JOBVMNbx7bcmdlHLYuKxgRL0Jxofpy3zxboxfY2K5X/ILVUUwPdCm8baA=="
   "resolved" "git+ssh://git@github.com/daginx/xx-bloom.git#b56df0178d955a5960cf8c81fc55f517159e9e28"
   "version" "0.1.2"
   dependencies:
@@ -891,6 +892,11 @@
   "version" "2.3.1"
   dependencies:
     "is-property" "^1.0.2"
+
+"geolib@^3.3.3":
+  "integrity" "sha512-YO704pzdB/8QQekQuDmFD5uv5RAwAf4rOUPdcMhdEOz+HoPWD0sC7Qqdwb+LAvwIjXVRawx0QgZlocKYh8PFOQ=="
+  "resolved" "https://registry.npmjs.org/geolib/-/geolib-3.3.3.tgz"
+  "version" "3.3.3"
 
 "get-intrinsic@^1.0.2":
   "integrity" "sha512-kWZrnVM42QCiEA2Ig1bG8zjoIMOgxWwYCEeNdwY6Tv/cOSeGpcoX4pXHfKUxNKVoArnrEr2e9srnAxxGIraS9Q=="

@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   ScrollView,
   ImageBackground,
+  TextInput,
+  Button,
 } from "react-native";
 
 import { Text } from "../../components/typography/text.component";
@@ -23,15 +25,24 @@ import ico_heart from "../../../assets/images/dropPng/ico_heart";
 import ico_speech from "../../../assets/images/dropPng/ico_speech";
 import ico_photo from "../../../assets/images/dropPng/ico_photo";
 import btn_like from "../../../assets/Buttons/btn_like";
+import btn_send from "../../../assets/Buttons/btn_send";
+import { getComments, postComment } from "../../services/drops/commentService";
 
 export const DetailScreen = ({ navigation, route }) => {
   const place = route.params.place;
   const drop = route.params.feedDrop;
   const isPlaceDrop = route.params.isPlaceDrop;
-  console.log("drop:", drop);
   const [modalVisible, setModalVisible] = useState(false);
   const hideModal = () => setModalVisible(false);
   const showModal = () => setModalVisible(true);
+
+  const [commentInput, setCommentInput] = useState("");
+  const [comments, setComments] = useState([]);
+  console.log(place.pk, drop.placePk, drop.pk);
+  useEffect(async () => {
+    await getComments(place.pk, drop.placePk, drop.pk, setComments);
+  }, []);
+
   return (
     <>
       <GNB
@@ -99,20 +110,34 @@ export const DetailScreen = ({ navigation, route }) => {
             </View>
           </View>
           <View style={styles.commentsContainer}>
-            <ScrollView style={styles.scrollView}>
-              {/* 아래 컴포넌트에 prop으로 댓글들을 넘겨주면 됨. */}
-              <FeedDropComment />
-              <FeedDropComment />
-              <FeedDropComment />
-              <FeedDropComment />
-              <FeedDropComment />
-              <FeedDropComment />
-              <FeedDropComment />
-              <FeedDropComment />
-              <FeedDropComment />
-            </ScrollView>
-            <View style={styles.commentInputContainer}>
-              <Text>댓글 입력창</Text>
+            {/* 아래 컴포넌트에 prop으로 댓글들을 넘겨주면 됨. */}
+            {comments.map((comment) => (
+              <FeedDropComment comment={comment} />
+            ))}
+          </View>
+
+          <View style={styles.commentInputContainer}>
+            <View style={{ flex: 6 }}>
+              <TextInput
+                placeholder="댓글을 입력해보세요."
+                onChangeText={(text) => {
+                  setCommentInput(text);
+                }}
+                value={commentInput}
+                style={{ backgroundColor: "transparent", marginLeft: 12 }}
+                // onSubmitEditing = {()=>{this.onSubmit(this.state.searchText)}}
+              />
+            </View>
+            <View style={{ marginRight: -12, flex: 1 }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setCommentInput("");
+                  postComment(place.pk, drop.placePk, drop.pk, commentInput);
+                  getComments(place.pk, drop.placePk, drop.pk, setComments);
+                }}
+              >
+                <SvgXml xml={btn_send} width={26} height={26}></SvgXml>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -128,13 +153,10 @@ export const styles = StyleSheet.create({
   },
   dropContainer: {
     alignSelf: "stretch",
-    height: "55%",
     alignItems: "center",
-    marginLeft: 12,
-    marginRight: 12,
+    margin: 12,
   },
   titleContainer: {
-    flex: 1,
     alignSelf: "stretch",
     flexDirection: "row",
   },
@@ -168,7 +190,7 @@ export const styles = StyleSheet.create({
 
   pictureInput: {
     width: 250,
-    height: "90%",
+    height: 250,
     marginLeft: 10,
     marginTop: 10,
     borderRadius: 5,
@@ -204,26 +226,13 @@ export const styles = StyleSheet.create({
   },
 
   commentsContainer: {
-    height: "35%",
     borderTopWidth: 5,
     borderColor: "#eeeeee",
     width: "100%",
   },
-  commentInputContainer: {
-    height: 100,
-  },
+
   scrollView: {},
 
-  replyContainer: {
-    flexDirection: "row",
-    marginTop: 2,
-  },
-  replyBar: {
-    width: 35,
-    height: 2,
-    backgroundColor: "#C4C4C4",
-    alignSelf: "center",
-  },
   showReply: {
     color: "#C4C4C4",
     fontSize: 12,
@@ -245,5 +254,30 @@ export const styles = StyleSheet.create({
     fontWeight: "500",
     paddingLeft: 20,
     width: 295,
+  },
+
+  commentInputContainer: {
+    flexDirection: "row",
+    width: "90%",
+    margin: 10,
+    padding: 4,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#e4e4e4",
+    borderRadius: 50,
+    backgroundColor: "#fff",
+  },
+
+  commentBox: {
+    fontSize: 14,
+    fontFamily: theme.fonts.body,
+    width: "90%",
+    height: 43,
+    backgroundColor: "#ffffff",
+    borderRadius: 50,
+    paddingLeft: 12,
+    borderWidth: 1,
+    borderColor: "#e4e4e4",
   },
 });
