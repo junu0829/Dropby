@@ -22,7 +22,6 @@ import {
   ImageBackground,
 } from "react-native";
 import { utils } from "./writescreen.styles";
-import gallergyBtn from "../../../../assets/Buttons/btn_gallery.png";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 const WINDOW_WIDTH = Dimensions.get("window").width;
@@ -228,7 +227,16 @@ export const CameraScreen = ({ navigation, route }) => {
     <View
       style={{ flex: 1, flexDirection: "column", backgroundColor: "white" }}
     >
-      <View style={[{ aspectRatio: 1 / 1, height: WINDOW_WIDTH }]}>
+      <View style={[{ aspectRatio: 3 / 4, height: "70%" }]}>
+        <View style={styles.GoBack}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <SvgXml xml={backButton} width={26} height={26}></SvgXml>
+          </TouchableOpacity>
+        </View>
         {isFocused ? (
           <Camera
             ref={cameraRef}
@@ -238,10 +246,10 @@ export const CameraScreen = ({ navigation, route }) => {
                 ? Camera.Constants.FlashMode.torch
                 : Camera.Constants.FlashMode.off
             }
-            style={[{ aspectRatio: 1 / 1, height: WINDOW_WIDTH }]}
+            style={[{ aspectRatio: 3 / 4, height: "100%", zIndex: 10 }]}
             ratio={"1:1"}
             onCameraReady={onCameraReady}
-          />
+          ></Camera>
         ) : null}
       </View>
 
@@ -338,6 +346,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
+  GoBack: { position: "absolute", zIndex: 999, margin: 30, top: 30 },
   setPictureButton: {
     alignItems: "center",
     justifyContent: "center",
@@ -419,7 +428,7 @@ const styles = StyleSheet.create({
   },
   capturePicture: {
     borderWidth: 6,
-    borderColor: "#707070",
+    borderColor: "#996afc",
     backgroundColor: "white",
     borderRadius: 5,
     height: captureSize,
