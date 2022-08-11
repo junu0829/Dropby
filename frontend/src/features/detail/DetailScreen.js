@@ -61,7 +61,7 @@ export const DetailScreen = ({ navigation, route }) => {
         navigation={navigation}
       ></EditModal>
 
-      <MainContainerView style={{ height: "80%" }}>
+      <MainContainerView style={{ height: "85%", paddingBottom: 60 }}>
         <ScrollView>
           <View style={styles.mainContainer}>
             <View style={styles.dropContainer}>
@@ -192,7 +192,8 @@ export const styles = StyleSheet.create({
   },
 
   pictureContainer: {
-    flex: 8,
+    flex: 4,
+    marginBottom: 16,
   },
 
   pictureInput: {
@@ -205,7 +206,7 @@ export const styles = StyleSheet.create({
   },
 
   content: {
-    flex: 2,
+    flex: 1,
     alignSelf: "stretch",
     marginLeft: 12,
     fontSize: theme.fontSizes.title,
@@ -267,6 +268,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 1000,
     width: "100%",
+    height: 61,
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: "#e4e4e4",
