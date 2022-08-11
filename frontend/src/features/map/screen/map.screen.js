@@ -173,7 +173,7 @@ export const MapScreen = ({ navigation, route }) => {
         </>
       ) : null}
 
-      <MainContainerView style={{ height: "85%" }}>
+      <MainContainerView style={{ height: "90%" }}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView behavior="position">
             <View>
