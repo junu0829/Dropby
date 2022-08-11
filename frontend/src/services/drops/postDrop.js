@@ -21,7 +21,7 @@ export const postDrop = async (area, placePk, frm) => {
     method: "POST",
     headers: {
       Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY1NzUxODYzOSwiZXhwIjoxNjYwMTEwNjM5fQ.X2q6YnNQGgq85xdCAP7zodcGMG26h3uT2v3oglmAadM",
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
     },
     body: frm,
   })

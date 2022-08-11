@@ -38,13 +38,12 @@ export const DetailScreen = ({ navigation, route }) => {
 
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState([]);
-  console.log(place.pk, drop.placePk, drop.pk);
   useEffect(async () => {
     await getComments(place.pk, drop.placePk, drop.pk, setComments);
   }, []);
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <GNB
         mode={"detailView"}
         navigation={navigation}
@@ -62,87 +61,95 @@ export const DetailScreen = ({ navigation, route }) => {
         navigation={navigation}
       ></EditModal>
 
-      <MainContainerView>
-        <View style={styles.mainContainer}>
-          <View style={styles.dropContainer}>
-            <View style={styles.titleContainer}>
-              <View style={styles.SymbolContainer}>
-                <ImageBackground source={dropBg} style={styles.dropemoji}>
-                  <Text style={styles.emoji}>{drop.emoji.icon}</Text>
-                </ImageBackground>
+      <MainContainerView style={{ height: "80%" }}>
+        <ScrollView>
+          <View style={styles.mainContainer}>
+            <View style={styles.dropContainer}>
+              <View style={styles.titleContainer}>
+                <View style={styles.SymbolContainer}>
+                  <ImageBackground source={dropBg} style={styles.dropemoji}>
+                    <Text style={styles.emoji}>{drop.emoji.icon}</Text>
+                  </ImageBackground>
+                </View>
+                <View style={styles.titleTime}>
+                  <Text style={styles.dropTitle}>{drop.title}</Text>
+                  <Text style={styles.dropTime}>
+                    {elapsedTime(drop.createdAt)}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.titleTime}>
-                <Text style={styles.dropTitle}>{drop.title}</Text>
-                <Text style={styles.dropTime}>
-                  {elapsedTime(drop.createdAt)}
-                </Text>
+              {/* 이 부분은 이미지가 있을 때만 필요 */}
+              <View style={styles.pictureContainer}>
+                <ScrollView horizontal={true}>
+                  <View style={styles.pictureInput}></View>
+                  <View style={styles.pictureInput}></View>
+                  <View style={styles.pictureInput}></View>
+                  <View style={styles.pictureInput}></View>
+                </ScrollView>
               </View>
-            </View>
-            {/* 이 부분은 이미지가 있을 때만 필요 */}
-            <View style={styles.pictureContainer}>
-              <ScrollView horizontal={true}>
-                <View style={styles.pictureInput}></View>
-                <View style={styles.pictureInput}></View>
-                <View style={styles.pictureInput}></View>
-                <View style={styles.pictureInput}></View>
-              </ScrollView>
-            </View>
 
-            <Text style={styles.content}>{drop.content}</Text>
-            <View style={styles.restContainer}>
-              <View style={styles.dropLike}>
-                <SvgXml xml={ico_heart} width={16} height={16}></SvgXml>
-                <Text style={styles.dropLikeNum}>12</Text>
-                <SvgXml xml={ico_speech} width={16} height={16}></SvgXml>
-                <Text style={styles.dropLikeNum}>5</Text>
-                <SvgXml xml={ico_photo} width={16} height={16}></SvgXml>
-                <Text style={styles.dropLikeNum}>1</Text>
+              <Text style={styles.content}>{drop.content}</Text>
+              <View style={styles.restContainer}>
+                <View style={styles.dropLike}>
+                  <SvgXml xml={ico_heart} width={16} height={16}></SvgXml>
+                  <Text style={styles.dropLikeNum}>12</Text>
+                  <SvgXml xml={ico_speech} width={16} height={16}></SvgXml>
+                  <Text style={styles.dropLikeNum}>5</Text>
+                  <SvgXml xml={ico_photo} width={16} height={16}></SvgXml>
+                  <Text style={styles.dropLikeNum}>1</Text>
+                </View>
+                {/* 좋아요 누르는 기능 구현 필요, 종아요 눌린 상태 구현 필요 */}
+                <TouchableOpacity>
+                  <SvgXml
+                    xml={btn_like}
+                    width={85}
+                    height={29}
+                    style={styles.LikeButton}
+                  ></SvgXml>
+                </TouchableOpacity>
               </View>
-              {/* 좋아요 누르는 기능 구현 필요, 종아요 눌린 상태 구현 필요 */}
-              <TouchableOpacity>
-                <SvgXml
-                  xml={btn_like}
-                  width={85}
-                  height={29}
-                  style={styles.LikeButton}
-                ></SvgXml>
-              </TouchableOpacity>
+            </View>
+            <View style={styles.commentsContainer}>
+              {/* 아래 컴포넌트에 prop으로 댓글들을 넘겨주면 됨. */}
+              {comments.map((comment) => (
+                <FeedDropComment comment={comment} />
+              ))}
             </View>
           </View>
-          <View style={styles.commentsContainer}>
-            {/* 아래 컴포넌트에 prop으로 댓글들을 넘겨주면 됨. */}
-            {comments.map((comment) => (
-              <FeedDropComment comment={comment} />
-            ))}
+        </ScrollView>
+      </MainContainerView>
+      <View style={styles.commentInputContainer}>
+        <View style={styles.commentInputContainerIn}>
+          <View style={{ flex: 6 }}>
+            <TextInput
+              placeholder="댓글을 입력해보세요."
+              onChangeText={(text) => {
+                setCommentInput(text);
+              }}
+              value={commentInput}
+              style={{ backgroundColor: "transparent", marginLeft: 12 }}
+              // onSubmitEditing = {()=>{this.onSubmit(this.state.searchText)}}
+            />
           </View>
-
-          <View style={styles.commentInputContainer}>
-            <View style={{ flex: 6 }}>
-              <TextInput
-                placeholder="댓글을 입력해보세요."
-                onChangeText={(text) => {
-                  setCommentInput(text);
-                }}
-                value={commentInput}
-                style={{ backgroundColor: "transparent", marginLeft: 12 }}
-                // onSubmitEditing = {()=>{this.onSubmit(this.state.searchText)}}
-              />
-            </View>
-            <View style={{ marginRight: -12, flex: 1 }}>
-              <TouchableOpacity
-                onPress={() => {
-                  setCommentInput("");
-                  postComment(place.pk, drop.placePk, drop.pk, commentInput);
-                  getComments(place.pk, drop.placePk, drop.pk, setComments);
-                }}
-              >
-                <SvgXml xml={btn_send} width={26} height={26}></SvgXml>
-              </TouchableOpacity>
-            </View>
+          <View style={{ marginRight: -12, flex: 1 }}>
+            <TouchableOpacity
+              onPress={async () => {
+                setCommentInput("");
+                await postComment(
+                  place.pk,
+                  drop.placePk,
+                  drop.pk,
+                  commentInput
+                );
+                getComments(place.pk, drop.placePk, drop.pk, setComments);
+              }}
+            >
+              <SvgXml xml={btn_send} width={26} height={26}></SvgXml>
+            </TouchableOpacity>
           </View>
         </View>
-      </MainContainerView>
-    </>
+      </View>
+    </View>
   );
 };
 
@@ -255,8 +262,16 @@ export const styles = StyleSheet.create({
     paddingLeft: 20,
     width: 295,
   },
-
   commentInputContainer: {
+    position: "absolute",
+    bottom: 0,
+    zIndex: 1000,
+    width: "100%",
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "#e4e4e4",
+  },
+  commentInputContainerIn: {
     flexDirection: "row",
     width: "90%",
     margin: 10,

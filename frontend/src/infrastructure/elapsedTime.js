@@ -14,7 +14,7 @@ export function elapsedTime(date) {
     const betweenTime = Math.floor(diff / value.milliSeconds);
     // 큰 단위는 0보다 작은 소수 단위 나옴
     if (betweenTime > 0) {
-      return `${betweenTime}${value.time} 전`;
+      return `${betweenTime}${value.time}`;
     }
   }
   // 모든 단위가 맞지 않을시

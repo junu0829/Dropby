@@ -8,7 +8,7 @@ export const postComment = async (areaPk, placePk, dropPk, comment) => {
       method: "POST",
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY1NzI5MzUyMiwiZXhwIjoxNjU5ODg1NTIyfQ.4La58jIAmjDM-EBw7dNH8lX2RbRy-VFY6uYZ-7vpXgM",
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
       },
       data: {
         content: comment,
@@ -29,7 +29,7 @@ export const getComments = async (areaPk, placePk, dropPk, setComments) => {
       headers: {
         Accept: "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY1NzI5MzUyMiwiZXhwIjoxNjU5ODg1NTIyfQ.4La58jIAmjDM-EBw7dNH8lX2RbRy-VFY6uYZ-7vpXgM",
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
       },
     }
   )
@@ -52,7 +52,7 @@ export const editComment = async (
       method: "PUT",
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY1NzI5MzUyMiwiZXhwIjoxNjU5ODg1NTIyfQ.4La58jIAmjDM-EBw7dNH8lX2RbRy-VFY6uYZ-7vpXgM",
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
       },
       data: {
         content: comment,
@@ -73,7 +73,7 @@ export const deleteComment = async (areaPk, placePk, dropPk, commentPk) => {
       headers: {
         Accept: "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY1NzI5MzUyMiwiZXhwIjoxNjU5ODg1NTIyfQ.4La58jIAmjDM-EBw7dNH8lX2RbRy-VFY6uYZ-7vpXgM",
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
       },
     }
   )

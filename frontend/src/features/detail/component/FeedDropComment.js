@@ -14,30 +14,27 @@ export const FeedDropComment = ({ comment }) => {
   return (
     <>
       <View style={styles.commentContainer}>
-        <Text style={styles.user}>유민</Text>
-        <View style={styles.inner}>
-          <Text style={styles.commet}>{comment.content}</Text>
-          <View style={styles.bottom}>
-            <Text style={styles.time}>{elapsedTime(comment.createdAt)}</Text>
-            <TouchableOpacity
-              onPress={() => deleteComment(3, 1, 5, comment.pk)}
-            >
-              <Text style={styles.like}>좋아요 1개</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => editComment(3, 1, 5, comment.pk, testcontent)}
-            >
-              <Text style={styles.reply}>답글달기</Text>
-            </TouchableOpacity>
+        <View style={styles.contentContainer}>
+          <Text style={styles.user}>유민{comment.creatorPk}</Text>
+          <View style={styles.inner}>
+            <Text style={styles.commentContent}>{comment.content}</Text>
+            <View style={styles.bottom}>
+              <Text style={styles.time}>{elapsedTime(comment.createdAt)}</Text>
+              <TouchableOpacity
+                onPress={() => deleteComment(3, 1, 5, comment.pk)}
+              >
+                <Text style={styles.like}>좋아요 1개</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => editComment(3, 1, 5, comment.pk, testcontent)}
+              >
+                <Text style={styles.reply}>답글달기</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-        <TouchableOpacity>
-          <SvgXml
-            xml={emptyHeart}
-            width={19}
-            height={21}
-            style={styles.emptyHeart}
-          ></SvgXml>
+        <TouchableOpacity style={styles.emptyHeart}>
+          <SvgXml xml={emptyHeart} width={19} height={21}></SvgXml>
         </TouchableOpacity>
       </View>
     </>
@@ -47,48 +44,52 @@ export const FeedDropComment = ({ comment }) => {
 const styles = StyleSheet.create({
   commentContainer: {
     flexDirection: "row",
-    marginTop: 20,
+    justifyContent: "space-around",
+    marginTop: 12,
     paddingBottom: 12,
     borderBottomColor: "#eeeeee",
     borderBottomWidth: 1,
   },
-  emptyHeart: {
-    justifyContent: "flex-end",
-    paddingRight: 10,
+  contentContainer: {
+    flexDirection: "row",
   },
+  emptyHeart: {},
   inner: {
     flexDirection: "column",
-    marginLeft: 20,
-    width: 240,
+    marginLeft: 8,
   },
   user: {
-    fontSize: 15,
+    width: 60,
+    marginLeft: 18,
+    fontSize: 13,
     fontWeight: "700",
-    marginLeft: 20,
   },
   bottom: {
     flexDirection: "row",
     marginTop: 5,
   },
   time: {
+    width: 30,
     fontSize: 10,
     fontWeight: "400",
     color: "#C4C4C4",
   },
-  commet: {
-    fontSize: 15,
+  commentContent: {
+    width: 240,
+    fontSize: 13,
     fontWeight: "500",
   },
   reply: {
     fontSize: 10,
     fontWeight: "400",
     color: "#C4C4C4",
-    marginLeft: 20,
+    marginLeft: 8,
   },
   like: {
+    width: 50,
     fontSize: 10,
     fontWeight: "400",
     color: "#C4C4C4",
-    marginLeft: 20,
+    marginLeft: 8,
   },
 });
