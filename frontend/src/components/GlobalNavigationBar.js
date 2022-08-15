@@ -141,12 +141,14 @@ export const GNB = ({
               </>
             ) : mode == "detailView" ? (
               <>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.title}>{title}</Text>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.address}>주소입니다</Text>
-                </View>
+                <FadeInView duration={2000}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.title}>{title}</Text>
+                  </View>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.address}>주소입니다</Text>
+                  </View>
+                </FadeInView>
               </>
             ) : null}
 

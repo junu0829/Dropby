@@ -1,15 +1,19 @@
 import LOCAL_HOST from "../local.js";
 import axios from "axios";
+import { user } from "../user.js";
 
 export const getPlaceDrops = async (areaPk, placePk, setDrops) => {
-  await axios(`http://${LOCAL_HOST}:3000/${areaPk}/${placePk}/drops`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY1NzI5MzUyMiwiZXhwIjoxNjU5ODg1NTIyfQ.4La58jIAmjDM-EBw7dNH8lX2RbRy-VFY6uYZ-7vpXgM",
-    },
-  })
+  await axios(
+    `http://${LOCAL_HOST}:3000/areas/${areaPk}/places/${placePk}/drops`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
+      },
+    }
+  )
     .then((res) => {
       setDrops(res.data.data.publicDrops);
     })
@@ -18,12 +22,12 @@ export const getPlaceDrops = async (areaPk, placePk, setDrops) => {
 
 // area에서 드롭 가져오는 api 테스트 성공 하면 바꿔주자., placePk 부분 지워주면 됨.
 export const getAreaDrops = async (areaPk, setDrops, setDropCount) => {
-  await axios(`http://${LOCAL_HOST}:3000/${areaPk}/drops`, {
+  await axios(`http://${LOCAL_HOST}:3000/areas/${areaPk}/drops`, {
     method: "GET",
     headers: {
       Accept: "application/json",
       Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY1NzI5MzUyMiwiZXhwIjoxNjU5ODg1NTIyfQ.4La58jIAmjDM-EBw7dNH8lX2RbRy-VFY6uYZ-7vpXgM",
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
     },
   })
     .then((res) => {
@@ -34,10 +38,31 @@ export const getAreaDrops = async (areaPk, setDrops, setDropCount) => {
 };
 
 export const getPlacePreview = async (areaPk, placePk, setDATA) => {
-  await axios(`http://${LOCAL_HOST}:3000/${areaPk}/${placePk}/drops`, {
-    method: "GET",
-  })
+  await axios(
+    `http://${LOCAL_HOST}:3000/areas/${areaPk}/places/${placePk}/drops`,
+    {
+      method: "GET",
+    }
+  )
     .then((res) => {})
+    .catch((e) => console.log(e));
+};
+
+export const getSpecificDrop = async (areaPk, placePk, dropPk, setDrop) => {
+  await axios(
+    `http://${LOCAL_HOST}:3000/areas/${aredPk}/places/${placePk}/drops/${dropPk}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
+      },
+    }
+  )
+    .then((res) => {
+      setDrop(res.data.data.publicDrops);
+    })
     .catch((e) => console.log(e));
 };
 

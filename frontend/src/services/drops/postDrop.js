@@ -17,11 +17,11 @@ export const postDrop = async (area, placePk, frm) => {
   //     console.log(`${res.data.data.content} 내용으로 ${res.data.msg}!`);
   //   })
   //   .catch((e) => console.log(e));
-  fetch(`http://${LOCAL_HOST}:3000/${area}/${placePk}/drops`, {
+  fetch(`http://${LOCAL_HOST}:3000/areas/${area}/places/${placePk}/drops`, {
     method: "POST",
     headers: {
       Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY1NzUxODYzOSwiZXhwIjoxNjYwMTEwNjM5fQ.X2q6YnNQGgq85xdCAP7zodcGMG26h3uT2v3oglmAadM",
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
     },
     body: frm,
   })

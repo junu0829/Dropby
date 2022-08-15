@@ -28,7 +28,7 @@ export const LocationContextProvider = ({ children }) => {
       let lat = locations[0].coords.latitude;
       let long = locations[0].coords.longitude;
       setLocation([lat, long]);
-      console.log(`${new Date(Date.now()).toLocaleString()}: ${lat},${long}`);
+      // console.log(`${new Date(Date.now()).toLocaleString()}: ${lat},${long}`);
     }
   });
 

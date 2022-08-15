@@ -9,7 +9,6 @@ import {
   Image,
   Video,
   StyleSheet,
-  ScrollView,
   ImageBackground,
   Switch,
 } from "react-native";
@@ -19,17 +18,7 @@ import { SafeArea } from "../../../components/utility/safe-area.component";
 import { TextInput } from "react-native-gesture-handler";
 import { SvgXml } from "react-native-svg";
 
-import Constants from "expo-constants";
-
-import addIcon from "../../../../assets/Buttons/addIcon";
-import backButton2 from "../../../../assets/Buttons/backButton2";
-import sendingButton from "../../../../assets/Buttons/sendingButton";
-//
-import addPicture from "../../../../assets/Buttons/addPicture";
-import LockButtonUnlocked from "../../../../assets/Buttons/LockButton(Unlocked)";
-
 import { styles } from "./writescreen.styles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { postDrop } from "../../../services/drops/postDrop";
 import { UpdateDrop } from "../../../services/drops/UpdateDrop";
 import { GNB } from "../../../components/GlobalNavigationBar";
@@ -54,8 +43,9 @@ export const WriteScreen = ({ navigation, route }) => {
   const [placeAddress, setPlaceAddress] = useState("새로운 장소-주소");
 
   const [selectedEmoji, setSelectedEmoji] = useState(null);
-  const [name, setName] = useState("test");
+
   const [area, setArea] = useState(null);
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
 
@@ -63,11 +53,14 @@ export const WriteScreen = ({ navigation, route }) => {
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   /////////////////////로컬 이미지 여기에 담김
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(
+    "file:///var/mobile/Media/DCIM/103APPLE/IMG_3123.PNG"
+  );
+  const [type, setType] = useState(null);
 
   const frm = new FormData();
-  frm.append("image", "false");
-  frm.append("title", name);
+  frm.append("image", image);
+  frm.append("title", title);
   frm.append("content", content);
   frm.append("isPrivate", isPrivate);
   frm.append("emojiSlug", "neutral_face");
@@ -85,14 +78,18 @@ export const WriteScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     setImage(route.params.source);
+    setType(route.params.type);
+    console.log(route.params.source);
   }, [route, image]);
 
   ////////////////////
 
+  const handleTitle = (e) => {
+    setTitle(e);
+  };
   const handleContent = (e) => {
     setContent(e);
   };
-
   const PostWrite = async () => {
     route.params.drop
       ? await UpdateDrop(area, place.pk, route.params.drop.pk, frm)
@@ -112,7 +109,10 @@ export const WriteScreen = ({ navigation, route }) => {
         <GNBButtonPart2>
           <TouchableOpacity
             style={{ marginRight: 30, marginTop: 8 }}
-            onPress={() => {}}
+            onPress={() => {
+              PostWrite();
+              navigation.navigate("MapScreen");
+            }}
           >
             <Text style={style.title}>전송</Text>
           </TouchableOpacity>
@@ -166,6 +166,23 @@ export const WriteScreen = ({ navigation, route }) => {
                     {route.params.drop ? (
                       <TextInput
                         style={styles.enter}
+                        placeholder={route.params.drop.title}
+                        onChangeText={(title) => handleTitle(title)}
+                        value={title}
+                      />
+                    ) : (
+                      <TextInput
+                        multiline={true}
+                        style={styles.enter}
+                        placeholder="제목을 입력하세요"
+                        onChangeText={(title) => handleTitle(title)}
+                        value={title}
+                      />
+                    )}
+
+                    {route.params.drop ? (
+                      <TextInput
+                        style={styles.enter2}
                         placeholder={route.params.drop.content}
                         onChangeText={(content) => handleContent(content)}
                         value={content}
@@ -173,16 +190,60 @@ export const WriteScreen = ({ navigation, route }) => {
                     ) : (
                       <TextInput
                         multiline={true}
-                        style={styles.enter}
-                        placeholder="텍스트를 입력하세요"
+                        style={styles.enter2}
+                        placeholder="내용을 입력하세요"
                         onChangeText={(content) => handleContent(content)}
                         value={content}
                       />
                     )}
+
+                    <View
+                      style={{
+                        backgroundColor: "#e4e4e4",
+                        width: "100%",
+                        height: "20%",
+                        justifyContent: "flex-start",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        margin: 5,
+                        borderRadius: 5,
+                      }}
+                    >
+                      {/* {route.params.type === 1 ? ( */}
+                      <View>
+                        <Image
+                          source={{ uri: route.params.source }}
+                          style={{
+                            aspectRatio: 1 / 1,
+                            height: "90%",
+                            margin: 5,
+                            borderRadius: 5,
+                          }}
+                        />
+                      </View>
+                      {/* ) : route.params.type === 0 ? (
+                        <View>
+                          <Video
+                            source={{ uri: route.params.source }}
+                            shouldPlay={true}
+                            isLooping={true}
+                            resizeMode="cover"
+                            style={{
+                              aspectRatio: 1 / 1,
+                              backgroundColor: "black",
+                            }}
+                          />
+                        </View>
+                      ) : null} */}
+                    </View>
                   </View>
 
                   <View style={style.lowerButtons}>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("CameraScreen", route);
+                      }}
+                    >
                       <SvgXml
                         xml={btn_photoadd}
                         width={50}
@@ -297,94 +358,3 @@ const style = StyleSheet.create({
     flex: 1,
   },
 });
-{
-  /* <View style={styles.containerTop}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Emoji");
-              }}
-            >
-              {selectedEmoji != null ? (
-                <Text
-                  style={{
-                    height: 70,
-                    fontSize: 60,
-                  }}
-                >
-                  {selectedEmoji}
-                </Text>
-              ) : (
-                <SvgXml
-                  xml={addIcon}
-                  width={65}
-                  height={50}
-                  style={styles.addIcon}
-                />
-              )}
-            </TouchableOpacity>
-
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-              <View style={styles.textContainer}>
-                {route.params.drop ? (
-                  <TextInput
-                    style={styles.enter}
-                    placeholder={route.params.drop.content}
-                    onChangeText={(content) => handleContent(content)}
-                    value={content}
-                  />
-                ) : (
-                  <TextInput
-                    style={styles.enter}
-                    placeholder="텍스트를 입력하세요"
-                    onChangeText={(content) => handleContent(content)}
-                    value={content}
-                  />
-                )}
-              </View>
-            </TouchableWithoutFeedback>
-
-            {/* -----------------------------------------------이미지 불러와서 미리보기---------------------------------------------------
-        {route.params.type === 1 ? (
-          <View>
-            <Image
-              style={container.image}
-              source={{ uri: route.params.source }}
-              // eslint-disable-next-line react/jsx-no-duplicate-props
-            />
-          </View>
-        ) : route.params.type === 0 ? (
-          <View>
-            <Video
-              source={{ uri: route.params.source }}
-              shouldPlay={true}
-              isLooping={true}
-              resizeMode="cover"
-              style={{ aspectRatio: 1 / 1, backgroundColor: "black" }}
-            />
-          </View>
-        ) : null} 
-            <View style={styles.containerLow}>
-          <TouchableOpacity
-            onPress={() => {
-              PostWrite();
-              navigation.navigate("CameraScreen", route);
-            }}
-          >
-            <SvgXml
-              xml={addPicture}
-              width={90}
-              height={90}
-              style={styles.addPicture}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <SvgXml
-              xml={LockButtonUnlocked}
-              width={41}
-              height={55}
-              style={styles.LockButtonUnlocked}
-            />
-          </TouchableOpacity>
-        </View> 
-          </View> */
-}

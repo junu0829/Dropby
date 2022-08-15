@@ -7,7 +7,7 @@ import axios from "axios";
 // 받아진 api 예시.
 
 export const getPlaceData = async (activePolygon, setPlaceList) => {
-  await axios(`http://${LOCAL_HOST}:3000/${activePolygon}`, {
+  await axios(`http://${LOCAL_HOST}:3000/areas/${activePolygon}/places`, {
     method: "GET",
     headers: {
       Accept: "application/json",

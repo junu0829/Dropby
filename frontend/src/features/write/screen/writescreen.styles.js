@@ -24,15 +24,6 @@ const utils = StyleSheet.create({
   ////////////
 });
 
-const container = StyleSheet.create({
-  // containerImage: {
-  //   flex: 1 / 3,
-  // },
-  // image: {
-  //   aspectRatio: 1 / 1,
-  // },
-});
-
 const styles = StyleSheet.create({
   containerTop: {
     alignItems: "center",
@@ -59,6 +50,15 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
 
+  enter2: {
+    width: 300,
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#9A9A9A",
+    textAlign: "center",
+    flexShrink: 1,
+  },
+
   containerLow: {
     backgroundColor: theme.colors.bg.secondary,
     flexDirection: "row",
@@ -73,4 +73,4 @@ const styles = StyleSheet.create({
     marginLeft: 70,
   },
 });
-export { container, styles, utils };
+export { styles, utils };

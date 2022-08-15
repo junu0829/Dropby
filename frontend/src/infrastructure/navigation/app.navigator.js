@@ -54,7 +54,7 @@ export const MainNavigator = () => {
         <MainStack.Screen name="WriteScreen" component={WriteScreen} />
         <MainStack.Screen name="DetailScreen" component={DetailScreen} />
 
-        <MainStack.Group screenOptions={{ presentation: "modal" }}>
+        <MainStack.Group>
           <MainStack.Screen name="Emoji" component={EmojiSelectScreen} />
           <MainStack.Screen name="CameraScreen" component={CameraScreen} />
         </MainStack.Group>
