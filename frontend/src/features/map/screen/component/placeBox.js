@@ -34,11 +34,7 @@ import dropBg from "../../../../../assets/images/dropPng/drawable-xxhdpi/pin.png
 import HeartIcon from "../../../../../assets/HeartIcon";
 import { elapsedTime } from "../../../../infrastructure/elapsedTime";
 
-export const PlaceBox = ({
-  navigation,
-  selectedPlace = {},
-  activePolygon = {},
-}) => {
+export const PlaceBox = ({ navigation, selectedPlace = {} }) => {
   const [searchfield, setSearchfield] = useState("");
   const [DATA, setDATA] = useState([
     {
@@ -73,7 +69,10 @@ export const PlaceBox = ({
     const Drop = ({ item, textColor }) => (
       <TouchableOpacity
         onPress={() => {
-          setSelectedpk(item.pk);
+          navigation.navigate({
+            name: "DetailScreen",
+            params: { place: selectedPlace, drop: item },
+          });
         }}
         style={styles.dropBox}
       >

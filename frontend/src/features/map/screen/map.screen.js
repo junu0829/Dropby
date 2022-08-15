@@ -10,7 +10,7 @@ import {
 } from "react-native";
 //Services
 import { LocationContext } from "../../../services/location/location.context";
-import { getAddress, getPlaceDetail } from "../../../services/maps/address";
+
 //Components
 
 import { Loading } from "../../../components/Loading";
@@ -120,12 +120,6 @@ export const MapScreen = ({ navigation, route }) => {
 
     setSelectedPlace(null);
   }, [activePolygon]);
-
-  //새로운  장소정보 가져오는 함수
-  useEffect(() => {
-    getAddress(pressedLocation, setPressedAddressID);
-    getPlaceDetail(setPressedAddress, setPressedAddressName, pressedAddressID);
-  }, [pressedAddressID, pressedLocation]);
 
   /////----writePage에서 다시 되돌아올 때 초기화면으로
   useEffect(() => {

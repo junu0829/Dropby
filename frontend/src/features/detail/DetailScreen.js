@@ -29,8 +29,32 @@ import btn_send from "../../../assets/Buttons/btn_send";
 import { getComments, postComment } from "../../services/drops/commentService";
 
 export const DetailScreen = ({ navigation, route }) => {
+  const [drop, setDrop] = useState({
+    Place: {
+      name: "",
+    },
+    content: "",
+    createdAt: "2022-06-03T10:54:33.000Z",
+    creatorPk: 2,
+    emoji: {
+      emoji_version: "0.7",
+      icon: "😀",
+      name: "중립적 인면",
+      pk: 1,
+      skinToneSupport: false,
+      slug: "neutral_face",
+      unicode_version: "0.7",
+    },
+    emojiPk: 1,
+    images: [],
+    isPrivate: false,
+    pk: 7,
+    placePk: 1,
+    title: "",
+  });
+
   const place = route.params.place;
-  const drop = route.params.feedDrop;
+
   const isPlaceDrop = route.params.isPlaceDrop;
   const [modalVisible, setModalVisible] = useState(false);
   const hideModal = () => setModalVisible(false);
@@ -42,12 +66,18 @@ export const DetailScreen = ({ navigation, route }) => {
     await getComments(place.pk, drop.placePk, drop.pk, setComments);
   }, []);
 
+  useEffect(async () => {
+    await setDrop(route.params.drop);
+
+    console.log(drop);
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <GNB
         mode={"detailView"}
         navigation={navigation}
-        title={isPlaceDrop == "true" ? place.name : drop.Place.name}
+        title={place.name}
         goBack={navigation.goBack}
         showModal={showModal}
         modalVisible={modalVisible}

@@ -50,6 +50,15 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
 
+  enter2: {
+    width: 300,
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#9A9A9A",
+    textAlign: "center",
+    flexShrink: 1,
+  },
+
   containerLow: {
     backgroundColor: theme.colors.bg.secondary,
     flexDirection: "row",

@@ -29,10 +29,9 @@ export const FeedDropComponent = ({
 }) => {
   //touchable 되게 만들고 눌렀을 때 드롭 디테일 페이지로 넘기기.
   const onPress = () => {
-    navigation.navigate("DetailScreen", {
-      place,
-      feedDrop,
-      isPlaceDrop: "true",
+    navigation.navigate({
+      name: "DetailScreen",
+      params: { place, drop: feedDrop },
     });
   };
 

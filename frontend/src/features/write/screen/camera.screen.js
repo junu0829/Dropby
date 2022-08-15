@@ -91,7 +91,7 @@ export const CameraScreen = ({ navigation, route }) => {
 
       navigation.navigate({
         name: "WriteScreen",
-        params: { source, imageSource: null, type },
+        params: { source, imageSource: null, type: 1 },
         merge: true,
       });
     }
