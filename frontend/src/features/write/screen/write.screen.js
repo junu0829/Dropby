@@ -53,19 +53,8 @@ export const WriteScreen = ({ navigation, route }) => {
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   /////////////////////로컬 이미지 여기에 담김
-  const [image, setImage] = useState(
-    "file:///var/mobile/Media/DCIM/103APPLE/IMG_3123.PNG"
-  );
+  const [imageUri, setImageUri] = useState("");
   const [type, setType] = useState(null);
-
-  const frm = new FormData();
-  frm.append("image", image);
-  frm.append("title", title);
-  frm.append("content", content);
-  frm.append("isPrivate", isPrivate);
-  frm.append("emojiSlug", "neutral_face");
-
-  /////////////
 
   useEffect(() => {
     if (route.params.activePolygon) {
@@ -77,10 +66,9 @@ export const WriteScreen = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
-    setImage(route.params.source);
+    setImageUri(route.params.source);
     setType(route.params.type);
-    console.log(route.params.source);
-  }, [route, image]);
+  }, [route, imageUri]);
 
   ////////////////////
 
@@ -90,7 +78,20 @@ export const WriteScreen = ({ navigation, route }) => {
   const handleContent = (e) => {
     setContent(e);
   };
+
+  ////////////전송함수
   const PostWrite = async () => {
+    //image전송 전처리
+    const imageFileName = imageUri.split("/").pop();
+    const match = /\.(\w+)$/.exec(imageFileName ?? "");
+    const imageType = match ? `image/${match[1]}` : "image";
+    ////////////formdata 형성
+    const frm = new FormData();
+    frm.append("image", { uri: imageUri, name: imageFileName, imageType });
+    frm.append("title", title);
+    frm.append("content", content);
+    frm.append("isPrivate", isPrivate);
+    frm.append("emojiSlug", "neutral_face");
     route.params.drop
       ? await UpdateDrop(area, place.pk, route.params.drop.pk, frm)
       : await postDrop(area.pk, place.pk, frm);
@@ -196,32 +197,34 @@ export const WriteScreen = ({ navigation, route }) => {
                         value={content}
                       />
                     )}
+                    {imageUri ? (
+                      <View
+                        style={{
+                          backgroundColor: "#e4e4e4",
+                          width: "100%",
+                          height: "20%",
+                          justifyContent: "flex-start",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          margin: 5,
+                          borderRadius: 5,
+                        }}
+                      >
+                        {route.params.type === 1 ? (
+                          <View>
+                            <Image
+                              source={{ uri: imageUri }}
+                              style={{
+                                aspectRatio: 1 / 1,
+                                height: "90%",
+                                margin: 5,
+                                borderRadius: 5,
+                              }}
+                            />
+                          </View>
+                        ) : null}
 
-                    <View
-                      style={{
-                        backgroundColor: "#e4e4e4",
-                        width: "100%",
-                        height: "20%",
-                        justifyContent: "flex-start",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        margin: 5,
-                        borderRadius: 5,
-                      }}
-                    >
-                      {/* {route.params.type === 1 ? ( */}
-                      <View>
-                        <Image
-                          source={{ uri: route.params.source }}
-                          style={{
-                            aspectRatio: 1 / 1,
-                            height: "90%",
-                            margin: 5,
-                            borderRadius: 5,
-                          }}
-                        />
-                      </View>
-                      {/* ) : route.params.type === 0 ? (
+                        {/*route.params.type === 0 ? (
                         <View>
                           <Video
                             source={{ uri: route.params.source }}
@@ -235,7 +238,8 @@ export const WriteScreen = ({ navigation, route }) => {
                           />
                         </View>
                       ) : null} */}
-                    </View>
+                      </View>
+                    ) : null}
                   </View>
 
                   <View style={style.lowerButtons}>
