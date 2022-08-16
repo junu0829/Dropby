@@ -29,6 +29,7 @@ import { MainContainerView } from "../../../infrastructure/style/styledComponent
 import DropBackground from "../../../../assets/images/writeDropPng/drawable-xxxhdpi/pin_edit.png";
 import ico_non from "../../../../assets/images/ico_non";
 import btn_photoadd from "../../../../assets/Buttons/btn_photoadd";
+import imageDeleteButton from "../../../../assets/Buttons/imageDeleteButton";
 
 export const WriteScreen = ({ navigation, route }) => {
   const place = route.params.selectedPlace
@@ -53,7 +54,8 @@ export const WriteScreen = ({ navigation, route }) => {
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   /////////////////////로컬 이미지 여기에 담김
-  const [imageUri, setImageUri] = useState("");
+  const defaultArray = [];
+  const [imageUri, setImageUri] = useState(defaultArray);
   const [type, setType] = useState(null);
 
   useEffect(() => {
@@ -66,9 +68,17 @@ export const WriteScreen = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
-    setImageUri(route.params.source);
+    if (route.params.source != undefined) {
+      const imageAdded = route.params.source;
+      if (imageUri == []) {
+        setImageUri([imageAdded]);
+      } else {
+        setImageUri([...imageUri, imageAdded]);
+      }
+    }
+
     setType(route.params.type);
-  }, [route, imageUri]);
+  }, [route.params.source]);
 
   ////////////////////
 
@@ -79,15 +89,41 @@ export const WriteScreen = ({ navigation, route }) => {
     setContent(e);
   };
 
-  ////////////전송함수
+  const removeImage = (e) => {
+    var array = [...imageUri];
+    var index = array.indexOf(e);
+    if (index !== -1) {
+      array.splice(index, 1);
+      setImageUri(array);
+    }
+  };
+
+  //////////전송함수
   const PostWrite = async () => {
     //image전송 전처리
-    const imageFileName = imageUri.split("/").pop();
+    const imageFileName = imageUri[0].split("/").pop();
     const match = /\.(\w+)$/.exec(imageFileName ?? "");
     const imageType = match ? `image/${match[1]}` : "image";
+
     ////////////formdata 형성
     const frm = new FormData();
-    frm.append("image", { uri: imageUri, name: imageFileName, imageType });
+    frm.append("image", { uri: imageUri[0], name: imageFileName, imageType });
+
+    /////복수의 image일 경우
+    if (imageUri.length > 1) {
+      for (var i = 1; i < imageUri.length; i++) {
+        const uri = imageUri[i];
+        const imageFileName = uri.split("/").pop();
+        const match = /\.(\w+)$/.exec(imageFileName ?? "");
+        const imageType = match ? `image/${match[1]}` : "image";
+
+        frm.append("image", {
+          name: imageFileName,
+          type: imageType,
+          uri: uri,
+        });
+      }
+    }
     frm.append("title", title);
     frm.append("content", content);
     frm.append("isPrivate", isPrivate);
@@ -102,6 +138,7 @@ export const WriteScreen = ({ navigation, route }) => {
       <GNBButtonPart>
         <TouchableOpacity
           onPress={() => {
+            setImageUri([]);
             navigation.goBack();
           }}
         >
@@ -197,9 +234,10 @@ export const WriteScreen = ({ navigation, route }) => {
                         value={content}
                       />
                     )}
-                    {imageUri ? (
+                    {imageUri.length > 0 && imageUri[0] != undefined ? (
                       <View
                         style={{
+                          //stylesheet으로 분리시키려 했더니 에러가 생겨서 놔둠
                           backgroundColor: "#e4e4e4",
                           width: "100%",
                           height: "20%",
@@ -210,10 +248,10 @@ export const WriteScreen = ({ navigation, route }) => {
                           borderRadius: 5,
                         }}
                       >
-                        {route.params.type === 1 ? (
+                        {imageUri.map((image) => (
                           <View>
                             <Image
-                              source={{ uri: imageUri }}
+                              source={{ uri: image }}
                               style={{
                                 aspectRatio: 1 / 1,
                                 height: "90%",
@@ -221,8 +259,24 @@ export const WriteScreen = ({ navigation, route }) => {
                                 borderRadius: 5,
                               }}
                             />
+                            <TouchableOpacity
+                              onPress={() => {
+                                removeImage(image);
+                              }}
+                              style={{
+                                position: "absolute",
+                                right: "10%",
+                                top: "10%",
+                              }}
+                            >
+                              <SvgXml
+                                xml={imageDeleteButton}
+                                width={15}
+                                height={15}
+                              ></SvgXml>
+                            </TouchableOpacity>
                           </View>
-                        ) : null}
+                        ))}
 
                         {/*route.params.type === 0 ? (
                         <View>
