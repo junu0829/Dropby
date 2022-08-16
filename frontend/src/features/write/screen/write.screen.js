@@ -110,18 +110,20 @@ export const WriteScreen = ({ navigation, route }) => {
     frm.append("image", { uri: imageUri[0], name: imageFileName, imageType });
 
     /////복수의 image일 경우
-    if (imageUri.length > 1) {
-      for (var i = 1; i < imageUri.length; i++) {
-        const uri = imageUri[i];
-        const imageFileName = uri.split("/").pop();
-        const match = /\.(\w+)$/.exec(imageFileName ?? "");
-        const imageType = match ? `image/${match[1]}` : "image";
+    if (imageUri) {
+      if (imageUri.length > 1) {
+        for (var i = 1; i < imageUri.length; i++) {
+          const uri = imageUri[i];
+          const imageFileName = uri.split("/").pop();
+          const match = /\.(\w+)$/.exec(imageFileName ?? "");
+          const imageType = match ? `image/${match[1]}` : "image";
 
-        frm.append("image", {
-          name: imageFileName,
-          type: imageType,
-          uri: uri,
-        });
+          frm.append("image", {
+            name: imageFileName,
+            type: imageType,
+            uri: uri,
+          });
+        }
       }
     }
     frm.append("title", title);
@@ -234,51 +236,53 @@ export const WriteScreen = ({ navigation, route }) => {
                         value={content}
                       />
                     )}
-                    {imageUri.length > 0 && imageUri[0] != undefined ? (
-                      <View
-                        style={{
-                          //stylesheet으로 분리시키려 했더니 에러가 생겨서 놔둠
-                          backgroundColor: "#e4e4e4",
-                          width: "100%",
-                          height: "20%",
-                          justifyContent: "flex-start",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          margin: 5,
-                          borderRadius: 5,
-                        }}
-                      >
-                        {imageUri.map((image) => (
-                          <View>
-                            <Image
-                              source={{ uri: image }}
-                              style={{
-                                aspectRatio: 1 / 1,
-                                height: "90%",
-                                margin: 5,
-                                borderRadius: 5,
-                              }}
-                            />
-                            <TouchableOpacity
-                              onPress={() => {
-                                removeImage(image);
-                              }}
-                              style={{
-                                position: "absolute",
-                                right: "10%",
-                                top: "10%",
-                              }}
-                            >
-                              <SvgXml
-                                xml={imageDeleteButton}
-                                width={15}
-                                height={15}
-                              ></SvgXml>
-                            </TouchableOpacity>
-                          </View>
-                        ))}
+                    {imageUri ? (
+                      <>
+                        {imageUri.length > 0 && imageUri[0] != undefined ? (
+                          <View
+                            style={{
+                              //stylesheet으로 분리시키려 했더니 에러가 생겨서 놔둠
+                              backgroundColor: "#e4e4e4",
+                              width: "100%",
+                              height: "20%",
+                              justifyContent: "flex-start",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              margin: 5,
+                              borderRadius: 5,
+                            }}
+                          >
+                            {imageUri.map((image) => (
+                              <View>
+                                <Image
+                                  source={{ uri: image }}
+                                  style={{
+                                    aspectRatio: 1 / 1,
+                                    height: "90%",
+                                    margin: 5,
+                                    borderRadius: 5,
+                                  }}
+                                />
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    removeImage(image);
+                                  }}
+                                  style={{
+                                    position: "absolute",
+                                    right: "10%",
+                                    top: "10%",
+                                  }}
+                                >
+                                  <SvgXml
+                                    xml={imageDeleteButton}
+                                    width={15}
+                                    height={15}
+                                  ></SvgXml>
+                                </TouchableOpacity>
+                              </View>
+                            ))}
 
-                        {/*route.params.type === 0 ? (
+                            {/*route.params.type === 0 ? (
                         <View>
                           <Video
                             source={{ uri: route.params.source }}
@@ -292,7 +296,9 @@ export const WriteScreen = ({ navigation, route }) => {
                           />
                         </View>
                       ) : null} */}
-                      </View>
+                          </View>
+                        ) : null}
+                      </>
                     ) : null}
                   </View>
 

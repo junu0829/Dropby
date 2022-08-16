@@ -4,7 +4,6 @@ import styled from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
 import backButton from "../../assets/Buttons/backButton";
 
-import { SafeArea } from "./utility/safe-area.component";
 import EditButton from "../../assets/Buttons/EditButton";
 import {
   StyleSheet,

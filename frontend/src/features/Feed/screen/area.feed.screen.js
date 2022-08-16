@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
-import backButton2 from "../../../../assets/Buttons/backButton2";
+
 import { theme } from "../../../infrastructure/theme";
 import { getAreaDrops } from "../../../services/drops/GetDrops";
 import { FeedDropComponent } from "../component/FeedDropComponent";
