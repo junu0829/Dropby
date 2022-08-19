@@ -8,8 +8,10 @@ import {
   TouchableWithoutFeedback,
   Image,
   Video,
+  FlatList,
   StyleSheet,
   ImageBackground,
+  KeyboardAvoidingView,
   Switch,
 } from "react-native";
 import { useEffect, useState, useContext } from "react";
@@ -30,6 +32,8 @@ import DropBackground from "../../../../assets/images/writeDropPng/drawable-xxxh
 import ico_non from "../../../../assets/images/ico_non";
 import btn_photoadd from "../../../../assets/Buttons/btn_photoadd";
 import imageDeleteButton from "../../../../assets/Buttons/imageDeleteButton";
+import { SearchBox } from "../../../components/utility/SearchBox";
+import emojiss from "../../../services/emojis.json";
 
 export const WriteScreen = ({ navigation, route }) => {
   const place = route.params.selectedPlace
@@ -45,10 +49,13 @@ export const WriteScreen = ({ navigation, route }) => {
 
   const [selectedEmoji, setSelectedEmoji] = useState(null);
 
+  const [searchfield, setSearchfield] = useState("");
+
   const [area, setArea] = useState(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
+  const [isEmojiMode, setIsEmojiMode] = useState(false);
 
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
@@ -82,6 +89,14 @@ export const WriteScreen = ({ navigation, route }) => {
 
   ////////////////////
 
+  const goBack = () => {
+    if (isEmojiMode) {
+      setIsEmojiMode(false);
+    } else {
+      setImageUri([]);
+      navigation.goBack();
+    }
+  };
   const handleTitle = (e) => {
     setTitle(e);
   };
@@ -129,19 +144,34 @@ export const WriteScreen = ({ navigation, route }) => {
     frm.append("title", title);
     frm.append("content", content);
     frm.append("isPrivate", isPrivate);
-    frm.append("emojiSlug", "neutral_face");
+    frm.append("emojiSlug", selectedEmoji.slug);
     route.params.drop
       ? await UpdateDrop(area, place.pk, route.params.drop.pk, frm)
       : await postDrop(area.pk, place.pk, frm);
   };
 
+  ///////////// emoji 관련
+  const [emojis, setEmojis] = useState([]);
+
+  useEffect(() => {
+    setEmojis(emojiss);
+  }, []);
+
+  useEffect(() => {
+    const filteredEmojis = emojiss.filter((emoji) => {
+      return emoji.name.toString().includes(searchfield);
+    });
+    setEmojis(filteredEmojis);
+    //console.log(searchfield.toString());
+  }, [searchfield]);
+
+  ////////////////화면/////////////////////
   return (
     <>
       <GNBButtonPart>
         <TouchableOpacity
           onPress={() => {
-            setImageUri([]);
-            navigation.goBack();
+            goBack();
           }}
         >
           <SvgXml xml={backButton} width={26} height={26}></SvgXml>
@@ -154,7 +184,7 @@ export const WriteScreen = ({ navigation, route }) => {
               navigation.navigate("MapScreen");
             }}
           >
-            <Text style={style.title}>전송</Text>
+            <Text style={style.title}>{isEmojiMode ? "완료" : "전송"}</Text>
           </TouchableOpacity>
         </GNBButtonPart2>
       </GNBButtonPart>
@@ -163,7 +193,7 @@ export const WriteScreen = ({ navigation, route }) => {
           navigation={navigation}
           title={place.name}
           goBack={navigation.goBack}
-          mode={"placeFeed"}
+          mode={isEmojiMode ? "selectEmoji" : "placeFeed"}
         ></GNB>
         <MainContainerView style={{ marginTop: 13 }}>
           <View style={style.container1}>
@@ -182,7 +212,7 @@ export const WriteScreen = ({ navigation, route }) => {
                     }}
                   >
                     {selectedEmoji != null ? (
-                      <Text style={style.DropEmoji}>{selectedEmoji}</Text>
+                      <Text style={style.DropEmoji}>{selectedEmoji.emoji}</Text>
                     ) : (
                       <SvgXml
                         xml={ico_non}
@@ -196,93 +226,111 @@ export const WriteScreen = ({ navigation, route }) => {
                   <TouchableOpacity
                     style={style.dropEditButton}
                     onPress={() => {
-                      navigation.navigate("Emoji");
+                      {
+                        isEmojiMode && !selectedEmoji
+                          ? setSelectedEmoji(
+                              emojis[Math.floor(Math.random() * emojis.length)]
+                            )
+                          : selectedEmoji
+                          ? setSelectedEmoji(null)
+                          : setIsEmojiMode(true);
+                      }
                     }}
                   >
-                    <Text style={style.DropEmojiEdit}>아이콘 변경하기</Text>
+                    <Text style={style.DropEmojiEdit}>
+                      {isEmojiMode && !selectedEmoji
+                        ? "랜덤 이모지 사용하기"
+                        : selectedEmoji
+                        ? "클릭해서 삭제"
+                        : "아이콘 변경하기"}
+                    </Text>
                   </TouchableOpacity>
+                  {!isEmojiMode ? (
+                    <>
+                      <View style={styles.containerMiddle}>
+                        <View style={styles.textContainer}>
+                          {route.params.drop ? (
+                            <TextInput
+                              style={styles.enter}
+                              placeholder={route.params.drop.title}
+                              onChangeText={(title) => handleTitle(title)}
+                              value={title}
+                              multiline={false}
+                            />
+                          ) : (
+                            <TextInput
+                              style={styles.enter}
+                              placeholder="제목을 입력하세요"
+                              onChangeText={(title) => handleTitle(title)}
+                              value={title}
+                              multiline={false}
+                            />
+                          )}
 
-                  <View style={styles.textContainer}>
-                    {route.params.drop ? (
-                      <TextInput
-                        style={styles.enter}
-                        placeholder={route.params.drop.title}
-                        onChangeText={(title) => handleTitle(title)}
-                        value={title}
-                      />
-                    ) : (
-                      <TextInput
-                        multiline={true}
-                        style={styles.enter}
-                        placeholder="제목을 입력하세요"
-                        onChangeText={(title) => handleTitle(title)}
-                        value={title}
-                      />
-                    )}
-
-                    {route.params.drop ? (
-                      <TextInput
-                        style={styles.enter2}
-                        placeholder={route.params.drop.content}
-                        onChangeText={(content) => handleContent(content)}
-                        value={content}
-                      />
-                    ) : (
-                      <TextInput
-                        multiline={true}
-                        style={styles.enter2}
-                        placeholder="내용을 입력하세요"
-                        onChangeText={(content) => handleContent(content)}
-                        value={content}
-                      />
-                    )}
-                    {imageUri ? (
-                      <>
-                        {imageUri.length > 0 && imageUri[0] != undefined ? (
-                          <View
-                            style={{
-                              //stylesheet으로 분리시키려 했더니 에러가 생겨서 놔둠
-                              backgroundColor: "#e4e4e4",
-                              width: "100%",
-                              height: "20%",
-                              justifyContent: "flex-start",
-                              flexDirection: "row",
-                              alignItems: "center",
-                              margin: 5,
-                              borderRadius: 5,
-                            }}
-                          >
-                            {imageUri.map((image) => (
-                              <View>
-                                <Image
-                                  source={{ uri: image }}
+                          {route.params.drop ? (
+                            <TextInput
+                              style={styles.enter2}
+                              placeholder={route.params.drop.content}
+                              onChangeText={(content) => handleContent(content)}
+                              value={content}
+                            />
+                          ) : (
+                            <TextInput
+                              multiline={true}
+                              style={styles.enter2}
+                              placeholder="내용을 입력하세요"
+                              onChangeText={(content) => handleContent(content)}
+                              value={content}
+                            />
+                          )}
+                          {imageUri ? (
+                            <>
+                              {imageUri.length > 0 &&
+                              imageUri[0] != undefined ? (
+                                <View
                                   style={{
-                                    aspectRatio: 1 / 1,
-                                    height: "90%",
+                                    //stylesheet으로 분리시키려 했더니 에러가 생겨서 놔둠
+                                    backgroundColor: "#e4e4e4",
+                                    width: "100%",
+                                    height: "20%",
+                                    justifyContent: "flex-start",
+                                    flexDirection: "row",
+                                    alignItems: "center",
                                     margin: 5,
                                     borderRadius: 5,
                                   }}
-                                />
-                                <TouchableOpacity
-                                  onPress={() => {
-                                    removeImage(image);
-                                  }}
-                                  style={{
-                                    position: "absolute",
-                                    right: "10%",
-                                    top: "10%",
-                                  }}
                                 >
-                                  <SvgXml
-                                    xml={imageDeleteButton}
-                                    width={15}
-                                    height={15}
-                                  ></SvgXml>
-                                </TouchableOpacity>
-                              </View>
-                            ))}
+                                  {imageUri.map((image) => (
+                                    <View>
+                                      <Image
+                                        source={{ uri: image }}
+                                        style={{
+                                          aspectRatio: 1 / 1,
+                                          height: "90%",
+                                          margin: 5,
+                                          borderRadius: 5,
+                                        }}
+                                      />
+                                      <TouchableOpacity
+                                        onPress={() => {
+                                          removeImage(image);
+                                        }}
+                                        style={{
+                                          position: "absolute",
+                                          right: "10%",
+                                          top: "10%",
+                                        }}
+                                      >
+                                        <SvgXml
+                                          xml={imageDeleteButton}
+                                          width={15}
+                                          height={15}
+                                        ></SvgXml>
+                                      </TouchableOpacity>
+                                    </View>
+                                  ))}
 
-                            {/*route.params.type === 0 ? (
+                                  {/*route.params.type === 0 ? (
                         <View>
                           <Video
                             source={{ uri: route.params.source }}
@@ -296,45 +344,99 @@ export const WriteScreen = ({ navigation, route }) => {
                           />
                         </View>
                       ) : null} */}
+                                </View>
+                              ) : null}
+                            </>
+                          ) : null}
+                        </View>
+                      </View>
+                      <View style={styles.containerLow}>
+                        <View style={style.lowerButtons}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              navigation.navigate("CameraScreen", route);
+                            }}
+                          >
+                            <SvgXml
+                              xml={btn_photoadd}
+                              width={50}
+                              height={50}
+                            ></SvgXml>
+                          </TouchableOpacity>
+                          <View style={style.lowerButtons2}>
+                            <TouchableOpacity
+                              style={{ alignItems: "center" }}
+                              onPress={() => {}}
+                            >
+                              <Switch
+                                trackColor={{
+                                  false: "#9596B",
+                                  true: "#996afc",
+                                }}
+                                thumbColor="#f4f3f4"
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={toggleSwitch}
+                                value={isEnabled}
+                              />
+                              <Text style={style.title2}>
+                                {isEnabled ? "퍼블릭" : "비공개"}
+                              </Text>
+                            </TouchableOpacity>
                           </View>
-                        ) : null}
-                      </>
-                    ) : null}
-                  </View>
-
-                  <View style={style.lowerButtons}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("CameraScreen", route);
-                      }}
-                    >
-                      <SvgXml
-                        xml={btn_photoadd}
-                        width={50}
-                        height={50}
-                      ></SvgXml>
-                    </TouchableOpacity>
-                    <View style={style.lowerButtons2}>
-                      <TouchableOpacity
-                        style={{ alignItems: "center" }}
-                        onPress={() => {}}
-                      >
-                        <Switch
-                          trackColor={{
-                            false: "#9596B",
-                            true: "#996afc",
-                          }}
-                          thumbColor="#f4f3f4"
-                          ios_backgroundColor="#3e3e3e"
-                          onValueChange={toggleSwitch}
-                          value={isEnabled}
+                        </View>
+                      </View>
+                    </>
+                  ) : (
+                    <>
+                      <View style={styles.containerMiddle}>
+                        <View style={{ height: 30 }}></View>
+                        <SearchBox
+                          searchBoxHint={"이모지를 검색해보세요"}
+                          setSearchfield={setSearchfield}
                         />
-                        <Text style={style.title2}>
-                          {isEnabled ? "퍼블릭" : "비공개"}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+
+                        <View
+                          style={{
+                            width: "100%",
+                            position: "absolute",
+                            top: 100,
+                            alignItems: "center",
+
+                            backgroundColor: "#E7E6E6",
+                          }}
+                        >
+                          <View
+                            style={{
+                              marginTop: 5,
+                              height: 500,
+                            }}
+                          >
+                            <FlatList
+                              // contentContainerStyle={{
+                              //   flexGrow: 1,
+                              // }}
+                              numColumns={8}
+                              data={emojis}
+                              renderItem={({ item }) => (
+                                <TouchableOpacity
+                                  onPress={async () => {
+                                    await setSelectedEmoji(item);
+                                  }}
+                                >
+                                  <View style={style.item}>
+                                    <Text style={style.emoji}>
+                                      {item.emoji}
+                                    </Text>
+                                  </View>
+                                </TouchableOpacity>
+                              )}
+                              keyExtractor={(item) => item.emoji}
+                            />
+                          </View>
+                        </View>
+                      </View>
+                    </>
+                  )}
                 </View>
               </TouchableWithoutFeedback>
             </View>
@@ -410,15 +512,25 @@ const style = StyleSheet.create({
     borderWidth: 1,
     zIndex: 999,
   },
+  searchFieldHeader: {
+    height: 50,
+  },
   lowerButtons: {
     flexDirection: "row",
     justifyContent: "flex-start",
     width: 320,
-    marginTop: 30,
+    marginTop: 50,
   },
   lowerButtons2: {
     flexDirection: "row",
     justifyContent: "flex-end",
     flex: 1,
+  },
+  item: {
+    width: 42,
+    height: 45,
+  },
+  emoji: {
+    fontSize: 35,
   },
 });
