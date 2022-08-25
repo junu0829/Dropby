@@ -89,16 +89,3 @@ exports.toggleCommentLike = async (req, res, next) => {
     console.log(error);
   }
 }
-// exports.getDrop = async (req, res, next) => {
-//   try {
-//     const dropPk = req.params.dropPk;
-//     const {writtenPlace, drop} = await dropServices.getDrop(dropPk);
-//     res.status(200).json({
-//       msg:'단일 드롭 조회 완료',
-//       writtenPlace,
-//       data:drop
-//     })
-//   } catch (error) {
-//     next(error);
-//   }
-// }
