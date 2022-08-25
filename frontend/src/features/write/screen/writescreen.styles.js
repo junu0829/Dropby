@@ -30,12 +30,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
+  containerMiddle: {
+    height: "48%",
+    width: "100%",
+
+    alignItems: "center",
+  },
+
   textContainer: {
     padding: 15,
     alignItems: "center",
     width: 320,
-    height: "48%",
-    marginTop: 20,
+    height: "100%",
+    marginTop: 40,
     borderWidth: 1,
     borderColor: "#e4e4e4",
     borderRadius: 20,
@@ -47,7 +54,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#9A9A9A",
     textAlign: "center",
-    flexShrink: 1,
+    height: 25,
   },
 
   enter2: {
@@ -60,8 +67,6 @@ const styles = StyleSheet.create({
   },
 
   containerLow: {
-    backgroundColor: theme.colors.bg.secondary,
-    flexDirection: "row",
     marginBottom: 5,
     justifyContent: "center",
     alignItems: "center",

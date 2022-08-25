@@ -4,7 +4,6 @@ import styled from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
 import backButton from "../../assets/Buttons/backButton";
 
-import { SafeArea } from "./utility/safe-area.component";
 import EditButton from "../../assets/Buttons/EditButton";
 import {
   StyleSheet,
@@ -42,7 +41,7 @@ export const GNB = ({
   const titleFormer = goBack ? title.substring(0, title.length - 10) : null;
   return (
     <>
-      {mode != "areaFeed" && mode != "placeFeed" ? (
+      {mode != "areaFeed" && mode != "placeFeed" && mode != "selectEmoji" ? (
         <GNBButtonPart>
           {goBack ? (
             <TouchableOpacity
@@ -150,6 +149,12 @@ export const GNB = ({
                   </View>
                 </FadeInView>
               </>
+            ) : mode == "selectEmoji" ? (
+              <FadeInView duration={2000}>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.title}>이모지 선택</Text>
+                </View>
+              </FadeInView>
             ) : null}
 
             <Text style={styles.subTitle}>{subTitle}</Text>

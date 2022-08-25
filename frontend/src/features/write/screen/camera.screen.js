@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import { Audio } from "expo-av";
 import { theme } from "../../../infrastructure/theme";
-
+import { StatusBar } from "expo-status-bar";
 import { Camera } from "expo-camera";
 
 import * as MediaLibrary from "expo-media-library";
@@ -14,7 +14,7 @@ import {
   Dimensions,
   FlatList,
   Image,
-  ScrollView,
+  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -22,6 +22,7 @@ import {
   ImageBackground,
 } from "react-native";
 import { utils } from "./writescreen.styles";
+import backButtonPurple from "../../../../assets/Buttons/backButtonPurple";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 const WINDOW_WIDTH = Dimensions.get("window").width;
@@ -224,19 +225,22 @@ export const CameraScreen = ({ navigation, route }) => {
   //////////////////////////미리보기 화면//////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////
   return (
-    <View
+    <SafeAreaView
       style={{ flex: 1, flexDirection: "column", backgroundColor: "white" }}
     >
-      <View style={[{ aspectRatio: 3 / 4, height: "70%" }]}>
+      <StatusBar style="dark" />
+      <View style={{ height: "20%" }}>
         <View style={styles.GoBack}>
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
             }}
           >
-            <SvgXml xml={backButton} width={26} height={26}></SvgXml>
+            <SvgXml xml={backButtonPurple} width={26} height={26}></SvgXml>
           </TouchableOpacity>
         </View>
+      </View>
+      <View style={[{ aspectRatio: 1 / 1, width: "100%" }]}>
         {isFocused ? (
           <Camera
             ref={cameraRef}
@@ -246,7 +250,7 @@ export const CameraScreen = ({ navigation, route }) => {
                 ? Camera.Constants.FlashMode.torch
                 : Camera.Constants.FlashMode.off
             }
-            style={[{ aspectRatio: 3 / 4, height: "100%", zIndex: 10 }]}
+            style={[{ aspectRatio: 1 / 1, height: "100%", zIndex: 10 }]}
             ratio={"1:1"}
             onCameraReady={onCameraReady}
           ></Camera>
@@ -323,7 +327,7 @@ export const CameraScreen = ({ navigation, route }) => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
