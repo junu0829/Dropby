@@ -145,19 +145,36 @@ exports.deleteDrop = async (dropPk) => {
   return true;
 }
 
-exports.getDrop = async (dropPk) => {
+exports.getDrop = async (accessToken, dropPk) => {
   const drop = await Drop.findOne({
     where:{
       pk:dropPk
     }, include: ["emoji", "images", { model: Place, attributes: ['name'] }]
   });
 
-  const writtenPlace = await getWrittenPlaceName(drop);
+  const user = await getUserWithAccess(accessToken);
 
+  const dropLiked = await LikeDrop.findAll({
+    where:{
+      DropPk:dropPk,
+      UserPk:user.pk
+    }
+  });
+  const writtenPlace = await getWrittenPlaceName(drop);
+  console.log(dropLiked);
+  if (dropLiked.length > 0) {
+    console.log("condition entered");
+    return {
+    writtenPlace:writtenPlace,
+    drop:drop,
+    isLiked:true
+  }
+}
   return {
-    writtenPlace,
-    drop
-  };
+    writtenPlace:writtenPlace,
+    drop:drop,
+    isLiked:false
+  }
 }
 
 exports.toggleDropLike = async (accessToken, dropPk) => {
