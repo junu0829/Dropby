@@ -101,11 +101,13 @@ exports.deleteDrop = async (req, res, next) => {
 exports.getDrop = async (req, res, next) => {
   try {
     const dropPk = req.params.dropPk;
-    const {writtenPlace, drop} = await dropServices.getDrop(dropPk);
+    const accessToken = getAccess(req.headers);
+    const {writtenPlace, drop, isLiked} = await dropServices.getDrop(accessToken, dropPk);
     res.status(200).json({
       msg:'단일 드롭 조회 완료',
       writtenPlace,
-      data:drop
+      data:drop,
+      isLiked:isLiked
     })
   } catch (error) {
     next(error);
@@ -130,7 +132,6 @@ exports.toggleDropLike = async (req, res, next) => {
         status:"OFF"
       });
     }
-  throw new Error();
   } catch(error) {
     console.log(error);
   }
