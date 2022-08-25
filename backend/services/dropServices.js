@@ -1,4 +1,4 @@
-const { Drop, Image, Emoji, LikeDrop } = require("../models");
+const { Drop, Image, Emoji, LikeDrop, Place } = require("../models");
 const { getUserWithAccess } = require("../utils/auth");
 const { getWrittenPlaceName } = require("../utils/place");
 
@@ -149,7 +149,7 @@ exports.getDrop = async (dropPk) => {
   const drop = await Drop.findOne({
     where:{
       pk:dropPk
-    }
+    }, include: ["emoji", "images", { model: Place, attributes: ['name'] }]
   });
 
   const writtenPlace = await getWrittenPlaceName(drop);

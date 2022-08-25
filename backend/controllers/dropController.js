@@ -130,7 +130,6 @@ exports.toggleDropLike = async (req, res, next) => {
         status:"OFF"
       });
     }
-  throw new Error();
   } catch(error) {
     console.log(error);
   }
