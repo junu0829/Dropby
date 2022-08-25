@@ -2,22 +2,27 @@ import { Feather } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import { Audio } from "expo-av";
 import { theme } from "../../../infrastructure/theme";
-import { Text } from "../../../components/typography/text.component";
+import { StatusBar } from "expo-status-bar";
 import { Camera } from "expo-camera";
 
 import * as MediaLibrary from "expo-media-library";
 import * as VideoThumbnails from "expo-video-thumbnails";
 import React, { useEffect, useRef, useState } from "react";
+import { SvgXml } from "react-native-svg";
+import backButton from "../../../../assets/Buttons/backButton";
 import {
   Dimensions,
   FlatList,
   Image,
-  ScrollView,
+  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,
+  Text,
+  ImageBackground,
 } from "react-native";
-import { container, utils } from "./writescreen.styles";
+import { utils } from "./writescreen.styles";
+import backButtonPurple from "../../../../assets/Buttons/backButtonPurple";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 const WINDOW_WIDTH = Dimensions.get("window").width;
@@ -45,9 +50,8 @@ export const CameraScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     (async () => {
-      const cameraPermissions = await Camera.requestPermissionsAsync();
+      const cameraPermissions = await Camera.requestCameraPermissionsAsync();
       const galleryPermissions = await MediaLibrary.requestPermissionsAsync();
-
       const audioPermissions = await Audio.requestPermissionsAsync();
 
       if (
@@ -59,8 +63,20 @@ export const CameraScreen = ({ navigation, route }) => {
           sortBy: ["creationTime"],
           mediaType: ["photo", "video"],
         });
+        getPhotos.assets.unshift({
+          creationTime: 1000000000000,
+          duration: 0,
+          filename: "CamButton",
+          height: 2532,
+          id: "001",
+          mediaSubtypes: ["screenshot"],
+          mediaType: "photo",
+          modificationTime: 1000000000000,
+          uri: "../../../../assets/Buttons/btn_gallery.png",
+          width: 1170,
+        });
         setGalleryItems(getPhotos);
-        setGalleryPickedImage(getPhotos.assets[0]);
+        setGalleryPickedImage(getPhotos.assets[1]);
         setHasPermission(true);
       }
     })();
@@ -76,7 +92,7 @@ export const CameraScreen = ({ navigation, route }) => {
 
       navigation.navigate({
         name: "WriteScreen",
-        params: { source, imageSource: null, type },
+        params: { source, imageSource: null, type: 1 },
         merge: true,
       });
     }
@@ -126,66 +142,9 @@ export const CameraScreen = ({ navigation, route }) => {
   };
 
   ///////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////사진촬영하는 화면//////////////////////////////
+  //////////////////////////사진촬영하는 버튼부분//////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////
 
-  const renderCaptureControl = () => (
-    <View>
-      <View
-        style={{
-          justifyContent: "space-evenly",
-          width: "100%",
-          alignItems: "center",
-          flexDirection: "row",
-          backgroundColor: "white",
-        }}
-      >
-        <TouchableOpacity
-          disabled={!isCameraReady}
-          onPress={() => setIsFlash(!isFlash)}
-        >
-          <Feather
-            style={utils.margin15}
-            name={"zap"}
-            size={25}
-            color="black"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity disabled={!isCameraReady} onPress={switchCamera}>
-          <Feather
-            style={utils.margin15}
-            name="rotate-cw"
-            size={25}
-            color="black"
-          />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          activeOpacity={0.7}
-          disabled={!isCameraReady}
-          onPress={takePicture}
-          style={styles.capturePicture}
-        />
-
-        <TouchableOpacity disabled={!isCameraReady}>
-          <Feather
-            style={utils.margin15}
-            name={type == 0 ? "camera" : "video"}
-            size={25}
-            color="black"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setShowGallery(true)}>
-          <Feather
-            style={utils.margin15}
-            name={"image"}
-            size={25}
-            color="black"
-          />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
   if (hasPermission === null) {
     return <View />;
   }
@@ -199,81 +158,66 @@ export const CameraScreen = ({ navigation, route }) => {
 
   if (showGallery) {
     return (
-      <ScrollView
-        ref={(ref) => setGalleryScrollRef(ref)}
-        style={[container.container, utils.backgroundWhite]}
-      >
-        <View style={[{ aspectRatio: 1 / 1, height: WINDOW_WIDTH }]}>
-          <Image
-            style={{ flex: 1 }}
-            source={{ uri: galleryPickedImage.uri }}
-            // eslint-disable-next-line react/jsx-no-duplicate-props
-            style={[{ aspectRatio: 1 / 1, height: WINDOW_WIDTH }]}
-            ratio={"1:1"}
-          />
-        </View>
-        <View
-          style={{
-            justifyContent: "flex-end",
-            alignItems: "center",
-            marginRight: 20,
-            marginVertical: 10,
-            flexDirection: "row",
-          }}
-        >
+      // <ScrollView ref={(ref) => setGalleryScrollRef(ref)}>
+
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <View style={[{ aspectRatio: 1 / 1, height: WINDOW_WIDTH }]}>
+              {/* 이미지 잘리는 문제 있음 */}
+
+              <Image
+                source={{ uri: galleryPickedImage.uri }}
+                style={[{ aspectRatio: 1 / 1, height: WINDOW_WIDTH }]}
+                ratio={"1:1"}
+              />
+            </View>
+            <View style={styles.middleBar}>
+              <View style={styles.middleBar1}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                >
+                  <SvgXml xml={backButton} width={26} height={26}></SvgXml>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.middleBar2}>
+                <TouchableOpacity
+                  style={styles.setPictureButton}
+                  onPress={() => {
+                    handleGoToSaveOnGalleryPick();
+                  }}
+                >
+                  <Text style={styles.setPictureButtonTxt}>선택</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </>
+        }
+        numColumns={3}
+        horizontal={false}
+        data={galleryItems.assets}
+        contentContainerStyle={{
+          flexGrow: 1,
+        }}
+        renderItem={({ item, index }) => (
           <TouchableOpacity
-            style={{
-              alignItems: "center",
-              backgroundColor: theme.colors.bg.a,
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-              marginRight: 15,
-              borderRadius: 50,
-            }}
+            style={styles.containerImage}
             onPress={() => {
-              handleGoToSaveOnGalleryPick();
+              index == 0 ? setShowGallery(false) : setGalleryPickedImage(item);
             }}
           >
-            <Text variant="bold">선택</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              alignItems: "center",
-              backgroundColor: theme.colors.bg.a,
-              borderRadius: 50,
-            }}
-            onPress={() => setShowGallery(false)}
-          >
-            <Feather
-              style={{ padding: 10 }}
-              name={"camera"}
-              size={20}
-              color="white"
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={({ flex: 1 }, [utils.borderTopGray])}>
-          <FlatList
-            numColumns={3}
-            horizontal={false}
-            data={galleryItems.assets}
-            contentContainerStyle={{
-              flexGrow: 1,
-            }}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={[container.containerImage, utils.borderWhite]}
-                onPress={() => {
-                  galleryScrollRef.scrollTo({ x: 0, y: 0, animated: true });
-                  setGalleryPickedImage(item);
-                }}
-              >
-                <Image style={container.image} source={{ uri: item.uri }} />
-              </TouchableOpacity>
+            {index == 0 ? (
+              <ImageBackground style={styles.camBtn} source={{ uri: item.uri }}>
+                <Feather name={"camera"} size={50} color="#c8c8c8" />
+              </ImageBackground>
+            ) : (
+              <Image style={styles.image} source={{ uri: item.uri }} />
             )}
-          />
-        </View>
-      </ScrollView>
+          </TouchableOpacity>
+        )}
+      />
     );
   }
 
@@ -281,25 +225,35 @@ export const CameraScreen = ({ navigation, route }) => {
   //////////////////////////미리보기 화면//////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////
   return (
-    <View
+    <SafeAreaView
       style={{ flex: 1, flexDirection: "column", backgroundColor: "white" }}
     >
-      <View style={[{ aspectRatio: 1 / 1, height: WINDOW_WIDTH }]}>
+      <StatusBar style="dark" />
+      <View style={{ height: "20%" }}>
+        <View style={styles.GoBack}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <SvgXml xml={backButtonPurple} width={26} height={26}></SvgXml>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={[{ aspectRatio: 1 / 1, width: "100%" }]}>
         {isFocused ? (
           <Camera
             ref={cameraRef}
-            style={{ flex: 1 }}
             type={cameraType}
             flashMode={
               isFlash
                 ? Camera.Constants.FlashMode.torch
                 : Camera.Constants.FlashMode.off
             }
-            // eslint-disable-next-line react/jsx-no-duplicate-props
-            style={[{ aspectRatio: 1 / 1, height: WINDOW_WIDTH }]}
+            style={[{ aspectRatio: 1 / 1, height: "100%", zIndex: 10 }]}
             ratio={"1:1"}
             onCameraReady={onCameraReady}
-          />
+          ></Camera>
         ) : null}
       </View>
 
@@ -312,12 +266,109 @@ export const CameraScreen = ({ navigation, route }) => {
           },
         ]}
       >
-        <View>{renderCaptureControl()}</View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            width: "100%",
+            height: "30%",
+            alignItems: "center",
+            flexDirection: "row",
+            backgroundColor: "white",
+          }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              disabled={!isCameraReady}
+              onPress={() => setIsFlash(!isFlash)}
+            >
+              <Feather
+                style={utils.margin15}
+                name={"zap"}
+                size={25}
+                color="black"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity disabled={!isCameraReady} onPress={switchCamera}>
+              <Feather
+                style={utils.margin15}
+                name="rotate-cw"
+                size={25}
+                color="black"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              disabled={!isCameraReady}
+              onPress={takePicture}
+              style={styles.capturePicture}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+
+              alignItems: "center",
+              width: "30%",
+            }}
+          >
+            <TouchableOpacity
+              style={styles.containerImage2}
+              onPress={() => setShowGallery(true)}
+            >
+              <Image
+                style={styles.image}
+                source={{ uri: galleryItems.assets[1].uri }}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
+  middleBar: {
+    alignItems: "center",
+    flexDirection: "row",
+    backgroundColor: "#996afc",
+    flex: 1,
+  },
+  middleBar1: {
+    flex: 1,
+    justifyContent: "flex-start",
+    paddingStart: 20,
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  middleBar2: {
+    flex: 6,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  GoBack: { position: "absolute", zIndex: 999, margin: 30, top: 30 },
+  setPictureButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#AA83FC",
+
+    marginVertical: 10,
+    marginRight: 20,
+    borderRadius: 50,
+    width: 60,
+    height: 30,
+    borderColor: "#ffffff",
+    borderWidth: 1,
+  },
+  setPictureButtonTxt: {
+    fontFamily: theme.fonts.bold,
+    fontSize: 13,
+    color: "#ffffff",
+  },
   closeButton: {
     position: "absolute",
     top: 35,
@@ -381,7 +432,7 @@ const styles = StyleSheet.create({
   },
   capturePicture: {
     borderWidth: 6,
-    borderColor: "gray",
+    borderColor: "#996afc",
     backgroundColor: "white",
     borderRadius: 5,
     height: captureSize,
@@ -390,4 +441,21 @@ const styles = StyleSheet.create({
     borderRadius: Math.floor(captureSize / 2),
     marginHorizontal: 31,
   },
+  containerImage: {
+    flex: 1 / 3,
+  },
+  containerImage2: {
+    width: 60,
+    height: 60,
+  },
+  image: {
+    aspectRatio: 1 / 1,
+    borderRadius: 15,
+  },
+  camBtn: {
+    aspectRatio: 1 / 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  camSvg: {},
 });

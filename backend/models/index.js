@@ -127,18 +127,18 @@ db.Comment.belongsTo(db.Drop, {
 
 // 드롭 좋아요 관계 설정
 db.User.belongsToMany(db.Drop, {
-    through:'likeDrop',
+    through:'LikeDrop',
 });
 
 db.Drop.belongsToMany(db.User, {
     through:'LikeDrop'
 })
 
-db.User.hasMany(db.LikeDrop);
-db.LikeDrop.belongsTo(db.User);
+// db.User.hasMany(db.LikeDrop);
+// db.LikeDrop.belongsTo(db.User);
 
-db.Drop.hasMany(db.LikeDrop);
-db.LikeDrop.belongsTo(db.Drop);
+// db.Drop.hasMany(db.LikeDrop);
+// db.LikeDrop.belongsTo(db.Drop);
 
 //댓글 좋아요 관계 설정
 db.User.belongsToMany(db.Comment, {

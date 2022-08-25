@@ -24,27 +24,25 @@ const utils = StyleSheet.create({
   ////////////
 });
 
-const container = StyleSheet.create({
-  // containerImage: {
-  //   flex: 1 / 3,
-  // },
-  // image: {
-  //   aspectRatio: 1 / 1,
-  // },
-});
-
 const styles = StyleSheet.create({
   containerTop: {
     alignItems: "center",
     marginTop: 20,
   },
 
+  containerMiddle: {
+    height: "48%",
+    width: "100%",
+
+    alignItems: "center",
+  },
+
   textContainer: {
     padding: 15,
     alignItems: "center",
     width: 320,
-    height: "48%",
-    marginTop: 20,
+    height: "100%",
+    marginTop: 40,
     borderWidth: 1,
     borderColor: "#e4e4e4",
     borderRadius: 20,
@@ -56,12 +54,19 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#9A9A9A",
     textAlign: "center",
+    height: 25,
+  },
+
+  enter2: {
+    width: 300,
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#9A9A9A",
+    textAlign: "center",
     flexShrink: 1,
   },
 
   containerLow: {
-    backgroundColor: theme.colors.bg.secondary,
-    flexDirection: "row",
     marginBottom: 5,
     justifyContent: "center",
     alignItems: "center",
@@ -73,4 +78,4 @@ const styles = StyleSheet.create({
     marginLeft: 70,
   },
 });
-export { container, styles, utils };
+export { styles, utils };

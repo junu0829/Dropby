@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
-import backButton2 from "../../../../assets/Buttons/backButton2";
+
 import { GNB } from "../../../components/GlobalNavigationBar";
 import { MainContainerView } from "../../../infrastructure/style/styledComponent";
 import { theme } from "../../../infrastructure/theme";
@@ -71,20 +71,21 @@ export const PlaceFeedScreen = ({ navigation, route }) => {
           mode={"placeFeed"}
           goBack={navigation.goBack}
         ></GNB>
-        <MainContainerView style={{ marginTop: 10 }}>
+        <MainContainerView style={{ height: "85%" }}>
           {/* drops */}
-          <View style={styles.container4}>
-            <ScrollView style={styles.dropsContainer}>
-              {drops.map((feedDrop) => (
-                <FeedDropComponent
-                  mode={"placeFeed"}
-                  navigation={navigation}
-                  feedDrop={feedDrop}
-                  place={place}
-                />
-              ))}
-            </ScrollView>
-          </View>
+          <ScrollView
+            contentContainerStyle={{ paddingBottom: 50 }}
+            style={styles.dropsContainer}
+          >
+            {drops.map((feedDrop) => (
+              <FeedDropComponent
+                mode={"placeFeed"}
+                navigation={navigation}
+                feedDrop={feedDrop}
+                place={place}
+              />
+            ))}
+          </ScrollView>
         </MainContainerView>
       </SlideView>
     </>

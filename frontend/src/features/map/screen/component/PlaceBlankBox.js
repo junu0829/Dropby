@@ -49,7 +49,7 @@ const data = {
   },
 };
 
-export const PlaceBoxBlank = (
+export const PlaceBlankBox = (
   setWriteMode,
   setPressedLocation,
   location = {},

@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
-import backButton2 from "../../../../assets/Buttons/backButton2";
+
 import { theme } from "../../../infrastructure/theme";
 import { getAreaDrops } from "../../../services/drops/GetDrops";
 import { FeedDropComponent } from "../component/FeedDropComponent";
@@ -72,24 +72,21 @@ export const AreaFeedScreen = ({ navigation, route }) => {
           dropCount={dropCount}
         ></GNB>
 
-        <MainContainerView>
+        <MainContainerView style={{ height: "85%" }}>
           {/* drops */}
-          <View style={styles.container4}>
-            <View style={{ height: 20 }}></View>
-            <ScrollView
-              contentContainerStyle={{ flexGrow: 1, paddingBottom: 300 }}
-              style={styles.dropsContainer}
-            >
-              {drops.map((feedDrop) => (
-                <FeedDropComponent
-                  navigation={navigation}
-                  feedDrop={feedDrop}
-                  place={area}
-                />
-                //여기서는 place에 area를 넣어서 드롭을 눌렀을 때 "구역" 이름이 뜨게 된다. "장소" 이름이 뜨도록 수정해야할듯
-              ))}
-            </ScrollView>
-          </View>
+          <ScrollView
+            contentContainerStyle={{ paddingBottom: 50 }}
+            style={styles.dropsContainer}
+          >
+            {drops.map((feedDrop) => (
+              <FeedDropComponent
+                navigation={navigation}
+                feedDrop={feedDrop}
+                place={area}
+              />
+              //여기서는 place에 area를 넣어서 드롭을 눌렀을 때 "구역" 이름이 뜨게 된다. "장소" 이름이 뜨도록 수정해야할듯
+            ))}
+          </ScrollView>
         </MainContainerView>
       </SlideView>
     </>
@@ -128,7 +125,6 @@ const styles = StyleSheet.create({
     borderBottomColor: "rgba(0,0,0,0.6)",
   },
   container4: {
-    flex: 7,
     justifyContent: "center",
     alignItems: "center",
   },
