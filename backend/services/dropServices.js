@@ -161,9 +161,8 @@ exports.getDrop = async (accessToken, dropPk) => {
     }
   });
   const writtenPlace = await getWrittenPlaceName(drop);
-  console.log(dropLiked);
+
   if (dropLiked.length > 0) {
-    console.log("condition entered");
     return {
     writtenPlace:writtenPlace,
     drop:drop,
@@ -187,15 +186,31 @@ exports.toggleDropLike = async (accessToken, dropPk) => {
     },
   });
 
+  const drop = await Drop.findOne({
+    where:{
+      pk:dropPk
+    }
+  });
+
   if (likeDrop) {
+    drop.set({
+      likesCount:drop.likesCount - 1
+    });
+
+    await drop.save();
     await likeDrop.destroy();
     return 'OFF';
   }
-  if (!likeDrop) {
+    drop.set({
+      likesCount:drop.likesCount + 1
+    });
+
+    await drop.save();
+
     const dropLiked = await LikeDrop.create({
       DropPk:dropPk,
       UserPk:user.pk
     })
     return 'ON';
-  }
+  
 }

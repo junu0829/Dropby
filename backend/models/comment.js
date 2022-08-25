@@ -16,6 +16,11 @@ const Comment = sequelize.define("Comment", {
                     type:DataTypes.DATE,
                     defaultValue: DataTypes.NOW
                 },
+                likesCount:{
+                    type:DataTypes.INTEGER,
+                    defaultValue:0,
+                    allowNull:false,
+                }
             }, {
                 freezeTableName:true,
                 timestamps:false
