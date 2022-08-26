@@ -41,7 +41,10 @@ export const GNB = ({
   const titleFormer = goBack ? title.substring(0, title.length - 10) : null;
   return (
     <>
-      {mode != "areaFeed" && mode != "placeFeed" && mode != "selectEmoji" ? (
+      {mode != "areaFeed" &&
+      mode != "placeFeed" &&
+      mode != "detailView" &&
+      mode != "selectEmoji" ? (
         <GNBButtonPart>
           {goBack ? (
             <TouchableOpacity
@@ -131,10 +134,12 @@ export const GNB = ({
               <>
                 <FadeInView duration={2000}>
                   <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.title}>{title}</Text>
+                    <Text style={[styles.title, { bottom: 10 }]}>{title}</Text>
                   </View>
                   <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.address}>주소입니다</Text>
+                    <Text style={[styles.address, { bottom: 10 }]}>
+                      주소입니다
+                    </Text>
                   </View>
                 </FadeInView>
               </>
@@ -142,10 +147,12 @@ export const GNB = ({
               <>
                 <FadeInView duration={2000}>
                   <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.title}>{title}</Text>
+                    <Text style={[styles.title, { bottom: 20 }]}>{title}</Text>
                   </View>
                   <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.address}>주소입니다</Text>
+                    <Text style={[styles.address, { bottom: 20 }]}>
+                      주소입니다
+                    </Text>
                   </View>
                 </FadeInView>
               </>
