@@ -68,10 +68,17 @@ export const DetailScreen = ({ navigation, route }) => {
 
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState([]);
+  const [commentsCount, setCommentsCount] = useState(0);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    await getComments(place.pk, drop.placePk, drop.pk, setComments);
-  }, [drop.pk, drop.placePk, place.pk]);
+    await getComments(
+      place.pk,
+      drop.placePk,
+      drop.pk,
+      setComments,
+      setCommentsCount
+    );
+  }, [drop.pk, drop.placePk, place.pk, comments]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
@@ -117,13 +124,13 @@ export const DetailScreen = ({ navigation, route }) => {
             modalVisible={modalVisible}
             secondButton={"true"}
           ></GNB>
-          {/* <EditModal
-          visible={modalVisible}
-          dismiss={hideModal}
-          drop={drop}
-          place={place}
-          navigation={navigation}
-        ></EditModal> */}
+          <EditModal
+            visible={modalVisible}
+            dismiss={hideModal}
+            drop={drop}
+            place={place}
+            navigation={navigation}
+          ></EditModal>
           <MainContainerView style={{ height: "85%", paddingBottom: 60 }}>
             <ScrollView
               scrollEventThrottle={16}
@@ -173,11 +180,13 @@ export const DetailScreen = ({ navigation, route }) => {
                   <View style={styles.restContainer}>
                     <View style={styles.dropLike}>
                       <SvgXml xml={ico_heart} width={16} height={16}></SvgXml>
-                      <Text style={styles.dropLikeNum}>12</Text>
+                      <Text style={styles.dropLikeNum}>{drop.likesCount}</Text>
                       <SvgXml xml={ico_speech} width={16} height={16}></SvgXml>
-                      <Text style={styles.dropLikeNum}>5</Text>
+                      <Text style={styles.dropLikeNum}>{commentsCount}</Text>
                       <SvgXml xml={ico_photo} width={16} height={16}></SvgXml>
-                      <Text style={styles.dropLikeNum}>1</Text>
+                      <Text style={styles.dropLikeNum}>
+                        {drop.images.length}
+                      </Text>
                     </View>
 
                     <TouchableOpacity>
