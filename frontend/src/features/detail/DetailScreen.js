@@ -27,6 +27,7 @@ import ico_photo from "../../../assets/images/dropPng/ico_photo";
 import btn_like from "../../../assets/Buttons/btn_like";
 import btn_send from "../../../assets/Buttons/btn_send";
 import { getComments, postComment } from "../../services/drops/commentService";
+import { likeDrop } from "../../services/drops/likeDrop";
 
 export const DetailScreen = ({ navigation, route }) => {
   const [drop, setDrop] = useState({
@@ -68,8 +69,6 @@ export const DetailScreen = ({ navigation, route }) => {
 
   useEffect(async () => {
     await setDrop(route.params.drop);
-
-    console.log(drop);
   }, []);
 
   return (
@@ -129,7 +128,11 @@ export const DetailScreen = ({ navigation, route }) => {
                   <Text style={styles.dropLikeNum}>1</Text>
                 </View>
                 {/* 좋아요 누르는 기능 구현 필요, 종아요 눌린 상태 구현 필요 */}
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={async () => {
+                    likeDrop(place.pk, drop.placePk, drop.pk);
+                  }}
+                >
                   <SvgXml
                     xml={btn_like}
                     width={85}
