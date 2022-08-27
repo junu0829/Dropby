@@ -33,6 +33,8 @@ import btn_send from "../../../assets/Buttons/btn_send";
 import { getComments, postComment } from "../../services/drops/commentService";
 import backButton from "../../../assets/Buttons/backButton";
 import EditButton from "../../../assets/Buttons/EditButton";
+import { postLike } from "../../services/drops/likeService";
+import btn_like_on from "../../../assets/Buttons/btn_like_on";
 
 export const DetailScreen = ({ navigation, route }) => {
   const [drop, setDrop] = useState({
@@ -66,6 +68,8 @@ export const DetailScreen = ({ navigation, route }) => {
   const hideModal = () => setModalVisible(false);
   const showModal = () => setModalVisible(true);
 
+  const [isLiked, setIsLiked] = useState(false);
+
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState([]);
   const [commentsCount, setCommentsCount] = useState(0);
@@ -86,6 +90,8 @@ export const DetailScreen = ({ navigation, route }) => {
 
     console.log(drop);
   }, []);
+  //like눌릴 때마다 드롭정보를 통째로 다시 받아오는게 맞는건지..??
+
   //animation
 
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
@@ -114,139 +120,149 @@ export const DetailScreen = ({ navigation, route }) => {
             </TouchableOpacity>
           </GNBButtonPart2>
         </GNBButtonPart>
-        <SlideView duration={2000} startValue={0} endValue={30}>
-          <GNB
-            mode={"detailView"}
-            navigation={navigation}
-            title={place.name}
-            goBack={navigation.goBack}
-            showModal={showModal}
-            modalVisible={modalVisible}
-            secondButton={"true"}
-          ></GNB>
-          <EditModal
-            visible={modalVisible}
-            dismiss={hideModal}
-            drop={drop}
-            place={place}
-            navigation={navigation}
-          ></EditModal>
-          <MainContainerView style={{ height: "85%", paddingBottom: 60 }}>
-            <ScrollView
-              scrollEventThrottle={16}
-              onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
-                { useNativeDriver: false }
-              )}
-            >
-              <View style={styles.mainContainer}>
-                <View style={styles.dropContainer}>
-                  <View style={styles.titleContainer}>
-                    <View style={styles.SymbolContainer}>
-                      <ImageBackground source={dropBg} style={styles.dropemoji}>
-                        <Text style={styles.emoji}>{drop.emoji.icon}</Text>
-                      </ImageBackground>
-                    </View>
-                    <View style={styles.titleTime}>
-                      <Text style={styles.dropTitle}>{drop.title}</Text>
-                      <Text style={styles.dropTime}>
-                        {elapsedTime(drop.createdAt)}
-                      </Text>
-                    </View>
+
+        <GNB
+          mode={"detailView"}
+          navigation={navigation}
+          title={place.name}
+          goBack={navigation.goBack}
+          showModal={showModal}
+          modalVisible={modalVisible}
+          secondButton={"true"}
+        ></GNB>
+        <EditModal
+          visible={modalVisible}
+          dismiss={hideModal}
+          drop={drop}
+          place={place}
+          navigation={navigation}
+        ></EditModal>
+        <MainContainerView style={{ height: "85%", paddingBottom: 60 }}>
+          <ScrollView
+          // scrollEventThrottle={16}
+          // onScroll={Animated.event(
+          //   [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
+          //   { useNativeDriver: false }
+          // )}
+          >
+            <View style={styles.mainContainer}>
+              <View style={styles.dropContainer}>
+                <View style={styles.titleContainer}>
+                  <View style={styles.SymbolContainer}>
+                    <ImageBackground source={dropBg} style={styles.dropemoji}>
+                      <Text style={styles.emoji}>{drop.emoji.icon}</Text>
+                    </ImageBackground>
+                  </View>
+                  <View style={styles.titleTime}>
+                    <Text style={styles.dropTitle}>{drop.title}</Text>
+                    <Text style={styles.dropTime}>
+                      {elapsedTime(drop.createdAt)}
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.pictureContainer}>
+                  <ScrollView horizontal={true}>
+                    {drop.images.map((image) => (
+                      <View>
+                        <Image
+                          source={{ uri: image.imageUrl }}
+                          style={{
+                            aspectRatio: 1 / 1,
+                            width: 200,
+                            height: 200,
+                            marginLeft: 10,
+                            marginTop: 10,
+
+                            borderRadius: 5,
+                          }}
+                        />
+                      </View>
+                    ))}
+                  </ScrollView>
+                </View>
+
+                <Text style={styles.content}>{drop.content}</Text>
+                <View style={styles.restContainer}>
+                  <View style={styles.dropLike}>
+                    <SvgXml xml={ico_heart} width={16} height={16}></SvgXml>
+                    <Text style={styles.dropLikeNum}>{drop.likesCount}</Text>
+                    <SvgXml xml={ico_speech} width={16} height={16}></SvgXml>
+                    <Text style={styles.dropLikeNum}>{commentsCount}</Text>
+                    <SvgXml xml={ico_photo} width={16} height={16}></SvgXml>
+                    <Text style={styles.dropLikeNum}>{drop.images.length}</Text>
                   </View>
 
-                  <View style={styles.pictureContainer}>
-                    <ScrollView horizontal={true}>
-                      {drop.images.map((image) => (
-                        <View>
-                          <Image
-                            source={{ uri: image.imageUrl }}
-                            style={{
-                              aspectRatio: 1 / 1,
-                              width: 200,
-                              height: 200,
-                              marginLeft: 10,
-                              marginTop: 10,
-
-                              borderRadius: 5,
-                            }}
-                          />
-                        </View>
-                      ))}
-                    </ScrollView>
-                  </View>
-
-                  <Text style={styles.content}>{drop.content}</Text>
-                  <View style={styles.restContainer}>
-                    <View style={styles.dropLike}>
-                      <SvgXml xml={ico_heart} width={16} height={16}></SvgXml>
-                      <Text style={styles.dropLikeNum}>{drop.likesCount}</Text>
-                      <SvgXml xml={ico_speech} width={16} height={16}></SvgXml>
-                      <Text style={styles.dropLikeNum}>{commentsCount}</Text>
-                      <SvgXml xml={ico_photo} width={16} height={16}></SvgXml>
-                      <Text style={styles.dropLikeNum}>
-                        {drop.images.length}
-                      </Text>
-                    </View>
-
-                    <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      // postLike(place.pk, drop.placePk, drop.pk, setIsLiked);
+                    }}
+                  >
+                    {isLiked ? (
                       <SvgXml
                         xml={btn_like}
                         width={85}
                         height={29}
                         style={styles.LikeButton}
                       ></SvgXml>
+                    ) : (
+                      <SvgXml
+                        xml={btn_like_on}
+                        width={85}
+                        height={29}
+                        style={styles.LikeButton}
+                      ></SvgXml>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.commentsContainer}>
+                {comments.map((comment) => (
+                  <FeedDropComment comment={comment} />
+                ))}
+              </View>
+              <View style={styles.commentInputContainer}>
+                <View style={styles.commentInputContainerIn}>
+                  <View style={{ flex: 6 }}>
+                    <TextInput
+                      placeholder="댓글을 입력해보세요."
+                      onChangeText={(text) => {
+                        setCommentInput(text);
+                      }}
+                      value={commentInput}
+                      style={{
+                        backgroundColor: "transparent",
+                        marginLeft: 12,
+                      }}
+                      // onSubmitEditing = {()=>{this.onSubmit(this.state.searchText)}}
+                    />
+                  </View>
+                  <View style={{ marginRight: -12, flex: 1 }}>
+                    <TouchableOpacity
+                      onPress={async () => {
+                        setCommentInput("");
+                        await postComment(
+                          place.pk,
+                          drop.placePk,
+                          drop.pk,
+                          commentInput
+                        );
+                        getComments(
+                          place.pk,
+                          drop.placePk,
+                          drop.pk,
+                          setComments
+                        );
+                      }}
+                    >
+                      <SvgXml xml={btn_send} width={26} height={26}></SvgXml>
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={styles.commentsContainer}>
-                  {comments.map((comment) => (
-                    <FeedDropComment comment={comment} />
-                  ))}
-                </View>
-                <View style={styles.commentInputContainer}>
-                  <View style={styles.commentInputContainerIn}>
-                    <View style={{ flex: 6 }}>
-                      <TextInput
-                        placeholder="댓글을 입력해보세요."
-                        onChangeText={(text) => {
-                          setCommentInput(text);
-                        }}
-                        value={commentInput}
-                        style={{
-                          backgroundColor: "transparent",
-                          marginLeft: 12,
-                        }}
-                        // onSubmitEditing = {()=>{this.onSubmit(this.state.searchText)}}
-                      />
-                    </View>
-                    <View style={{ marginRight: -12, flex: 1 }}>
-                      <TouchableOpacity
-                        onPress={async () => {
-                          setCommentInput("");
-                          await postComment(
-                            place.pk,
-                            drop.placePk,
-                            drop.pk,
-                            commentInput
-                          );
-                          getComments(
-                            place.pk,
-                            drop.placePk,
-                            drop.pk,
-                            setComments
-                          );
-                        }}
-                      >
-                        <SvgXml xml={btn_send} width={26} height={26}></SvgXml>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
               </View>
-            </ScrollView>
-          </MainContainerView>
-        </SlideView>
+            </View>
+          </ScrollView>
+        </MainContainerView>
       </KeyboardAvoidingView>
     </View>
   );

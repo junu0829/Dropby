@@ -88,7 +88,7 @@ export const PlaceDropBox = ({ navigation, selectedPlace = {} }) => {
             <Text style={styles.dropContent}>{item.content}</Text>
             <View style={styles.dropLike}>
               <SvgXml xml={HeartIcon} width={15} height={15}></SvgXml>
-              <Text style={styles.dropLikeNum}>12</Text>
+              <Text style={styles.dropLikeNum}>{item.likesCount}</Text>
             </View>
           </View>
         </View>

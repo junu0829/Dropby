@@ -34,6 +34,7 @@ export const FeedDropComponent = ({
       params: { place, drop: feedDrop },
     });
   };
+  console.log(feedDrop);
 
   // console.log(feedDrop);
 
@@ -68,11 +69,11 @@ export const FeedDropComponent = ({
             <Text style={styles.dropContent}>{feedDrop.content}</Text>
             <View style={styles.dropLike}>
               <SvgXml xml={ico_heart} width={15} height={15}></SvgXml>
-              <Text style={styles.dropLikeNum}>12</Text>
+              <Text style={styles.dropLikeNum}>{feedDrop.likesCount}</Text>
               <SvgXml xml={ico_speech} width={15} height={15}></SvgXml>
-              <Text style={styles.dropLikeNum}>5</Text>
+              <Text style={styles.dropLikeNum}>0</Text>
               <SvgXml xml={ico_photo} width={15} height={15}></SvgXml>
-              <Text style={styles.dropLikeNum}>1</Text>
+              <Text style={styles.dropLikeNum}>0</Text>
             </View>
           </View>
         </View>
