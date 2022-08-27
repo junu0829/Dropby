@@ -34,6 +34,11 @@ import { getComments, postComment } from "../../services/drops/commentService";
 import backButton from "../../../assets/Buttons/backButton";
 import EditButton from "../../../assets/Buttons/EditButton";
 
+import { postLike } from "../../services/drops/likeService";
+import btn_like_on from "../../../assets/Buttons/btn_like_on";
+
+import { likeDrop } from "../../services/drops/likeDrop";
+
 export const DetailScreen = ({ navigation, route }) => {
   const [drop, setDrop] = useState({
     Place: {
@@ -178,6 +183,17 @@ export const DetailScreen = ({ navigation, route }) => {
                   </ScrollView>
                 </View>
 
+                <Text style={styles.content}>{drop.content}</Text>
+                <View style={styles.restContainer}>
+                  <View style={styles.dropLike}>
+                    <SvgXml xml={ico_heart} width={16} height={16}></SvgXml>
+                    <Text style={styles.dropLikeNum}>{drop.likesCount}</Text>
+                    <SvgXml xml={ico_speech} width={16} height={16}></SvgXml>
+                    <Text style={styles.dropLikeNum}>{commentsCount}</Text>
+                    <SvgXml xml={ico_photo} width={16} height={16}></SvgXml>
+                    <Text style={styles.dropLikeNum}>{drop.images.length}</Text>
+                  </View>
+
                   <Text style={styles.content}>{drop.content}</Text>
                   <View style={styles.restContainer}>
                     <View style={styles.dropLike}>
@@ -189,13 +205,26 @@ export const DetailScreen = ({ navigation, route }) => {
                       <Text style={styles.dropLikeNum}>1</Text>
                     </View>
 
-                    <TouchableOpacity>
-                      <SvgXml
-                        xml={btn_like}
-                        width={85}
-                        height={29}
-                        style={styles.LikeButton}
-                      ></SvgXml>
+                    <TouchableOpacity
+                      onPress={async () => {
+                        likeDrop(place.pk, drop.placePk, drop.pk);
+                      }}
+                    >
+                      {isLiked ? (
+                        <SvgXml
+                          xml={btn_like}
+                          width={85}
+                          height={29}
+                          style={styles.LikeButton}
+                        ></SvgXml>
+                      ) : (
+                        <SvgXml
+                          xml={btn_like_on}
+                          width={85}
+                          height={29}
+                          style={styles.LikeButton}
+                        ></SvgXml>
+                      )}
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -244,9 +273,9 @@ export const DetailScreen = ({ navigation, route }) => {
                   </View>
                 </View>
               </View>
-            </ScrollView>
-          </MainContainerView>
-        </SlideView>
+            </View>
+          </ScrollView>
+        </MainContainerView>
       </KeyboardAvoidingView>
     </View>
   );
