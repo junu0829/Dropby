@@ -33,8 +33,6 @@ import btn_send from "../../../assets/Buttons/btn_send";
 import { getComments, postComment } from "../../services/drops/commentService";
 import backButton from "../../../assets/Buttons/backButton";
 import EditButton from "../../../assets/Buttons/EditButton";
-import { postLike } from "../../services/drops/likeService";
-import btn_like_on from "../../../assets/Buttons/btn_like_on";
 
 export const DetailScreen = ({ navigation, route }) => {
   const [drop, setDrop] = useState({
@@ -86,9 +84,7 @@ export const DetailScreen = ({ navigation, route }) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    setDrop(route.params.drop);
-
-    console.log(drop);
+    await setDrop(route.params.drop);
   }, []);
   //like눌릴 때마다 드롭정보를 통째로 다시 받아오는게 맞는건지..??
 
@@ -182,87 +178,75 @@ export const DetailScreen = ({ navigation, route }) => {
                   </ScrollView>
                 </View>
 
-                <Text style={styles.content}>{drop.content}</Text>
-                <View style={styles.restContainer}>
-                  <View style={styles.dropLike}>
-                    <SvgXml xml={ico_heart} width={16} height={16}></SvgXml>
-                    <Text style={styles.dropLikeNum}>{drop.likesCount}</Text>
-                    <SvgXml xml={ico_speech} width={16} height={16}></SvgXml>
-                    <Text style={styles.dropLikeNum}>{commentsCount}</Text>
-                    <SvgXml xml={ico_photo} width={16} height={16}></SvgXml>
-                    <Text style={styles.dropLikeNum}>{drop.images.length}</Text>
-                  </View>
+                  <Text style={styles.content}>{drop.content}</Text>
+                  <View style={styles.restContainer}>
+                    <View style={styles.dropLike}>
+                      <SvgXml xml={ico_heart} width={16} height={16}></SvgXml>
+                      <Text style={styles.dropLikeNum}>12</Text>
+                      <SvgXml xml={ico_speech} width={16} height={16}></SvgXml>
+                      <Text style={styles.dropLikeNum}>5</Text>
+                      <SvgXml xml={ico_photo} width={16} height={16}></SvgXml>
+                      <Text style={styles.dropLikeNum}>1</Text>
+                    </View>
 
-                  <TouchableOpacity
-                    onPress={() => {
-                      // postLike(place.pk, drop.placePk, drop.pk, setIsLiked);
-                    }}
-                  >
-                    {isLiked ? (
+                    <TouchableOpacity>
                       <SvgXml
                         xml={btn_like}
                         width={85}
                         height={29}
                         style={styles.LikeButton}
                       ></SvgXml>
-                    ) : (
-                      <SvgXml
-                        xml={btn_like_on}
-                        width={85}
-                        height={29}
-                        style={styles.LikeButton}
-                      ></SvgXml>
-                    )}
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={styles.commentsContainer}>
-                {comments.map((comment) => (
-                  <FeedDropComment comment={comment} />
-                ))}
-              </View>
-              <View style={styles.commentInputContainer}>
-                <View style={styles.commentInputContainerIn}>
-                  <View style={{ flex: 6 }}>
-                    <TextInput
-                      placeholder="댓글을 입력해보세요."
-                      onChangeText={(text) => {
-                        setCommentInput(text);
-                      }}
-                      value={commentInput}
-                      style={{
-                        backgroundColor: "transparent",
-                        marginLeft: 12,
-                      }}
-                      // onSubmitEditing = {()=>{this.onSubmit(this.state.searchText)}}
-                    />
-                  </View>
-                  <View style={{ marginRight: -12, flex: 1 }}>
-                    <TouchableOpacity
-                      onPress={async () => {
-                        setCommentInput("");
-                        await postComment(
-                          place.pk,
-                          drop.placePk,
-                          drop.pk,
-                          commentInput
-                        );
-                        getComments(
-                          place.pk,
-                          drop.placePk,
-                          drop.pk,
-                          setComments
-                        );
-                      }}
-                    >
-                      <SvgXml xml={btn_send} width={26} height={26}></SvgXml>
                     </TouchableOpacity>
                   </View>
                 </View>
+                <View style={styles.commentsContainer}>
+                  {comments.map((comment) => (
+                    <FeedDropComment comment={comment} />
+                  ))}
+                </View>
+                <View style={styles.commentInputContainer}>
+                  <View style={styles.commentInputContainerIn}>
+                    <View style={{ flex: 6 }}>
+                      <TextInput
+                        placeholder="댓글을 입력해보세요."
+                        onChangeText={(text) => {
+                          setCommentInput(text);
+                        }}
+                        value={commentInput}
+                        style={{
+                          backgroundColor: "transparent",
+                          marginLeft: 12,
+                        }}
+                        // onSubmitEditing = {()=>{this.onSubmit(this.state.searchText)}}
+                      />
+                    </View>
+                    <View style={{ marginRight: -12, flex: 1 }}>
+                      <TouchableOpacity
+                        onPress={async () => {
+                          setCommentInput("");
+                          await postComment(
+                            place.pk,
+                            drop.placePk,
+                            drop.pk,
+                            commentInput
+                          );
+                          getComments(
+                            place.pk,
+                            drop.placePk,
+                            drop.pk,
+                            setComments
+                          );
+                        }}
+                      >
+                        <SvgXml xml={btn_send} width={26} height={26}></SvgXml>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
               </View>
-            </View>
-          </ScrollView>
-        </MainContainerView>
+            </ScrollView>
+          </MainContainerView>
+        </SlideView>
       </KeyboardAvoidingView>
     </View>
   );

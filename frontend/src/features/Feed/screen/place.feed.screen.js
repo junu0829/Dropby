@@ -20,7 +20,6 @@ import backButton from "../../../../assets/Buttons/backButton";
 
 export const PlaceFeedScreen = ({ navigation, route }) => {
   const place = route.params;
-  console.log(place);
   const [drops, setDrops] = useState([
     {
       Place: {
