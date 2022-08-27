@@ -194,39 +194,27 @@ export const DetailScreen = ({ navigation, route }) => {
                     <Text style={styles.dropLikeNum}>{drop.images.length}</Text>
                   </View>
 
-                  <Text style={styles.content}>{drop.content}</Text>
-                  <View style={styles.restContainer}>
-                    <View style={styles.dropLike}>
-                      <SvgXml xml={ico_heart} width={16} height={16}></SvgXml>
-                      <Text style={styles.dropLikeNum}>12</Text>
-                      <SvgXml xml={ico_speech} width={16} height={16}></SvgXml>
-                      <Text style={styles.dropLikeNum}>5</Text>
-                      <SvgXml xml={ico_photo} width={16} height={16}></SvgXml>
-                      <Text style={styles.dropLikeNum}>1</Text>
-                    </View>
-
-                    <TouchableOpacity
-                      onPress={async () => {
-                        likeDrop(place.pk, drop.placePk, drop.pk);
-                      }}
-                    >
-                      {isLiked ? (
-                        <SvgXml
-                          xml={btn_like}
-                          width={85}
-                          height={29}
-                          style={styles.LikeButton}
-                        ></SvgXml>
-                      ) : (
-                        <SvgXml
-                          xml={btn_like_on}
-                          width={85}
-                          height={29}
-                          style={styles.LikeButton}
-                        ></SvgXml>
-                      )}
-                    </TouchableOpacity>
-                  </View>
+                  <TouchableOpacity
+                    onPress={async () => {
+                      likeDrop(place.pk, drop.placePk, drop.pk);
+                    }}
+                  >
+                    {isLiked ? (
+                      <SvgXml
+                        xml={btn_like}
+                        width={85}
+                        height={29}
+                        style={styles.LikeButton}
+                      ></SvgXml>
+                    ) : (
+                      <SvgXml
+                        xml={btn_like_on}
+                        width={85}
+                        height={29}
+                        style={styles.LikeButton}
+                      ></SvgXml>
+                    )}
+                  </TouchableOpacity>
                 </View>
                 <View style={styles.commentsContainer}>
                   {comments.map((comment) => (
