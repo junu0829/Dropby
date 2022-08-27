@@ -74,15 +74,29 @@ exports.toggleCommentLike = async (accessToken, commentPk) => {
         },
     });
 
+    const comment = await Comment.findOne({
+        where:{
+            pk:commentPk
+        }
+    })
     if (likeComment) {
+        comment.set({
+            likesCount:comment.likesCount - 1
+        });
+
+        await comment.save();
         await likeComment.destroy();
         return 'OFF';
     }
-    if (!likeComment) {
-        const commentLiked = await LikeComment.create({
+    comment.set({
+        likesCount:comment.likesCount + 1
+    });
+
+    await comment.save();
+
+    const commentLiked = await LikeComment.create({
             CommentPk: commentPk,
             UserPk: user.pk
         })
-        return 'ON';
-    }
+    return 'ON';
 }

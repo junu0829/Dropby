@@ -17,8 +17,8 @@ import { Loading } from "../../../components/Loading";
 
 import { PlaceSearchBox } from "./component/PlaceSearchBox";
 //assets
-import { PlaceBox } from "./component/placeBox";
-import { PlaceBoxBlank } from "./component/placeBoxBlank";
+import { PlaceDropBox } from "./component/PlaceDropBox";
+import { PlaceBlankBox } from "./component/PlaceBlankBox";
 
 import { changedDrops, getMapDrops } from "../../../services/drops/GetDrops";
 import { GNB } from "../../../components/GlobalNavigationBar";
@@ -198,7 +198,7 @@ export const MapScreen = ({ navigation, route }) => {
             {/*----------------------- 맨 하단 컴포넌트--------------------------- */}
             {selectedPlace == null && activePolygon == null ? (
               <>
-                {PlaceBoxBlank(
+                {PlaceBlankBox(
                   setWriteMode,
                   setPressedLocation,
                   location,
@@ -221,7 +221,7 @@ export const MapScreen = ({ navigation, route }) => {
             ) : activePolygon && selectedPlace ? (
               <>
                 {/* 여기에 장소(place) 클릭 후 나타나는 컴포넌트 배치. */}
-                <PlaceBox
+                <PlaceDropBox
                   selectedPlace={selectedPlace}
                   activePolygon={activePolygon}
                   navigation={navigation}

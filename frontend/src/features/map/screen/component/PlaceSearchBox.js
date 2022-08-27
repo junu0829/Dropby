@@ -29,6 +29,7 @@ import dropLine from "../../../../../assets/Global/dropPath.png";
 import building_01 from "../../../../../assets/images/symbols_xxhdpi/building_01.png";
 import icon_search from "../../../../../assets/Global/icon_search";
 import btn_arrow from "../../../../../assets/Buttons/btn_arrow";
+import { SearchBox } from "../../../../components/utility/SearchBox";
 
 export const PlaceSearchBox = ({
   placeList = {},
@@ -106,23 +107,10 @@ export const PlaceSearchBox = ({
 
   return (
     <PlaceSearchBoxContainer>
-      <View
-        style={{
-          flexDirection: "row",
-        }}
-      >
-        <TextInput
-          placeholder="장소를 입력해보세요"
-          onChangeText={(text) => {
-            setSearchfield(text);
-          }}
-          backgroundColor={theme.colors.bg.secondary}
-          style={styles.searchBox}
-        ></TextInput>
-        <View style={styles.searchIcon}>
-          <SvgXml xml={icon_search} width={17.5} height={18.5}></SvgXml>
-        </View>
-      </View>
+      <SearchBox
+        searchBoxHint={"장소를 검색해보세요"}
+        setSearchfield={setSearchfield}
+      ></SearchBox>
       <FlatList
         contentContainerStyle={styles.FlatListContainer}
         style={styles.placeListBox}
@@ -242,42 +230,6 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.bold,
     marginTop: 9.5,
     color: "#996afc",
-  },
-
-  searchIcon: {
-    width: 50,
-    position: "absolute",
-    zIndex: 999,
-    right: 0,
-    top: 12,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  searchBox: {
-    zIndex: 995,
-    fontSize: 14,
-    fontFamily: theme.fonts.body,
-    width: "80%",
-
-    backgroundColor: "#ffffff",
-    height: 43,
-    borderRadius: 50,
-    paddingLeft: 12,
-
-    ...Platform.select({
-      ios: {
-        shadowColor: "rgba(50, 50, 50,0.5)",
-        shadowOpacity: 0.5,
-        shadowRadius: 2,
-        shadowOffset: {
-          height: 1,
-          width: 0,
-        },
-      },
-      android: {
-        elevation: 3,
-      },
-    }),
   },
 
   FlatListContainer: {

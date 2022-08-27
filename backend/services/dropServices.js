@@ -1,4 +1,4 @@
-const { Drop, Image, Emoji, LikeDrop } = require("../models");
+const { Drop, Image, Emoji, LikeDrop, Place } = require("../models");
 const { getUserWithAccess } = require("../utils/auth");
 const { getWrittenPlaceName } = require("../utils/place");
 
@@ -145,19 +145,35 @@ exports.deleteDrop = async (dropPk) => {
   return true;
 }
 
-exports.getDrop = async (dropPk) => {
+exports.getDrop = async (accessToken, dropPk) => {
   const drop = await Drop.findOne({
     where:{
       pk:dropPk
-    }
+    }, include: ["emoji", "images", { model: Place, attributes: ['name'] }]
   });
 
+  const user = await getUserWithAccess(accessToken);
+
+  const dropLiked = await LikeDrop.findAll({
+    where:{
+      DropPk:dropPk,
+      UserPk:user.pk
+    }
+  });
   const writtenPlace = await getWrittenPlaceName(drop);
 
+  if (dropLiked.length > 0) {
+    return {
+    writtenPlace:writtenPlace,
+    drop:drop,
+    isLiked:true
+  }
+}
   return {
-    writtenPlace,
-    drop
-  };
+    writtenPlace:writtenPlace,
+    drop:drop,
+    isLiked:false
+  }
 }
 
 exports.toggleDropLike = async (accessToken, dropPk) => {
@@ -170,15 +186,31 @@ exports.toggleDropLike = async (accessToken, dropPk) => {
     },
   });
 
+  const drop = await Drop.findOne({
+    where:{
+      pk:dropPk
+    }
+  });
+
   if (likeDrop) {
+    drop.set({
+      likesCount:drop.likesCount - 1
+    });
+
+    await drop.save();
     await likeDrop.destroy();
     return 'OFF';
   }
-  if (!likeDrop) {
+    drop.set({
+      likesCount:drop.likesCount + 1
+    });
+
+    await drop.save();
+
     const dropLiked = await LikeDrop.create({
       DropPk:dropPk,
       UserPk:user.pk
     })
     return 'ON';
-  }
+  
 }

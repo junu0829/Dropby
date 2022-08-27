@@ -19,23 +19,17 @@ import { Platform } from "react-native";
 
 import { Text } from "../../../../components/typography/text.component";
 import { theme } from "../../../../infrastructure/theme";
-import { getPlaceData } from "../../../../services/maps/placeData";
-import {
-  getAreaDrops,
-  getPlaceDrops,
-} from "../../../../services/drops/GetDrops";
+
+import { getPlaceDrops } from "../../../../services/drops/GetDrops";
 
 //assets
-import dropLine from "../../../../../assets/Global/dropPath.png";
-import building_01 from "../../../../../assets/images/symbols_xxhdpi/building_01.png";
-import icon_search from "../../../../../assets/Global/icon_search";
+
 import btn_arrow from "../../../../../assets/Buttons/btn_arrow";
 import dropBg from "../../../../../assets/images/dropPng/drawable-xxhdpi/pin.png";
 import HeartIcon from "../../../../../assets/HeartIcon";
 import { elapsedTime } from "../../../../infrastructure/elapsedTime";
 
-export const PlaceBox = ({ navigation, selectedPlace = {} }) => {
-  const [searchfield, setSearchfield] = useState("");
+export const PlaceDropBox = ({ navigation, selectedPlace = {} }) => {
   const [DATA, setDATA] = useState([
     {
       content: "test content",
