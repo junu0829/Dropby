@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const {ExtractJwt, Strategy:JWTStrategy} = require('passport-jwt');
 const {User} = require('../models/index')
 const bcrypt = require('bcrypt');
+const { logger } = require('../utils/winston');
 require('dotenv').config();
 
 const loginVerify = async (email, password, done) => {
@@ -10,22 +11,23 @@ const loginVerify = async (email, password, done) => {
         const user = await User.findOne({where:{email:email}});
 
         if (!user) {
+            logger.error(`User with id ${email} doesn't exist`);
             return done(null, false, {message:'존재하지 않는 사용자입니다.'})
         }
         isAuth = await bcrypt.compare(password, user.password)
         if (!isAuth) {
+            logger.error(`Invalid Password`);
             return done(null, false, {message:'잘못된 비밀번호입니다.'})
         };
         return done(null, user);
     } catch(error) {
-        console.log(error);
+        logger.error(error.message);
+        throw new Error("로그인에 실패하였습니다.");
     }
 
 }
 
 const JWTVerify = async (jwtpayload, done) => {
-    //console.log('jwtpayload', jwtpayload);
-    //console.log('jwtpayloadsub', jwtpayload.pk);
     const user = User.findOne({where:{pk:jwtpayload.pk}})
                 .then(user => {
                     return done(null, user);
@@ -36,7 +38,6 @@ const JWTVerify = async (jwtpayload, done) => {
 }
 
 const JWTRefreshVerify = async (jwtrefresh, done) => {
-    console.log(jwtrefresh);
     if (jwtrefresh) {
         return done(null, jwtrefresh);
     } else {
