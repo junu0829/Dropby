@@ -3,7 +3,7 @@ const { User } = require('../models');
 require('dotenv').config();
 
 exports.signAccess = (userData) => { //AccessToken 발급
-    const payload = {
+    try {    const payload = {
         pk:userData.pk,
         email:userData.email
     }
@@ -16,6 +16,11 @@ exports.signAccess = (userData) => { //AccessToken 발급
             expiresIn:process.env.JWT_ACCESS_EXPIRE
         }
     );
+} catch (error) {
+    this.error(`Signing accessToken failed with ${userData.email} : ${error.message}`);
+    throw new Error(error.message);
+}
+
 };
 
 exports.signRefresh = (userPk) => { //RefreshToken 발급
@@ -95,7 +100,8 @@ exports.getUserWithAccess = async (accessToken) => {
 
         return user.dataValues
     } catch(error) {
-        return error.message;
+        this.logger('User not found with accessToken');
+        throw new Error(error.message);
     }
 }
 
@@ -109,3 +115,57 @@ exports.getUserWithRefresh = async (refreshToken) => {
         return error.message;
     }
 }
+
+exports.getTransporter = () => {
+    const transporter = nodemailer.createTransport({
+        service:'gmail',
+        host: 'smtp.gmail.com',
+        secure:false,
+        requireTLS:true,
+        auth: {
+            user:process.env.EMAIL_ACCOUNT,
+            pass:process.env.EMAIL_PASSWORD
+        }
+    });
+
+    return transporter;
+}
+
+const generateNumber = () => {
+    const randomNumber = Math.floor(Math.random() * (999999-100000)) + 100000;
+    return randomNumber.toString().split().join(' ')
+}
+
+exports.getMailOptions = async (mailType, email) => {
+
+    const randomNumber = generateNumber();
+    if (mailType === 'findPass') {
+        const mailOptions = {
+            from : process.env.EMAIL_ACCOUNT,
+            to:email,
+            subject:```[Dropby code] ${randomNumber}`,
+            text:`안녕하세요!
+            ${email}으로 Dropby의 가입 요청을 받았습니다. 회원 가입을 진행하려면 아래 6자리 이메일 인증 코드를 입력하세요. (인증코드는 1시간 동안 유효합니다.)
+            ${randomNumber}
+            위 코드를 요청하지 않으셨다면 위 이메일을 무시하셔도 됩니다.
+            감사합니다.
+            -Dropby 운영팀```
+        };
+        return mailOptions;
+    }
+    const user = User.findOne({where:{email:email}});
+
+    const mailOptions = {
+        from : process.env.EMAIL_ACCOUNT,
+        to:email,
+        subject:`[Dropby Recovery Code] ${randomNumber}`,
+        text:```안녕하세요!
+        ${email}으로 Dropby의 가입 요청을 받았습니다. 회원 가입을 진행하려면 아래 6자리 이메일 인증 코드를 입력하세요. (인증코드는 1시간 동안 유효합니다.)
+        ${randomNumber}
+        위 코드를 요청하지 않으셨다면 위 이메일을 무시하셔도 됩니다.
+        감사합니다.
+        -Dropby 운영팀```
+    };
+    return mailOptions;
+}
+
