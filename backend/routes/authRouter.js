@@ -5,7 +5,7 @@ const controller = require('../controllers/authController');
 const LocalPassportAuth = passport.authenticate('local', {session:false}); //id, pw 검증
 
 router.post('/signup', controller.signUp, LocalPassportAuth, controller.logIn); //회원가입
-router.post('/login', LocalPassportAuth, controller.logIn); //로그인_accessToken, refreshToken 발급
+router.post('/login', controller.logIn); //로그인_accessToken, refreshToken 발급
 router.post('/token/refresh', controller.tokenRefresh) //AccessToken이 만료되면, refreshToken보내서 AccessToken 재발급
 router.post('/logout', controller.logOut) //로그아웃
 router.post('/email/:type', controller.sendEmail); // 이메일 전송
