@@ -21,7 +21,13 @@ export const postComment = async (areaPk, placePk, dropPk, comment) => {
     .catch((e) => console.log(e));
 };
 
-export const getComments = async (areaPk, placePk, dropPk, setComments) => {
+export const getComments = async (
+  areaPk,
+  placePk,
+  dropPk,
+  setComments,
+  setCommentsCount
+) => {
   await axios(
     `http://${LOCAL_HOST}:3000/areas/${areaPk}/places/${placePk}/drops/${dropPk}/comments`,
     {
@@ -35,6 +41,7 @@ export const getComments = async (areaPk, placePk, dropPk, setComments) => {
   )
     .then((res) => {
       setComments(res.data.data);
+      setCommentsCount(res.data.commentsCount);
     })
     .catch((e) => console.log(e));
 };
