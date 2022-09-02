@@ -1,4 +1,4 @@
-const { Drop, Image, Emoji, LikeDrop, Place } = require("../models");
+const { Drop, Image, Emoji, LikeDrop, Place, Comment } = require("../models");
 const { getUserWithAccess } = require("../utils/auth");
 const { getWrittenPlaceName } = require("../utils/place");
 const { logger } = require("../utils/winston");
@@ -52,9 +52,17 @@ exports.getDrops = async (accessToken, placePk) => {
         placePk,
         isPrivate:false,
       },
-      include:["images", "emoji"],
+      include: [{model:Image, attributes:['imageUrl']}, {model:Emoji, attributes:['name', 'icon']}, { model: Place, attributes: ['name'] }]
     });
-  
+
+    for (let publicDrop of publicDrops) {
+      const commentsCount = (await Comment.findAll({where:{dropPk:publicDrop.pk}})).length;
+      if (commentsCount) {
+          publicDrop.dataValues['commentsCount'] = commentsCount;
+      } else {
+      publicDrop.dataValues['commentsCount'] = 0;
+      }
+    }
     const user = await getUserWithAccess(accessToken);
   
     const myDrops = await Drop.findAll({
@@ -63,8 +71,18 @@ exports.getDrops = async (accessToken, placePk) => {
         isPrivate:true,
         creatorPk:user.pk
       },
-      include:["images", "emoji"],
-    })
+      include: [{model:Image, attributes:['imageUrl']}, {model:Emoji, attributes:['name', 'icon']}, { model: Place, attributes: ['name'] }]
+    });
+
+    for (let myDrop of myDrops) {
+      const commentsCount = (await Comment.findAll({where:{dropPk:myDrop.pk}})).length;
+      if (commentsCount) {
+          myDrop.dataValues['commentsCount'] = commentsCount;
+      } else {
+          myDrop.dataValues['commentsCount'] = 0;
+      }
+    }
+
     const writtenPlace = await getWrittenPlaceName(publicDrops[0]);
     const dropsCount = publicDrops.length + myDrops.length;
     
@@ -89,7 +107,7 @@ exports.getPublicDrops = async (accessToken, placePk) => {
         placePk,
         isPrivate:false,
       },
-      include:["images", "emoji"]
+      include: [{model:Image, attributes:['imageUrl']}, {model:Emoji, attributes:['name', 'icon']}, { model: Place, attributes: ['name'] }]
     });
   
     const writtenPlace = await getWrittenPlaceName(publicDrops[0]);
@@ -117,7 +135,7 @@ exports.getMyDrops = async (accessToken, placePk) => {
       isPrivate:true,
       creatorPk:user.pk
     },
-    include:["images", "emoji"],
+    include: [{model:Image, attributes:['imageUrl']}, {model:Emoji, attributes:['name', 'icon']}, { model: Place, attributes: ['name'] }]
   });
 
   const writtenPlace = await getWrittenPlaceName(myDrops[0]);
