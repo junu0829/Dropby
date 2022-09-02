@@ -27,8 +27,8 @@ const ConnectDB = async () => {
 ConnectDB();
 
 // request body 안의 데이터를 json 형식으로 변환
-app.use(express.json());
-app.use(express.urlencoded({extended:false}))
+app.use(express.json({limit:"50mb"}));
+app.use(express.urlencoded({limit:"50mb", extended:false}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 
