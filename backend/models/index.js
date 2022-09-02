@@ -63,7 +63,6 @@ db.Place.belongsTo(db.Area, {
 
 //한 드롭은 여러 개의 이미지를 가질 수 있음.
 db.Drop.hasMany(db.Image, {
-    as:'images',
     foreignKey: {
         name:'dropPk',
         allowNull:true
@@ -85,7 +84,6 @@ db.Emoji.hasMany(db.Drop, {
     }
 })
 db.Drop.belongsTo(db.Emoji, {
-    as:'emoji',
     foreignKey:{
         name:'emojiPk',
         allowNull:true

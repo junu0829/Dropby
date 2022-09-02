@@ -1,4 +1,4 @@
-const { Area, Place, Drop } = require("../models");
+const { Area, Place, Drop, Comment, Emoji, Image } = require("../models");
 const { getUserWithAccess } = require("../utils/auth");
 const { logger } = require("../utils/winston");
 
@@ -64,26 +64,46 @@ exports.getAreaDrops = async (accessToken, areaPk) => {
         let allDrops = { 'publicDrops': [], 'myDrops': [] };
         for (let place of AreaPlaces) {
             let placePk = place.dataValues.pk;
-            let publicDrops = await Drop.findAll({
+            const publicDrops = await Drop.findAll({
                 where: {
                     placePk,
                     isPrivate: false,
                 },
-                include: ["emoji", { model: Place, attributes: ['name'] }]
+                include: [{model:Image, attributes:['imageUrl']}, {model:Emoji, attributes:['name', 'icon']}, { model: Place, attributes: ['name'] }]
             });
+            for (let publicDrop of publicDrops) {
+                const commentsCount = (await Comment.findAll({where:{dropPk:publicDrop.pk}})).length;
+                if (commentsCount) {
+                    publicDrop.dataValues['commentsCount'] = commentsCount;
+            } else {
+                publicDrop.dataValues['commentsCount'] = 0;
+            }
+        }
             allDrops['publicDrops'].push(...publicDrops);
-    
-            let myDrops = await Drop.findAll({
+            console.log("--------------publicDrops");
+            console.log(allDrops['publicDrops']);
+
+            const myDrops = await Drop.findAll({
                 where: {
                     placePk,
                     isPrivate: true,
                     creatorPk: user.pk
                 },
-                include: ["emoji", { model: Place, attributes: ['name'] }]
+                include: [{model:Image, attributes:['imageUrl']}, {model:Emoji, attributes:['name', 'icon']}, { model: Place, attributes: ['name'] }]
             });
-            allDrops['myDrops'].push(...myDrops)
+            for (let myDrop of myDrops) {
+                const commentsCount = Comment.findAll({where:{dropPk:myDrop.pk}}).length;
+                if (commentsCount) {
+                    myDrop.dataValues['commentsCount'] = commentsCount;
+                } else {
+                    myDrop.dataValues['commentsCount'] = 0;
+                };
+            }
+
+            allDrops['myDrops'].push(...myDrops);
         }
-        logger.info(`All Drops of area Id ${areaPk} retrieved : ${myDrops.length + publicDrops.length} in total`);
+
+        logger.info(`All Drops of area Id ${areaPk} retrieved : ${allDrops.myDrops.length + allDrops.publicDrops.length} in total`);
         return {
             areaName: areaName,
             areaPk: areaPk,
@@ -94,5 +114,8 @@ exports.getAreaDrops = async (accessToken, areaPk) => {
         logger.error(`Failed to getAreadrops of area ${areaPk} : ${error.message}`);
         throw new Error(`${areaPk}번 내 전체 드롭 정보 조회에 실패하였습니다.`);
     }
+
+ 
+    
 
 };
