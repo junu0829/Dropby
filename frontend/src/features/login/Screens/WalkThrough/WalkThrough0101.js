@@ -47,23 +47,22 @@ export const WalkThrough0101 = ({ navigation }) => {
     signIn(email, password);
     navigation.navigate("MapScreen");
   };
-  useEffect(async () => {
+
+  // accessToken이 있는지 확인하고, 서버와 통신해 토큰의 유효성을 검사하는 코드
+  const letsDropBtn = async () => {
     await user.getItemFromAsync();
     if (user.getAccessToken() == null) {
       console.log("No Token, login page");
       setIsLoading(false);
     } else {
-      checkTokenAvailable(
+      await checkTokenAvailable(
         user.getAccessToken(),
         user.getRefreshToken(),
-        naviMapFunc
+        naviMapFunc,
+        setIsLoading
       );
-
-      setIsLoading(false);
-      // 여기서 token 유효기간 내인지 검사하기. 그리고 맵스크린으로 보내기.
-      // navigation.navigate("MapScreen");
     }
-  }, []);
+  };
 
   const startedbottomComponent = () => {
     return (
@@ -243,6 +242,7 @@ export const WalkThrough0101 = ({ navigation }) => {
                   <TouchableOpacity
                     style={styles.LetsDropButton}
                     onPress={() => {
+                      letsDropBtn();
                       setIsStarted(true);
                     }}
                   >
