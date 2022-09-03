@@ -5,7 +5,7 @@ exports.signUp = async(req, res, next) => {
         if (newUser) {
             next();
         } else {
-            res.status(409).json({
+            res.status(200).json({
                 msg:'이미 존재하는 이메일입니다.'
             })
         }
@@ -39,7 +39,7 @@ exports.tokenRefresh = async(req, res, next) => {
                 token:refreshResult.token
             })
         } else {
-            res.status(400).json({
+            res.status(200).json({
                 msg:'Access Token 신규 발급 실패',
                 status:refreshResult.status,
                 token:refreshResult.token
