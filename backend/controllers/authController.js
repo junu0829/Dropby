@@ -6,13 +6,13 @@ exports.signUp = async(req, res, next) => {
         if (context['user']) {
             next(); //router에서 다음 -> 로그인 로직으로.
         } else {
-            res.status(409).json({
+            res.status(200).json({
                 msg:context['msg']
             });
         }
     } catch (error) {
         console.log(error);
-        res.status(400).json({
+        res.status(200).json({
             msg:context['msg']
         });
     }
@@ -51,7 +51,7 @@ exports.tokenRefresh = async(req, res, next) => {
                 })
             } 
             if (refreshResult.success === false) {
-                res.status(400).json({
+                res.status(200).json({
                     msg:'Access Token 신규 발급 실패',
                     status:refreshResult.status,
                     tokens:refreshResult.tokens
@@ -60,7 +60,7 @@ exports.tokenRefresh = async(req, res, next) => {
     
     
         } else {
-            res.status(400).json({
+            res.status(200).json({
                 msg:'Access Token 신규 발급 실패',
                 status:'Refresh Token과 Access Token이 요청에 포함되지 않았습니다.'
             })
@@ -83,7 +83,7 @@ exports.logOut = async(req, res, next) => {
             })
         }
         if (refreshRemoved.success === false) {
-            res.status(400).json({
+            res.status(200).json({
                 message:'로그아웃 실패',
                 leftUser:refreshRemoved.userData,
                 status:refreshRemoved.message
