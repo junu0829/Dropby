@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import { theme } from "../../../../infrastructure/theme";
@@ -16,12 +16,19 @@ import { LoginButton } from "../../Component/LoginButton";
 import { Platform } from "react-native";
 import { signIn } from "../../../../services/login/login";
 import arrow_btn from "../../../../../assets/Buttons/arrow_btn";
+import { user } from "../../../../services/user";
+import { Loading } from "../../../../components/Loading";
+import { checkTokenAvailable } from "../../../../services/auth/checkTokenAvailable";
 
 export const WalkThrough0101 = ({ navigation }) => {
   const [isStarted, setIsStarted] = useState(false);
   const [isLogIn, setIsLogIn] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+
+  const [isTokenAva, setIsTokenAva] = useState(false);
+  // Token 체크를 위한 isLoading, 서버와 통신하면 false가 된다.
+  const [isLoading, setIsLoading] = useState(true);
 
   const handlePassword = (e) => {
     setPassword(e);
@@ -31,11 +38,82 @@ export const WalkThrough0101 = ({ navigation }) => {
     setEmail(e);
   };
 
+  const naviMapFunc = () => {
+    navigation.navigate("MapScreen");
+  };
   const nextButton = async () => {
     // 인증 코드 입력받음
     // 코드 확인하고, signUp0202로 넘어감
     signIn(email, password);
     navigation.navigate("MapScreen");
+  };
+  useEffect(async () => {
+    await user.getItemFromAsync();
+    if (user.getAccessToken() == null) {
+      console.log("No Token, login page");
+      setIsLoading(false);
+    } else {
+      checkTokenAvailable(
+        user.getAccessToken(),
+        user.getRefreshToken(),
+        naviMapFunc
+      );
+
+      setIsLoading(false);
+      // 여기서 token 유효기간 내인지 검사하기. 그리고 맵스크린으로 보내기.
+      // navigation.navigate("MapScreen");
+    }
+  }, []);
+
+  const startedbottomComponent = () => {
+    return (
+      <>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <View
+            style={{
+              justifyContent: "flex-start",
+              alignItems: "center",
+              zIndex: 990,
+            }}
+          >
+            <TouchableOpacity
+              style={styles.LogInButton}
+              onPress={() => {
+                setIsLogIn(true);
+              }}
+            >
+              <Text
+                style={{
+                  color: "#996afc",
+                  fontSize: 14,
+                  fontFamily: theme.fonts.bold,
+                }}
+              >
+                로그인
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.SignUpButton}
+              onPress={() => {
+                navigation.navigate("SignUp0101");
+              }}
+            >
+              <Text
+                style={{
+                  color: "#ffffff",
+                  fontSize: 14,
+                  fontFamily: theme.fonts.bold,
+                }}
+              >
+                회원가입
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </>
+    );
   };
   return (
     <>
@@ -127,7 +205,6 @@ export const WalkThrough0101 = ({ navigation }) => {
           </View>
 
           {/* ----------------------처음에 뜨는 웰컴 메시지, 렛츠드롭, 로그인 회원가입 있는 바닥부분----------------------- */}
-
           <View
             style={[
               styles.BottomContainer,
@@ -135,47 +212,10 @@ export const WalkThrough0101 = ({ navigation }) => {
             ]}
           >
             {isStarted && !isLogIn ? (
-              <View
-                style={{
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  zIndex: 990,
-                }}
-              >
-                <TouchableOpacity
-                  style={styles.LogInButton}
-                  onPress={() => {
-                    setIsLogIn(true);
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "#996afc",
-                      fontSize: 14,
-                      fontFamily: theme.fonts.bold,
-                    }}
-                  >
-                    로그인
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.SignUpButton}
-                  onPress={() => {
-                    navigation.navigate("SignUp0101");
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "#ffffff",
-                      fontSize: 14,
-                      fontFamily: theme.fonts.bold,
-                    }}
-                  >
-                    회원가입
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              // 로그인, 회원가입 선택 화면 로딩 옵션을 추가하기 위해 컴포넌트 새로 선언함.
+              startedbottomComponent()
             ) : !isStarted ? (
+              //맨 처음 화면 하단 부분 . 렛츠 드롭 버튼.
               <View
                 style={{
                   position: "absolute",
@@ -219,6 +259,7 @@ export const WalkThrough0101 = ({ navigation }) => {
                 </FadeInView>
               </View>
             ) : (
+              // 이메일, 비밀번호 입력 화면. 계정이 없으신가요? 회원가입 부분
               <FadeInView
                 style={{
                   zIndex: 880,

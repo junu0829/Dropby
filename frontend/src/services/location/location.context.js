@@ -85,7 +85,6 @@ export const LocationContextProvider = ({ children }) => {
       value={{
         location,
         errorMsg,
-        isLoading,
       }}
     >
       {children}

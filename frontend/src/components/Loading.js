@@ -15,24 +15,18 @@ const LoadingAnim = styled(ActivityIndicator)`
 `;
 const LoadingContainer = styled.View`
   position: absolute;
-  top: 80%;
+  top: 50%;
   left: 50%;
 `;
 
 export const Loading = () => {
   return (
     <>
-      <LoginBg>
-        <View style={styles.container2}>
-          <SvgXml xml={LoadIcon} width={72} height={123} />
-        </View>
-        <View style={styles.container3}>
-          <LoadingContainer>
-            <LoadingAnim size={30} animating={true} color={Colors.white} />
-          </LoadingContainer>
-        </View>
-        <View style={styles.container4} />
-      </LoginBg>
+      <View style={styles.container3}>
+        <LoadingContainer>
+          <LoadingAnim size={30} animating={true} color={Colors.white} />
+        </LoadingContainer>
+      </View>
     </>
   );
 };
@@ -48,7 +42,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   container3: {
-    flex: 5,
+    flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
   },

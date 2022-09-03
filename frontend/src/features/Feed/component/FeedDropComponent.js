@@ -34,7 +34,6 @@ export const FeedDropComponent = ({
       params: { place, drop: feedDrop },
     });
   };
-  console.log(feedDrop);
 
   // console.log(feedDrop);
 
@@ -48,7 +47,9 @@ export const FeedDropComponent = ({
       <View style={styles.dropBox}>
         <View style={styles.SymbolContainer}>
           <ImageBackground source={dropBg} style={styles.dropemoji}>
-            <Text style={styles.emoji}>{feedDrop.emoji.icon}</Text>
+            <Text style={styles.emoji}>
+              {feedDrop.emoji ? feedDrop.emoji.icon : null}
+            </Text>
           </ImageBackground>
         </View>
         <View style={styles.dropContentContainer}>
