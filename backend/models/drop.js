@@ -2,23 +2,23 @@ const sequelize = require('../config/db');
 const {DataTypes} = require('sequelize');
 
 const Drop = sequelize.define("Drop", {
-                id: {
+                pk: {
                     type:DataTypes.INTEGER,
                     allowNull:false,
                     primaryKey:true,
                     autoIncrement:true,
                 },
-                category : {
-                    type:DataTypes.TINYINT,
-                    allowNull:false,
+                title : {
+                    type:DataTypes.STRING(50),
+                    allowNull:true,
                 },
-                totalSubmit: {
+                content: {
                     type:DataTypes.TEXT,
                     allowNull:false,
                 },
-                enfp:{
-                    type:DataTypes.INTEGER,
-                    allowNull:false
+                createdAt:{
+                    type:DataTypes.DATE,
+                    defaultValue: DataTypes.NOW
                 },
                 isPrivate: {
                     type:DataTypes.BOOLEAN,
