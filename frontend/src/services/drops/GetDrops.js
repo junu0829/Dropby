@@ -3,14 +3,15 @@ import axios from "axios";
 import { user } from "../user.js";
 
 export const getPlaceDrops = async (areaPk, placePk, setDrops) => {
+  accessToken = user.getAccessToken();
+  console.log("getPlaceDrops acceessToken:", accessToken);
   await axios(
     `http://${LOCAL_HOST}:3000/areas/${areaPk}/places/${placePk}/drops`,
     {
       method: "GET",
       headers: {
         Accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
+        Authorization: `Bearer ${accessToken}`,
       },
     }
   )
@@ -22,15 +23,17 @@ export const getPlaceDrops = async (areaPk, placePk, setDrops) => {
 
 // area에서 드롭 가져오는 api 테스트 성공 하면 바꿔주자., placePk 부분 지워주면 됨.
 export const getAreaDrops = async (areaPk, setDrops, setDropCount) => {
+  console.log("getAreaDrops");
   await axios(`http://${LOCAL_HOST}:3000/areas/${areaPk}/drops`, {
     method: "GET",
     headers: {
       Accept: "application/json",
       Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MjExNjM3MiwiZXhwIjoxNjYzMzI1OTcyfQ.k847dvNKSz9g_JGVLqNwvPMl4y8DK6OaWpF7TRK-2B0",
     },
   })
     .then((res) => {
+      console.log(res.data);
       setDrops(res.data.data.publicDrops);
       setDropCount(res.data.dropsCount);
     })
@@ -56,7 +59,7 @@ export const getSpecificDrop = async (areaPk, placePk, dropPk, setDrop) => {
       headers: {
         Accept: "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MDIzNTI1MiwiZXhwIjoxNjYyODI3MjUyfQ.grypUueNcNkbFevK6UcU8I-y5xyJLuww1d1oZ9yBMy4",
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6MSwiZW1haWwiOiJ0ZXN0MkB0ZXN0LmNvbSIsImlhdCI6MTY2MjExNjM3MiwiZXhwIjoxNjYzMzI1OTcyfQ.k847dvNKSz9g_JGVLqNwvPMl4y8DK6OaWpF7TRK-2B0",
       },
     }
   )

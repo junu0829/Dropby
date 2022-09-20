@@ -1,7 +1,6 @@
-const emojiServices = require('../services/emojiServices')
+const emojiServices = require("../services/emojiServices");
 
 exports.newEmoji = async (req, res, next) => {
-    
     try {
         const emoji = await emojiServices.newEmoji(req.body);
         res.status(201).json({

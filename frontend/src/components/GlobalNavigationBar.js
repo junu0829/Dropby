@@ -20,6 +20,7 @@ import btn_my from "../../assets/Buttons/btn_my";
 import btn_add_locate from "../../assets/Buttons/btn_add_locate";
 import { ExpandView } from "./animations/expand.animation";
 import { FadeInView } from "./animations/fade.animation";
+import { user } from "../services/user";
 
 export const GNB = ({
   navigation,
@@ -75,9 +76,12 @@ export const GNB = ({
                 <SvgXml xml={EditButton} width={26} height={26}></SvgXml>
               </TouchableOpacity>
             ) : !goBack ? (
+              // 맵스크린 오른쪽 위 mypage 버튼을 '로그아웃' 버튼으로 임시 설정함. 누르면 Token 초기화.
               <TouchableOpacity
                 style={{ marginRight: 40, marginTop: 22 }}
-                onPress={() => {}}
+                onPress={() => {
+                  user.clearAll();
+                }}
               >
                 <SvgXml xml={btn_my} width={30} height={30}></SvgXml>
               </TouchableOpacity>
