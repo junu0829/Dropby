@@ -1,17 +1,12 @@
 FROM node:14
 
-WORKDIR /backend
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app/
 
-ENV PORT 3000
-
-COPY package.json /backend/package.json
+COPY package.json /usr/src/app
 
 RUN npm install
-RUN npm install bcrypt
-COPY . /backend
 
-VOLUME ["/data"]
-
-EXPOSE 3000
+COPY . /usr/src/app
 
 CMD ["node", "app.js"]

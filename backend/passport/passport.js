@@ -1,10 +1,11 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const { ExtractJwt, Strategy: JWTStrategy } = require("passport-jwt");
 const { User } = require("../models/index");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { logger } = require("../utils/winston");
-require("dotenv").config();
 
 const loginVerify = async (email, password, done) => {
     try {
@@ -64,7 +65,7 @@ module.exports = () => {
         new JWTStrategy(
             {
                 jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-                secretOrKey: process.env.JWT_SECRET_ACCESS_KEY,
+                secretOrKey: process.env.JWT_SECRET_ACCESS_KEY.toString(),
             },
             JWTVerify,
         ),
@@ -75,7 +76,7 @@ module.exports = () => {
         new JWTStrategy(
             {
                 jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken("Refresh"),
-                secretOrKey: process.env.JWT_SECRET_REFRESH_KEY,
+                secretOrKey: process.env.JWT_SECRET_REFRESH_KEY.toString(),
             },
             JWTRefreshVerify,
         ),
