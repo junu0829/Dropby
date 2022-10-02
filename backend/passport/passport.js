@@ -4,7 +4,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const { ExtractJwt, Strategy: JWTStrategy } = require("passport-jwt");
 const { User } = require("../models/index");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const { logger } = require("../utils/winston");
 
 const loginVerify = async (email, password, done) => {
