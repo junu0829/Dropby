@@ -7,6 +7,7 @@ const router = require("./routes/index");
 const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
+
 // passport
 const passport = require("passport");
 const PassportConfig = require("./passport/passport");
@@ -14,23 +15,21 @@ const PassportConfig = require("./passport/passport");
 const bodyParser = require("body-parser");
 
 const ConnectDB = async () => {
-  try {
-    await sequelize
-      .authenticate()
-      .then(() => console.log("데이터베이스 연결 성공!"));
-    await sequelize.sync().then(() => console.log("동기화 완료!"));
-  } catch (error) {
-    console.error("DB 연결 및 동기화 실패", error);
-  }
+    try {
+        await sequelize.authenticate().then(() => console.log("데이터베이스 연결 성공!"));
+        await sequelize.sync().then(() => console.log("동기화 완료!"));
+    } catch (error) {
+        console.error("DB 연결 및 동기화 실패", error);
+    }
 };
 // DB와 연결 및 동기화
 ConnectDB();
 
 // request body 안의 데이터를 json 형식으로 변환
-app.use(express.json({limit:"50mb"}));
-app.use(express.urlencoded({limit:"50mb", extended:false}))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:false}))
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //passport middleware 사용
 app.use(passport.initialize());
@@ -41,10 +40,10 @@ app.use("/", router);
 // 다른 도메인에서 온 요청도 허용함.
 app.use(cors());
 app.use((req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "*");
 });
 
 // 서버 포트랑 연결하기
 app.listen(process.env.SERVER_PORT, () => {
-  console.log(process.env.SERVER_PORT + "번 포트에 연결되었습니다!");
+    console.log(process.env.SERVER_PORT + "번 포트에 연결되었습니다!");
 });
