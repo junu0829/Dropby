@@ -6,15 +6,14 @@ exports.newArea = async (name, polygon) => {
     try {
         const area = await Area.create({
             name,
-            polygon
+            polygon,
         });
         logger.info(`${name} area created`);
         return area;
     } catch (error) {
-        logger.error(`Failed to create a new area : ${error.message}`)
+        logger.error(`Failed to create a new area : ${error.message}`);
         throw new Error("새 구역 정보 저장에 실패하였습니다.");
     }
-
 };
 
 exports.getAreas = async () => {
@@ -27,14 +26,14 @@ exports.getAreas = async () => {
         throw new Error("전체 구역 정보 조회에 실패하였습니다.");
         // next(error);
     }
-}
+};
 
 exports.getPlaces = async (areaPk) => {
     try {
         const places = await Place.findAll({
             where: {
-                pk: areaPk
-            }
+                pk: areaPk,
+            },
         });
         logger.info(`All places in area Id ${areaPk} retrieved : ${places.length} in total`);
 
@@ -43,7 +42,7 @@ exports.getPlaces = async (areaPk) => {
         logger.error(`Failed to retrieve all areas in area ${areaPk} : ${error.message}`);
         throw new Error(`${areaPk}번 구역 내 전체 장소 조회에 실패하였습니다.`);
     }
-}
+};
 
 exports.getAreaDrops = async (accessToken, areaPk) => {
     try {
@@ -53,15 +52,15 @@ exports.getAreaDrops = async (accessToken, areaPk) => {
                 pk: areaPk,
             },
         });
-    
+
         const areaName = area.name;
-    
+
         const AreaPlaces = await Place.findAll({
             where: {
                 areaPk,
             },
         });
-        let allDrops = { 'publicDrops': [], 'myDrops': [] };
+        let allDrops = { publicDrops: [], myDrops: [] };
         for (let place of AreaPlaces) {
             let placePk = place.dataValues.pk;
             const publicDrops = await Drop.findAll({
@@ -69,53 +68,62 @@ exports.getAreaDrops = async (accessToken, areaPk) => {
                     placePk,
                     isPrivate: false,
                 },
-                include: [{model:Image, attributes:['imageUrl']}, {model:Emoji, attributes:['name', 'icon']}, { model: Place, attributes: ['name'] }]
+                include: [
+                    { model: Image, attributes: ["imageUrl"] },
+                    { model: Emoji, attributes: ["name", "icon"] },
+                    { model: Place, attributes: ["name"] },
+                ],
             });
             for (let publicDrop of publicDrops) {
-                const commentsCount = (await Comment.findAll({where:{dropPk:publicDrop.pk}})).length;
+                const commentsCount = (await Comment.findAll({ where: { dropPk: publicDrop.pk } }))
+                    .length;
                 if (commentsCount) {
-                    publicDrop.dataValues['commentsCount'] = commentsCount;
-            } else {
-                publicDrop.dataValues['commentsCount'] = 0;
+                    publicDrop.dataValues["commentsCount"] = commentsCount;
+                } else {
+                    publicDrop.dataValues["commentsCount"] = 0;
+                }
             }
-        }
-            allDrops['publicDrops'].push(...publicDrops);
+            allDrops["publicDrops"].push(...publicDrops);
             console.log("--------------publicDrops");
-            console.log(allDrops['publicDrops']);
+            console.log(allDrops["publicDrops"]);
 
             const myDrops = await Drop.findAll({
                 where: {
                     placePk,
                     isPrivate: true,
-                    creatorPk: user.pk
+                    creatorPk: user.pk,
                 },
-                include: [{model:Image, attributes:['imageUrl']}, {model:Emoji, attributes:['name', 'icon']}, { model: Place, attributes: ['name'] }]
+                include: [
+                    { model: Image, attributes: ["imageUrl"] },
+                    { model: Emoji, attributes: ["name", "icon"] },
+                    { model: Place, attributes: ["name"] },
+                ],
             });
             for (let myDrop of myDrops) {
-                const commentsCount = Comment.findAll({where:{dropPk:myDrop.pk}}).length;
+                const commentsCount = Comment.findAll({ where: { dropPk: myDrop.pk } }).length;
                 if (commentsCount) {
-                    myDrop.dataValues['commentsCount'] = commentsCount;
+                    myDrop.dataValues["commentsCount"] = commentsCount;
                 } else {
-                    myDrop.dataValues['commentsCount'] = 0;
-                };
+                    myDrop.dataValues["commentsCount"] = 0;
+                }
             }
 
-            allDrops['myDrops'].push(...myDrops);
+            allDrops["myDrops"].push(...myDrops);
         }
 
-        logger.info(`All Drops of area Id ${areaPk} retrieved : ${allDrops.myDrops.length + allDrops.publicDrops.length} in total`);
+        logger.info(
+            `All Drops of area Id ${areaPk} retrieved : ${
+                allDrops.myDrops.length + allDrops.publicDrops.length
+            } in total`,
+        );
         return {
             areaName: areaName,
             areaPk: areaPk,
             drops: allDrops,
-            dropsCount: (allDrops.myDrops.length + allDrops.publicDrops.length),
+            dropsCount: allDrops.myDrops.length + allDrops.publicDrops.length,
         };
     } catch (error) {
         logger.error(`Failed to getAreadrops of area ${areaPk} : ${error.message}`);
         throw new Error(`${areaPk}번 내 전체 드롭 정보 조회에 실패하였습니다.`);
     }
-
- 
-    
-
 };
