@@ -28,8 +28,6 @@ exports.tokenRefresh = async (req, res, next) => {
     try {
         const accessToken = req.body.access;
         const refreshToken = req.body.refresh;
-        console.log("accessToken", accessToken);
-        console.log("refreshToken", refreshToken);
 
         const refreshResult = await userServices.tokenRefresh(accessToken, refreshToken);
         if (refreshResult.success) {

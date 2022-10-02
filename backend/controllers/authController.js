@@ -94,7 +94,7 @@ exports.logOut = async (req, res, next) => {
 exports.sendEmail = (req, res, next) => {
     const mailType = req.params.type;
     const userEmail = req.body.email;
-    console.log(mailType);
+
     try {
         const randomNumber = authServices.sendEmail(mailType, userEmail);
         res.status(200).json({

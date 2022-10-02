@@ -25,7 +25,7 @@ exports.signUp = async ({ nickname, email, password }) => {
 exports.logIn = async ({ email, password }) => {
     const user = await User.findOne({ where: { email } });
     userData = user.dataValues;
-    console.log(user.dataValues);
+
     payload = {
         pk: userData.pk,
         email: userData.email,
@@ -48,9 +48,8 @@ exports.logIn = async ({ email, password }) => {
 
 exports.tokenRefresh = async (accessToken, refreshToken) => {
     const authResult = verifyAccess(accessToken);
-    console.log("authResult", authResult);
+
     const verified = jwt.verify(accessToken, process.env.JWT_SECRET_ACCESS_KEY);
-    console.log("verified", verified);
 
     if (verified === null) {
         return {

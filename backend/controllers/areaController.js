@@ -5,7 +5,7 @@ exports.newArea = async (req, res, next) => {
     try {
         const { name, points } = req.body;
         const polygon = { type: "Polygon", coordinates: points };
-        console.log(polygon);
+
         const area = await areaServices.newArea(name, polygon);
         res.status(201).json({
             msg: "구역 생성 완료",

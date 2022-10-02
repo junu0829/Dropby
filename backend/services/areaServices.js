@@ -84,8 +84,6 @@ exports.getAreaDrops = async (accessToken, areaPk) => {
                 }
             }
             allDrops["publicDrops"].push(...publicDrops);
-            console.log("--------------publicDrops");
-            console.log(allDrops["publicDrops"]);
 
             const myDrops = await Drop.findAll({
                 where: {
