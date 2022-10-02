@@ -54,7 +54,7 @@ exports.updateComment = async (req, res, next) => {
 exports.deleteComment = async (req, res, next) => {
     try {
         const commentPk = req.params.commentPk;
-        const commentDeleted = await commentServices.deleteComment(commentPk);
+        await commentServices.deleteComment(commentPk);
 
         res.status(200).json({
             msg: "댓글 삭제 완료",
