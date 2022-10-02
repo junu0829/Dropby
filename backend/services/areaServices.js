@@ -114,6 +114,7 @@ exports.getAreaDrops = async (accessToken, areaPk) => {
                 allDrops.myDrops.length + allDrops.publicDrops.length
             } in total`,
         );
+
         return {
             areaName: areaName,
             areaPk: areaPk,
